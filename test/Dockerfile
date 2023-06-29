@@ -1,7 +1,8 @@
 FROM braughtg/vnc-novnc-base:1.1.0
 
 USER root
-RUN curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh \
+RUN \
+  curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh \
   && bash /tmp/nodesource_setup.sh \
   && apt install nodejs \
   && rm /tmp/nodesource_setup.sh \

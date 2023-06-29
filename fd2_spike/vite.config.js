@@ -7,7 +7,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   publicDir: '../public',
-  root: './src',
+  root: './fd2_spike/src',
   build: {
     outDir: '../dist',
     rollupOptions: {

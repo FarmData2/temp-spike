@@ -1,0 +1,40 @@
+{
+  "name": "fd2",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --config fd2_spike/vite.config.js",
+    "build": "vite --config fd2_spike/vite.config.js build",
+    "build-watch": "vite --config fd2_spike/vite.config.js build --watch",
+    "preview": "vite --config fd2_spike/vite.config.js preview",
+    "test:gui": "cypress open --project fd2_spike",
+    "test:e2e": "cypress run --project fd2_spike --e2e",
+    "test:unit": "cypress run --project fd2_spike --component",
+    "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix --ignore-path .gitignore",
+    "bashlint": "npx shellcheck $(find . -name '*.bash')",
+    "dockerlint": "for NAME in $(find . -name node_modules -prune -false -o -name 'Dockerfile'); do echo 'Linting:' $NAME; npx dockerlint $NAME; done",
+    "lint": "npm run eslint; npm run bashlint; npm run dockerlint",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "pinia": "^2.1.3",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "cypress": "^12.14.0",
+    "dockerlint": "^0.3.9",
+    "eslint": "^8.39.0",
+    "eslint-plugin-cypress": "^2.13.3",
+    "eslint-plugin-json": "^3.1.0",
+    "eslint-plugin-md": "^1.0.19",
+    "eslint-plugin-vue": "^9.11.0",
+    "prettier": "^2.8.8",
+    "prettier-plugin-sh": "^0.12.8",
+    "shellcheck": "^2.2.0",
+    "start-server-and-test": "^2.0.0",
+    "vite": "^4.3.9"
+  }
+}
