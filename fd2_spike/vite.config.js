@@ -10,6 +10,8 @@ export default defineConfig({
   root: './fd2_spike/src',
   build: {
     outDir: '../dist',
+    emptyOutDir: true,
+    exclude: ['**/*.cy.js', '**/*.cy.comp.js'],
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL('./src/main/index.html', import.meta.url)),
