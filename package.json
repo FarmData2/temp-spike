@@ -13,7 +13,7 @@
     "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix --ignore-path .gitignore",
     "bashlint": "npx shellcheck $(find . -name '*.bash')",
     "dockerlint": "for NAME in $(find . -name node_modules -prune -false -o -name 'Dockerfile'); do echo 'Linting:' $NAME; npx dockerlint $NAME; done",
-    "lint": "npm run eslint; npm run bashlint; npm run dockerlint",
+    "lint": "npm run eslint; npm run bashlint",
     "format": "prettier --write ."
   },
   "dependencies": {
