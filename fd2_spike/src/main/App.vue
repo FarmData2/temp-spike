@@ -1,6 +1,22 @@
 <script setup>
 import HelloWorld from '../components/HelloWorld/HelloWorld.vue'
 import TheWelcome from '../components/TheWelcome/TheWelcome.vue'
+import dayjs from 'dayjs'
+</script>
+
+<script>
+export default {
+  data() {
+    return {
+      date: '1/1/2022',
+    }
+  },
+  computed: {
+    formatDate() {
+      return dayjs(this.date).format('YYYY-MM-DD')
+    },
+  },
+}
 </script>
 
 <template>
@@ -14,6 +30,8 @@ import TheWelcome from '../components/TheWelcome/TheWelcome.vue'
 
   <main>
     <TheWelcome />
+    <br />
+    <div>{{ formatDate }}</div>
   </main>
 </template>
 
