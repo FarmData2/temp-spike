@@ -1,0 +1,23 @@
+main:
+  js:
+    main.js:
+      preprocess: false
+      minified: true
+      attributes: { type: 'module'}
+  css:
+    theme:
+      main.css: {}
+    layout: 
+      TheWelcome.css: {}
+
+other:
+  js:
+    other.js:
+      preprocess: false
+      minified: true
+      attributes: { type: 'module'}
+  css:
+    theme:
+      other.css: {}
+    layout: 
+      TheWelcome.css: {}

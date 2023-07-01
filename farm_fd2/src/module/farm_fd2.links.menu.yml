@@ -1,0 +1,13 @@
+farm.fd2_main:
+  title: 'FarmData2'
+  description: 'example of how to make an admin settings page link'
+  parent: farm.base
+  route_name: farm.fd2_main.content
+  weight: 100
+
+farm.fd2_other:
+  title: 'FarmData2 Other'
+  description: 'example of how to make another link'
+  parent: farm.fd2_main
+  route_name: farm.fd2_other.content
+  weight: 100

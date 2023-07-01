@@ -1,0 +1,20 @@
+{
+  "name": "drupal/farmdata2",
+  "description": "Blah blah",
+  "type": "drupal-profile",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/DickinsonCollege/FarmData2",
+  "support": {
+    "docs": "https://github.com/DickinsonCollege/FarmData2",
+    "forum": "https://farmdata2.zulipchat.com/",
+    "chat": "https://farmdata2.zulipchat.com/"
+  },
+  "authors": [
+    {
+      "name": "Grant Braught",
+      "email": "braughtg@gmail.com"
+    }
+  ],
+  "require": {
+  }
+}

@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite --config fd2_spike/vite.config.js",
-    "build": "vite --config fd2_spike/vite.config.js build",
-    "build-watch": "vite --config fd2_spike/vite.config.js build --watch",
-    "preview": "vite --config fd2_spike/vite.config.js preview",
-    "test:gui": "cypress open --project fd2_spike",
-    "test:e2e": "cypress run --project fd2_spike --e2e",
-    "test:unit": "cypress run --project fd2_spike --component",
+    "dev": "vite --config farm_fd2/vite.config.js",
+    "build": "vite --config farm_fd2/vite.config.js build",
+    "build-watch": "vite --config farm_fd2/vite.config.js build --watch",
+    "preview": "vite --config farm_fd2/vite.config.js preview",
+    "test:gui": "cypress open --project farm_fd2",
+    "test:e2e": "cypress run --project farm_fd2 --e2e",
+    "test:unit": "cypress run --project farm_fd2 --component",
     "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix --ignore-path .gitignore",
     "bashlint": "npx shellcheck $(find . -name '*.bash')",
     "dockerlint": "for NAME in $(find . -name node_modules -prune -false -o -name 'Dockerfile'); do echo 'Linting:' $NAME; npx dockerlint $NAME; done",
@@ -22,6 +22,7 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@prettier/plugin-php": "^0.19.6",
     "@rushstack/eslint-patch": "^1.2.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-prettier": "^7.1.0",
@@ -36,6 +37,7 @@
     "prettier-plugin-sh": "^0.12.8",
     "shellcheck": "^2.2.0",
     "start-server-and-test": "^2.0.0",
-    "vite": "^4.3.9"
+    "vite": "^4.3.9",
+    "vite-plugin-static-copy": "^0.16.0"
   }
 }
