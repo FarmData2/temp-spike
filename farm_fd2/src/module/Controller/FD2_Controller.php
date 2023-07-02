@@ -20,11 +20,9 @@ class FD2_Controller extends ControllerBase
       'app' => [
         '#markup' => '<div id="app"></div>',
         '#attached' => [
-          'library' => [
-            'farm_fd2/' . $fd2_service,
-          ]
-        ]
-      ]
+          'library' => ['farm_fd2/' . $fd2_service],
+        ],
+      ],
     ];
   }
 }

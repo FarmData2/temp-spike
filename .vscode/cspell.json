@@ -1,0 +1,9 @@
+{
+  "languageSettings": [
+    {
+      "languageId": "javascript",
+      "includeRegExpList": ["CStyleComment", "string"],
+      "ignoreRegExpList": ["/from\\s+(['\"]).*\\1/"]
+    }
+  ]
+}

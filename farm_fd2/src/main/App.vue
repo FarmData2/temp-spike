@@ -23,6 +23,8 @@ export default {
   <header>
     <img alt="Vue logo" class="logo" src="../assets/logo.svg" width="125" height="125" />
 
+    <p>Another Change to the .vue file</p>
+
     <div class="wrapper">
       <HelloWorld msg="This is the `main` module!" />
     </div>

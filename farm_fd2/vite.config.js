@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import path from 'node:path'
+import glob from 'glob'
 import { defineConfig } from 'vite'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
@@ -10,6 +11,7 @@ export default defineConfig({
   plugins: [
     vue(),
     viteStaticCopy({
+      // Copy the Drupal module stuff...
       targets: [
         {
           src: 'module/*.yml',
@@ -29,14 +31,16 @@ export default defineConfig({
     emptyOutDir: true,
     exclude: ['**/*.cy.js', '**/*.cy.comp.js'],
     rollupOptions: {
-      input: {
-        main: fileURLToPath(new URL('./src/main/main.html', import.meta.url)),
-        other: fileURLToPath(new URL('./src/other/other.html', import.meta.url)),
-      },
+      input: Object.fromEntries(
+        glob.sync('farm_fd2/src/**/*.html').map((file) => [
+          path.basename(file, '.html'), // the prefix to .html, e.g. main
+          fileURLToPath(new URL(file.slice('farm_fd2/'.length), import.meta.url)),
+        ])
+      ),
       output: {
         // Ensures that the entry point and css names are not hashed.
         entryFileNames: '[name].js',
-        assetFileNames: `[name].[ext]`,
+        assetFileNames: '[name].[ext]',
       },
     },
   },

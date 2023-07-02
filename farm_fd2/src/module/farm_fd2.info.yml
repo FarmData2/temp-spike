@@ -3,4 +3,4 @@ description: Creates the FarmData2 module and menu".
 package: farmOS FarmData2
 type: module
 version: 1.0
-core_version_requirement: ">=9"
+core_version_requirement: '>=9'
