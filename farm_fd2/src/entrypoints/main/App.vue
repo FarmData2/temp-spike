@@ -1,6 +1,6 @@
 <script setup>
-import HelloWorld from '../components/HelloWorld/HelloWorld.vue'
-import TheWelcome from '../components/TheWelcome/TheWelcome.vue'
+import HelloWorld from '@/components/HelloWorld/HelloWorld.vue'
+import TheWelcome from '@/components/TheWelcome/TheWelcome.vue'
 import dayjs from 'dayjs'
 </script>
 
@@ -21,7 +21,7 @@ export default {
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="../assets/logo.svg" width="125" height="125" />
+    <img alt="Vue logo" class="logo" src="@/shared/logo.png" width="125" height="125" />
 
     <p>Another Change to the .vue file</p>
 

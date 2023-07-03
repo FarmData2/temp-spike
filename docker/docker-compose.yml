@@ -22,13 +22,3 @@ services:
     environment:
       XDEBUG_MODE: debug
       XDEBUG_CONFIG: discover_client_host=yes
-      # Enable this for PHPStorm:
-      #XDEBUG_SESSION: PHPSTORM
-      #PHP_IDE_CONFIG: serverName=localhost
-
-  # Enable this service when executing javascript tests.
-#  chrome:
-
-# Tests are failing on later versions of this image.
-# See https://github.com/farmOS/farmOS/issues/514
-#      image: selenium/standalone-chrome:4.1.2-20220217
