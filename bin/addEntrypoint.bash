@@ -49,7 +49,12 @@ then
     exit 255
 fi
 
-echo -e "Adding an ${UNDERLINE_WHITE}entry point${NO_COLOR} to ${UNDERLINE_WHITE}$APP_DIR${NO_COLOR}."
+echo -e "Adding an ${UNDERLINE_GREEN}entry point${NO_COLOR} to ${UNDERLINE_GREEN}$APP_DIR${NO_COLOR}."
+echo -e ""
+read -rp "Name for new entry point (snake_case): " ENTRY_POINT
+
+echo "$ENTRY_POINT"
+
 # Get entry point information
   # Name - One word all lowercase
   # Route - fd2/name  - generate this.
