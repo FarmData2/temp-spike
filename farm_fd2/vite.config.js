@@ -21,6 +21,10 @@ export default defineConfig({
           src: '../module/Controller',
           dest: 'src/',
         },
+        {
+          src: '../composer.json',
+          dest: './composer.json',
+        },
       ],
     }),
   ],

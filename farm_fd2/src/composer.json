@@ -1,6 +1,6 @@
 {
   "name": "drupal/farmdata2",
-  "description": "Blah blah",
+  "description": "FarmData2 module for farmOS",
   "type": "drupal-profile",
   "license": "GPL-3.0-or-later",
   "homepage": "https://github.com/DickinsonCollege/FarmData2",
