@@ -40,7 +40,7 @@ then
 fi
 
 # Check that working tree is clean
-STATUS=$(git status)
+STATUS=$(git status | tail -1)
 if [[ ! "$STATUS" =~ ^"nothing to commit, working tree clean"$ ]]
 then
     echo -e "${ON_RED}ERROR:${NO_COLOR} The working tree must be clean to add an entry point."
