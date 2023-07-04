@@ -24,8 +24,8 @@ then
     echo -e "  farm_fd2_example"
     echo -e "  farm_fd2_school"
     echo -e ""
-    echo -e "Change to the directory contianing the module you want to add an"
-    echo -e "entry point to and run this script again."
+    echo -e "Change to the directory contianing the module you want to add an entry point to."
+    echo -e "Then run this script again."
     exit 255
 fi
 
@@ -34,13 +34,20 @@ BRANCH=$(git branch)
 if [[ ! "$BRANCH" =~ ^"* main" ]]
 then
     echo -e "${ON_RED}ERROR:${NO_COLOR} You must have the main branch checked out to add an entry point."
-    echo -e "Switch to the main branch and run this script again."
+    echo -e "Switch to the main branch."
+    echo -e "Then run this script again."
     exit 255
 fi
 
 # Check that working tree is clean
-
-
+STATUS=$(git status)
+if [[ ! "$STATUS" =~ ^"nothing to commit, working tree clean"$ ]]
+then
+    echo -e "${ON_RED}ERROR:${NO_COLOR} The working tree must be clean to add an entry point."
+    echo -e "Commit chagnes to a feature branch or use git stash."
+    echo -e "Then run this script again."
+    exit 255
+fi
 
 # Create a new branch
 
