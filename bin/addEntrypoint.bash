@@ -49,8 +49,7 @@ then
     exit 255
 fi
 
-# Create a new branch
-
+echo -e "Adding an ${UNDERLINE_WHITE}entry point${NO_COLOR} to ${UNDERLINE_WHITE}$APP_DIR${NO_COLOR}."
 # Get entry point information
   # Name - One word all lowercase
   # Route - fd2/name  - generate this.
@@ -59,12 +58,12 @@ fi
 
 #read var
 
-  # verify entry point doesn't exist (check for dir)
-  # verify route doesn't exist (check routing.yml)
+# verify entry point doesn't exist (check for dir)
+# verify route doesn't exist (check routing.yml)
+
+# Create a new branch
 
 # Create a new entry point
-
-
 
 # make the directory
 # populate with stock App.vue, .html, .js, .cy.js
