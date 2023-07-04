@@ -1,0 +1,2 @@
+# Allow source commands in scripts.
+external-sources=true
