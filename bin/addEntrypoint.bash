@@ -53,6 +53,25 @@ echo -e "Adding an ${UNDERLINE_GREEN}entry point${NO_COLOR} to ${UNDERLINE_GREEN
 echo -e ""
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
 
+# Define the module .yml files for convenience.
+ROUTE_YML_FILE="src/module/$APP_DIR.routing.yml"
+LINKS_YML_FILE="src/module/$APP_DIR.links.menu.yml"
+LIBRARY_YML_FILE="src/module/$APP_DIR.libraries.yml"
+
+# Check that the entry point is not already defined.
+IN_ROUTES=$(grep $ROUTE_YML_FILE "^farm.farm_$ENTRY_POINT.content:$")
+
+if [[ ! "$IN_ROUTES" = "" ]]
+then
+    echo -e "${ON_RED}ERROR:${NO_COLOR} The entry point $ENTRY_POINT is already defined."
+    echo -e "Pick a different name for your entry point.
+    echo -e "Or remove definitions realated to the entry point $ENTRY_POINT from the files:"
+    echo -e "  $ROUTE_YML_FILE"
+    echo -e "  $LINKS_YML_FILE"
+    echo -e "  $LIBRARIES_YML_FLIE"
+    echo -e "Then run this script again."
+fi
+
 echo "$ENTRY_POINT"
 
 # Get entry point information
