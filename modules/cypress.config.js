@@ -6,11 +6,11 @@ module.exports = defineConfig({
   video: false,
   trashAssetsBeforeRuns: true,
   e2e: {
-    specPattern: 'entrypoints/**/*.cy.js',
+    specPattern: '**/entrypoints/**/*.cy.js',
     baseUrl: 'http://localhost:5173',
   },
   component: {
-    specPattern: 'components/**/*.cy.comp.js',
+    specPattern: '**/components/**/*.cy.comp.js',
     devServer: {
       framework: 'vue',
       bundler: 'vite',

@@ -3,11 +3,12 @@ import path from 'node:path'
 import glob from 'glob'
 import { defineConfig } from 'vite'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
-
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+let viteConfig = {
+  root: 'modules/farm_fd2/src/entrypoints',
+  publicDir: '../public',
   plugins: [
     vue(),
     viteStaticCopy({
@@ -28,17 +29,15 @@ export default defineConfig({
       ],
     }),
   ],
-  publicDir: '../public',
-  root: './farm_fd2/src/entrypoints',
   build: {
     outDir: '../../dist',
     emptyOutDir: true,
-    exclude: ['**/*.cy.js', '**/*.cy.comp.js'],
+    exclude: ['**/*.cy.js', '**/*.cy.comp.js', '**/*.cy.unit.js'],
     rollupOptions: {
       input: Object.fromEntries(
-        glob.sync('farm_fd2/src/entrypoints/*/*.html').map((file) => [
+        glob.sync('modules/farm_fd2/src/entrypoints/*/*.html').map((file) => [
           path.basename(file, '.html'), // the prefix to .html, e.g. main
-          fileURLToPath(new URL(file.slice('farm_fd2/'.length), import.meta.url)),
+          file.slice('modules/farm_fd2/src/entrypoints/'),
         ])
       ),
       output: {
@@ -61,4 +60,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src/', import.meta.url)),
     },
   },
-})
+}
+
+console.log('Building: ')
+console.log(viteConfig.build.rollupOptions.input)
+
+export default defineConfig(viteConfig)

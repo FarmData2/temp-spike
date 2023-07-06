@@ -13,7 +13,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ['fd2_spike/src/**/*.cy.comp.js', 'fd2_spike/src/**/*.cy.js'],
+      files: ['**/*.cy.comp.js', '**/*.cy.unit.js', '**/*.cy.js'],
       extends: ['plugin:cypress/recommended'],
     },
   ],
