@@ -164,7 +164,9 @@ echo -e "                   title: $ENTRY_POINT_TITLE"
 echo -e "             description: $ENTRY_POINT_DESCRIPTION"
 echo -e "            drupal route: $DRUPAL_ROUTE"
 echo -e "       drupal route name: $DRUPAL_ROUTE_NAME"
+echo ""
 
+# Confirm that the entry point should be created.
 Y_N=""
 while  [[ "$Y_N" != "Y" && "$Y_N" != "y" ]]
 do 
@@ -177,8 +179,6 @@ do
         exit 255
     fi
 done
-
-exit 1
 
 # Create a new feature branch for the entry point.
 git branch "$FEATURE_BRANCH_NAME"
