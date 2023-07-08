@@ -65,6 +65,7 @@ cd "$MODULE_DIR" 2> /dev/null || ( \
 
 # Get the name for the new entry point.
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
+echo ""
 
 DRUPAL_ROUTE="$DRUPAL_ROUTE_PREFIX""/$ENTRY_POINT"
 ENTRY_POINT_SRC_DIR="$MODULE_DIR/src/endpoints/$ENTRY_POINT"
