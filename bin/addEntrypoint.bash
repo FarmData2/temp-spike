@@ -66,7 +66,7 @@ cd "$MODULE_DIR" 2> /dev/null || ( \
 # Get the name for the new entry point.
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
 
-DRUPAL_ROUTE="$ROUTE_PREFIX""/$ENTRY_POINT"
+DRUPAL_ROUTE="$DRUPAL_ROUTE_PREFIX""/$ENTRY_POINT"
 ENTRY_POINT_SRC_DIR="$MODULE_DIR/src/endpoints/$ENTRY_POINT"
 DRUPAL_ROUTE_NAME="$DRUPAL_ROUTE_PREFIX""_$ENTRY_POINT"
 
@@ -157,17 +157,16 @@ git branch "$BRANCH_NAME"
 git switch "$BRANCH_NAME"
 
 # Make the directory for the entrypoint and populate it with the template files.
-ENTRY_POINT_DIR="$PWD/src/entrypoints/$ENTRY_POINT"
-mkdir "$ENTRY_POINT_DIR"
+mkdir "$ENTRY_POINT_SRC_DIR"
 
-cp "$SCRIPT_DIR/templates/entrypoints/App.vue" "$ENTRY_POINT_DIR"
+cp "$SCRIPT_DIR/templates/entrypoints/App.vue" "$ENTRY_POINT_SRC_DIR"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_DIR/App.vue"
-cp "$SCRIPT_DIR/templates/entrypoints/entry_point.exists.cy.js" "$ENTRY_POINT_DIR/$ENTRY_POINT.exists.cy.js"
-sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_DIR/$ENTRY_POINT.exists.cy.js"
-cp "$SCRIPT_DIR/templates/entrypoints/entry_point.html" "$ENTRY_POINT_DIR/$ENTRY_POINT.html"
-sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ENTRY_POINT_DIR/$ENTRY_POINT.html"
-sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_DIR/$ENTRY_POINT.html"
-cp "$SCRIPT_DIR/templates/entrypoints/entry_point.js" "$ENTRY_POINT_DIR/$ENTRY_POINT.js"
+cp "$SCRIPT_DIR/templates/entrypoints/entry_point.exists.cy.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
+sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
+cp "$SCRIPT_DIR/templates/entrypoints/entry_point.html" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
+sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
+sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
+cp "$SCRIPT_DIR/templates/entrypoints/entry_point.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js"
 
 # Make the new entry point into a drupal Module by adding to the
 # libraries, links.menu and routing  yml files.
