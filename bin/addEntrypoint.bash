@@ -68,26 +68,6 @@ FARMOS_ROUTE="$ROUTE_PREFIX""/$ENTRY_POINT"
 ENTRY_POINT_DIR="REPO_ROOT_DIR/modules/$MODULE_NAME/src/endpoints/$ENTRY_POINT"
 DRUPAL_ROUTE_NAME=$ROUTE_PREFIX
 
-echo ""
-echo -e "Adding an entry point as follows:"
-echo -e "             module: $MODULE_NAME"
-echo -e "   entry point name: $ENTRY_POINT"
-echo -e "      src directory: $ENTRY_POINT_DIR"
-echo -e "              title: $ENTRY_POINT_TITLE"
-echo -e "        description: $ENTRY_POINT_DESCRIPTION"
-echo -e "       farmOS route: $FARMOS_ROUTE"
-echo -e "  drupal route name: $DRUPAL_ROUTE_NAME"
-
-exit 1
-
-
-echo "${UNDERLINE_GREEN}$ENTRY_POINT${NO_COLOR} to the ${UNDERLINE_GREEN}$MODULE_NAME${NO_COLOR} module"
-echo -e "with the farmOS route ${UNDERLINE_GREEN}$FARMOS_ROUTE${NO_COLOR}."
-echo -e ""
-
-exit 1
-
-
 # Check if the directory for the entry point exits...
 if [ -d "src/entrypoints/$ENTRY_POINT" ]
 then
@@ -150,6 +130,21 @@ do
         break
     fi
 done
+
+echo ""
+echo -e "Adding an entry point as follows:"
+echo -e "             module: $MODULE_NAME"
+echo -e "   entry point name: $ENTRY_POINT"
+echo -e "      src directory: $ENTRY_POINT_DIR"
+echo -e "              title: $ENTRY_POINT_TITLE"
+echo -e "        description: $ENTRY_POINT_DESCRIPTION"
+echo -e "       farmOS route: $FARMOS_ROUTE"
+echo -e "  drupal route name: $DRUPAL_ROUTE_NAME"
+
+exit 1
+
+
+
 
 # Permissions - ????
 
