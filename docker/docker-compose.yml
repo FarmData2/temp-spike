@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:12
     volumes:
-      - './db:/var/lib/postgresql/data'
+      - 'farmos2_db:/var/lib/postgresql/data'  # Use docker volume for performance.
     ports:
       - '5432:5432'
     environment:
@@ -16,9 +16,12 @@ services:
       - db
     image: farmos/farmos:2.x
     volumes:
-      - '../farm_fd2/dist:/opt/drupal/web/sites/all/modules/farm_fd2'
+      - '../modules/farm_fd2/dist:/opt/drupal/web/sites/all/modules/farm_fd2'
     ports:
       - '80:80'
     environment:
       XDEBUG_MODE: debug
       XDEBUG_CONFIG: discover_client_host=yes
+
+volumes:
+  farmos2_db:

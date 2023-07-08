@@ -8,8 +8,9 @@
     "watch:fd2": "vite --config modules/farm_fd2/vite.config.js build --watch",
     "preview:fd2": "vite --config modules/farm_fd2/vite.config.js preview",
 
-    "test:gui": "cypress open --project modules/farm_fd2",
-    "test:e2e": "cypress run --project modules/farm_fd2 --e2e",
+    "test:fd2:gui": "cypress open --project modules/farm_fd2",
+    "test:fd2": "cypress run --project modules/farm_fd2 --e2e",
+
     "test:comp": "cypress run --project modules/farm_fd2 --component",
     
     "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix --ignore-path .gitignore",

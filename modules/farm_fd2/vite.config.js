@@ -58,6 +58,8 @@ let viteConfig = {
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src/', import.meta.url)),
+      '@comps': fileURLToPath(new URL('../../components/', import.meta.url)),
+      '@libs': fileURLToPath(new URL('../../libraries/', import.meta.url)),
     },
   },
 }
