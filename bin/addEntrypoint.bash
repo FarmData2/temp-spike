@@ -12,7 +12,7 @@ MODULE_NAME=$(basename "$PWD")
 # Get the path to the main repo directory.
 SCRIPT_PATH=$(readlink -f $0)  # Path to this script.
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
-MAIN_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # Project root directory.
+REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
 
 # shellcheck source=./colors.bash
 source "$SCRIPT_DIR/colors.bash"
@@ -21,8 +21,8 @@ source "$SCRIPT_DIR/colors.bash"
 if [ -z ${TESTING+x} ]
 then 
     # Check that the main branch is checked out
-    BRANCH=$(git branch)
-    if [[ ! "$BRANCH" == *"* main"* ]]
+    CUR_GIT_BRANCH=$(git branch)
+    if [[ ! "$CUR_GIT_BRANCH" == *"* main"* ]]
     then
         echo -e "${ON_RED}ERROR:${NO_COLOR} You must have the main branch checked out to add an entry point."
         echo -e "Switch to the main branch."
@@ -32,8 +32,8 @@ then
 fi
 
 # Check that working tree is clean
-STATUS=$(git status | tail -1)
-if [[ ! "$STATUS" =~ ^"nothing to commit, working tree clean"$ ]]
+GIT_STATUS=$(git status | tail -1)
+if [[ ! "$GIT_STATUS" =~ ^"nothing to commit, working tree clean"$ ]]
 then
     echo -e "${ON_RED}ERROR:${NO_COLOR} The working tree must be clean to add an entry point."
     echo -e "Commit chagnes to a feature branch or use git stash."
@@ -42,12 +42,11 @@ then
 fi
 
 # Get the module to which the endpoint should be added.
-MODULES=("farm_fd2" "farm_fd2_examples" "farm_fd2_school")
-
+ALLOWED_MODULES=("farm_fd2" "farm_fd2_examples" "farm_fd2_school")
 echo -e "Choose the module in which an entry point should be created."
-select MODULE_NAME in "${MODULES[@]}"
+select MODULE_NAME in "${ALLOWED_MODULES[@]}"
 do
-    if (( "$REPLY" <= 0 || "$REPLY" > "${#MODULES[@]}" ))
+    if (( "$REPLY" <= 0 || "$REPLY" > "${#ALLOWED_MODULES[@]}" ))
     then
         echo -e "${ON_RED}ERROR:${NO_COLOR} Invalid choice. Please try again."
     else
@@ -58,35 +57,42 @@ ROUTE_PREFIX="${MODULE_NAME:5}"
 echo ""
 
 # Switch to the directory for the module to which the entry point is being added.
-cd "$MAIN_DIR/modules/$MODULE_NAME" 2> /dev/null || ( \
+cd "$REPO_ROOT_DIR/modules/$MODULE_NAME" 2> /dev/null || ( \
     echo -e "${ON_RED}ERROR:${NO_COLOR} Directory modules/$MODULE_NAME is missisng."; \
     echo -e "Restore this directory and try again."; \
     exit 255 ) || exit 255
 
 # Get the name for the new entry point.
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
-ROUTE="$ROUTE_PREFIX""/$ENTRY_POINT"
+FARMOS_ROUTE="$ROUTE_PREFIX""/$ENTRY_POINT"
+ENTRY_POINT_DIR="REPO_ROOT_DIR/modules/$MODULE_NAME/src/endpoints/$ENTRY_POINT"
+DRUPAL_ROUTE_NAME=$ROUTE_PREFIX
 
 echo ""
-echo -e "Adding the entry point ${UNDERLINE_GREEN}$ENTRY_POINT${NO_COLOR} to the ${UNDERLINE_GREEN}$MODULE_NAME${NO_COLOR} module"
-echo -e "with the farmOS route ${UNDERLINE_GREEN}$ROUTE${NO_COLOR}."
+echo -e "Adding an entry point as follows:"
+echo -e "             module: $MODULE_NAME"
+echo -e "   entry point name: $ENTRY_POINT"
+ehco -e "      src directory: $ENTRY_POINT_DIR"
+echo -e "              title: $ENTRY_POINT_TITLE"
+echo -e "        description: $ENTRY_POINT_DESCRIPTION"
+echo -e "       farmOS route: $FARMOS_ROUTE"
+echo -e "  drupal route name: $DRUPAL_ROUTE_NAME"
+
+exit 1
+
+
+echo "${UNDERLINE_GREEN}$ENTRY_POINT${NO_COLOR} to the ${UNDERLINE_GREEN}$MODULE_NAME${NO_COLOR} module"
+echo -e "with the farmOS route ${UNDERLINE_GREEN}$FARMOS_ROUTE${NO_COLOR}."
 echo -e ""
 
-# Define the module .yml file paths for convenience.
-ROUTING_YML_FILE="src/module/$MODULE_NAME.routing.yml"
-LINKS_YML_FILE="src/module/$MODULE_NAME.links.menu.yml"
-LIBRARIES_YML_FILE="src/module/$MODULE_NAME.libraries.yml"
+exit 1
 
-# Check that the entry point is not already defined.
-IN_ROUTES=$(grep "^farm.fd2_$ENTRY_POINT.content:$" "$ROUTING_YML_FILE")
-IN_LINKS=$(grep "^farm.fd2_$ENTRY_POINT:$" "$LINKS_YML_FILE")
-IN_LIBRARIES=$(grep "^$ENTRY_POINT:$" "$LIBRARIES_YML_FILE")
 
 # Check if the directory for the entry point exits...
 if [ -d "src/entrypoints/$ENTRY_POINT" ]
 then
     echo -e "${ON_RED}ERROR:${NO_COLOR} A directory for the entry point $ENTRY_POINT already exists"
-    echo -e "in the directory $MAIN_DIR/src/entrypoints/$ENTRY_POINT."
+    echo -e "in the directory $REPO_ROOT_DIR/src/entrypoints/$ENTRY_POINT."
     echo -e "Pick a different name for your entry point."
     echo -e "OR:"
     echo -e "  Remove the src/entrypoints/$ENTRY_POINT directory"
@@ -97,6 +103,16 @@ then
     echo -e "Then run this script again."
     exit 255
 fi
+
+# Define the module .yml file paths for convenience.
+ROUTING_YML_FILE="src/module/$MODULE_NAME.routing.yml"
+LINKS_YML_FILE="src/module/$MODULE_NAME.links.menu.yml"
+LIBRARIES_YML_FILE="src/module/$MODULE_NAME.libraries.yml"
+
+# Check that the entry point is not already defined.
+IN_ROUTES=$(grep "^farm.fd2_$ENTRY_POINT.content:$" "$ROUTING_YML_FILE")
+IN_LINKS=$(grep "^farm.fd2_$ENTRY_POINT:$" "$LINKS_YML_FILE")
+IN_LIBRARIES=$(grep "^$ENTRY_POINT:$" "$LIBRARIES_YML_FILE")
 
 # The directory for the entry point does not exist.
 # So now check if the entry point has information in any of the .yml files.

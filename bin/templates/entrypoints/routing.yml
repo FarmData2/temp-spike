@@ -1,5 +1,5 @@
 
-farm.%ENTRY_POINT%.content:
+farm.fd2_%ENTRY_POINT%.content:
   path: '/fd2/%ENTRY_POINT%'
   defaults:
     _controller: '\Drupal\farm_fd2\Controller\FD2_Controller::content'
