@@ -69,6 +69,18 @@ read -rp "Name for new entry point (snake_case): " ENTRY_POINT
 DRUPAL_ROUTE="$DRUPAL_ROUTE_PREFIX""/$ENTRY_POINT"
 ENTRY_POINT_SRC_DIR="$MODULE_DIR/src/endpoints/$ENTRY_POINT"
 DRUPAL_ROUTE_NAME="$DRUPAL_ROUTE_PREFIX""_$ENTRY_POINT"
+FEATURE_BRANCH_NAME="add_$ENTRY_POINT""_entry_point"
+
+# Check if a feature branch already exists for the entry point...
+FEATURE_BRANCH_EXISTS=$(git branch -a | grep "$FEATURE_BRANCH_NAME")
+if [[ ! "$FEATURE_BRANCH_EXISTS" == "" ]]
+then
+  echo -e "${ON_RED}ERROR:${NO_COLOR} The feature branch $FEATURE_BRANCH_NAME already exists."
+  echo -e "Pick a different name for your entry point."
+  echo -e "Or delete the feature branch $FEATURE_BRANCH_NAME."
+  echo -e "Then run this script again."
+  exit 255
+fi
 
 # Check if the directory for the entry point exits...
 if [ -d "src/entrypoints/$ENTRY_POINT" ]
@@ -135,14 +147,14 @@ done
 
 echo ""
 echo -e "Adding an entry point as follows:"
-echo -e "             module: $MODULE_NAME"
-echo -e "   module direcotry: $MODULE_DIR"
-echo -e "   entry point name: $ENTRY_POINT"
-echo -e "      src directory: $ENTRY_POINT_SRC_DIR"
-echo -e "              title: $ENTRY_POINT_TITLE"
-echo -e "        description: $ENTRY_POINT_DESCRIPTION"
-echo -e "       drupal route: $DRUPAL_ROUTE"
-echo -e "  drupal route name: $DRUPAL_ROUTE_NAME"
+echo -e "               in module: $MODULE_NAME"
+echo -e "        module direcotry: $MODULE_DIR"
+echo -e "        entry point name: $ENTRY_POINT"
+echo -e "   entry point directory: $ENTRY_POINT_SRC_DIR"
+echo -e "                   title: $ENTRY_POINT_TITLE"
+echo -e "             description: $ENTRY_POINT_DESCRIPTION"
+echo -e "            drupal route: $DRUPAL_ROUTE"
+echo -e "       drupal route name: $DRUPAL_ROUTE_NAME"
 
 exit 1
 
@@ -151,10 +163,9 @@ exit 1
 
 # Permissions - ????
 
-# Create a new branch
-BRANCH_NAME="add_$ENTRY_POINT""_entry_point"
-git branch "$BRANCH_NAME"
-git switch "$BRANCH_NAME"
+# Create a new feature branch for the entry point.
+git branch "$FEATURE_BRANCH_NAME"
+git switch "$FEATURE_BRANCH_NAME"
 
 # Make the directory for the entrypoint and populate it with the template files.
 mkdir "$ENTRY_POINT_SRC_DIR"
