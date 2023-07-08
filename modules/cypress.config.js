@@ -11,7 +11,6 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:5173',
   },
   component: {
-    //excludeSpecPattern: '**/*',
     specPattern: '../../components/**/*.cy.comp.js',
     devServer: {
       framework: 'vue',
