@@ -153,6 +153,8 @@ echo -e ""
 # *** NEED TO DEAL WITH Permissions - ????
 # ***
 
+# shellcheck disable=SC1003
+DISPLAY_DRUPAL_ROUTE=$(echo "$DRUPAL_ROUTE"| tr -d '\\')
 
 echo -e "About to add an entry point as follows:"
 echo -e "               in module: $MODULE_NAME"
@@ -162,7 +164,6 @@ echo -e "   entry point directory: $ENTRY_POINT_SRC_DIR"
 echo -e "      template directory: $ENTRY_POINT_TEMPLATE_DIR"
 echo -e "                   title: $ENTRY_POINT_TITLE"
 echo -e "             description: $ENTRY_POINT_DESCRIPTION"
-DISPLAY_DRUPAL_ROUTE=$(tr '\' '' "$DRUPAL_ROUTE")
 echo -e "            drupal route: $DISPLAY_DRUPAL_ROUTE"
 echo -e "       drupal route name: $DRUPAL_ROUTE_NAME"
 echo ""
