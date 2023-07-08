@@ -27,7 +27,7 @@ export default {
 <template>
   <h1 class="sample" data-cy="title">Template for %ENTRY_POINT% Entry Point</h1>
   <p>
-    The current date is: <span>{{ formatDate }}</span>
+    This uses the dayjs import: <span>{{ formatDate }}</span>
   </p>
 
   <div data-cy="page-loaded" v-show="false">{{ pageDoneLoading }}</div>

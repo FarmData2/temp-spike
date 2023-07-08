@@ -17,23 +17,6 @@ MAIN_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # Project root directory.
 # shellcheck source=./colors.bash
 source "$SCRIPT_DIR/colors.bash"
 
-# Check if script was run from a valid location.
-MODULES=" farm_fd2 farm_fd2_example farm_fd2_school "
-if [[ ! "$MODULES" == *" $MODULE_NAME "* ]]
-then
-    echo -e "${ON_RED}ERROR:${NO_COLOR} This script must be run in a directory containing a farm_fd2 module."
-    echo -e "It was run in: $PWD"
-    echo -e "The valid directories are:"
-    echo -e "  farm_fd2"
-    echo -e "  farm_fd2_example"
-    echo -e "  farm_fd2_school"
-    echo -e ""
-    echo -e "Change to the directory contianing the module you want to add an entry point to."
-    echo -e "Then run this script again."
-    exit 255
-fi
-
-
 # Check that the main branch is checked out
 BRANCH=$(git branch)
 if [[ ! "$BRANCH" == *"* main"* ]]
@@ -58,11 +41,26 @@ then
     fi
 fi
 
+# Get the module to which the endpoint should be added.
+MODULES=("farm_fd2" "farm_fd2_examples" "farm_fd2_school")
+
+echo -e "Choose the module in which an entry point should be created."
+select MODULE_NAME in "${MODULES[@]}"
+do
+    if (( "$REPLY" <= 0 || "$REPLY" > "${#MODULES[@]}" ))
+    then
+        echo -e "Invalid choice. Please try again."
+    else
+        break
+    fi
+done
+
+cd "$MAIN_DIR/modules/$MODULE_NAME"
 echo -e "Adding an ${UNDERLINE_GREEN}entry point${NO_COLOR} to ${UNDERLINE_GREEN}$MODULE_NAME${NO_COLOR}."
 echo -e ""
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
 
-# Define the module .yml files for convenience.
+# Define the module .yml file paths for convenience.
 ROUTING_YML_FILE="src/module/$MODULE_NAME.routing.yml"
 LINKS_YML_FILE="src/module/$MODULE_NAME.links.menu.yml"
 LIBRARIES_YML_FILE="src/module/$MODULE_NAME.libraries.yml"
@@ -82,6 +80,8 @@ then
     echo -e "  $LIBRARIES_YML_FILE"
     echo -e "Then run this script again."
 fi
+
+exit 1
 
 # Define the route that will be used for the entyrpoint in farmOS
 ROUTE="fd2/$ENTRY_POINT"
@@ -147,7 +147,7 @@ sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ROUTING_YML_FILE"
 
 # Clear drupal cache
 
-# Run test
+# Run existence tests...
 
 # Print a message...
 
