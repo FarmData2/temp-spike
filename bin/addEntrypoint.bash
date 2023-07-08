@@ -68,7 +68,7 @@ read -rp "Name for new entry point (snake_case): " ENTRY_POINT
 
 DRUPAL_ROUTE="$ROUTE_PREFIX""/$ENTRY_POINT"
 ENTRY_POINT_SRC_DIR="$MODULE_DIR/src/endpoints/$ENTRY_POINT"
-DRUPAL_ROUTE_NAME="$DRUPAL_ROUTE_PREFIX""_$ENTRY_POINT_NAME"
+DRUPAL_ROUTE_NAME="$DRUPAL_ROUTE_PREFIX""_$ENTRY_POINT"
 
 # Check if the directory for the entry point exits...
 if [ -d "src/entrypoints/$ENTRY_POINT" ]
