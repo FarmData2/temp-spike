@@ -54,7 +54,7 @@ do
     fi
 done
 DRUPAL_ROUTE_PREFIX="${MODULE_NAME:5}"
-echo ""
+echo -e ""
 
 # Switch to the directory for the module to which the entry point is being added.
 MODULE_DIR="$REPO_ROOT_DIR/modules/$MODULE_NAME"
@@ -65,7 +65,7 @@ cd "$MODULE_DIR" 2> /dev/null || ( \
 
 # Get the name for the new entry point.
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
-echo ""
+echo -e ""
 
 DRUPAL_ROUTE="$DRUPAL_ROUTE_PREFIX""/$ENTRY_POINT"
 ENTRY_POINT_SRC_DIR="$MODULE_DIR/src/entrypoints/$ENTRY_POINT"
@@ -126,10 +126,10 @@ fi
 # Get a title and a description for the farmOS drupal module.
 echo -e "Enter a title (2-5 words) for the entry point."
 read -r ENTRY_POINT_TITLE
-echo ""
+echo -e ""
 echo -e "Enter a short (one 5-10 word sentence) description of the entry point."
 read -r ENTRY_POINT_DESCRIPTION
-echo ""
+echo -e ""
 
 # Get the possible menus on which to post the entry point and 
 # ask the user to pick one.
@@ -146,7 +146,7 @@ do
         break
     fi
 done
-echo ""
+echo -e ""
 
 
 # ****
@@ -171,7 +171,7 @@ Y_N=""
 while  [[ "$Y_N" != "Y" && "$Y_N" != "y" ]]
 do 
     read -rp "Continue (Y/N)? " Y_N
-    echo ""
+    echo -e ""
 
     if [[ "$Y_N" == "n" || "$Y_N" == "N" ]]
     then
@@ -182,35 +182,48 @@ done
 
 # Create a new feature branch for the entry point.
 git branch "$FEATURE_BRANCH_NAME"
+echo -e "Created feature branch '$FEATURE_BRANCH_NAME"
 git switch "$FEATURE_BRANCH_NAME"
+echo -e ""
 
 # Make the directory for the entrypoint and populate it with the template files.
 mkdir "$ENTRY_POINT_SRC_DIR"
+echo -e "Created entry point directory '$ENTRY_POINT_SRC_DIR"
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/App.vue" "$ENTRY_POINT_SRC_DIR"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/App.vue"
+echo -e "Added $ENTRY_POINT_SRC_DIR/App.vue from templates."
+
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.exists.cy.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
+echo -e "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js from templates."
+
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.html" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
+echo -e "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html from templates."
+
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js"
+echo -e "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js from templates."
 
 # Make the new entry point into a drupal Module by adding to the
 # libraries, links.menu and routing  yml files.
 cat "$ENTRY_POINT_TEMPLATE_DIR/libraries.yml" >> "$LIBRARIES_YML_FILE"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$LIBRARIES_YML_FILE"
+echo -e "Updated $LIBRARIES_YML_FILE from templates."
 
 cat "$ENTRY_POINT_TEMPLATE_DIR/links.menu.yml" >> "$LINKS_YML_FILE"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$LINKS_YML_FILE"
 sed -i "s/%ENTRY_POINT_DESCRIPTION%/$ENTRY_POINT_DESCRIPTION/g" "$LINKS_YML_FILE"
 sed -i "s/%ENTRY_POINT_PARENT%/$ENTRY_POINT_PARENT/g" "$LINKS_YML_FILE"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$LINKS_YML_FILE"
+echo -e "Updated $LINKS_YML_FILE from templates."
 
 cat "$ENTRY_POINT_TEMPLATE_DIR/routing.yml" >> "$ROUTING_YML_FILE"
 sed -i "s/%DRUPAL_ROUTE_NAME%/$DRUPAL_ROUTE_NAME/g" "$ROUTING_YML_FILE"
 sed -i "s/%DRUPAL_ROUTE%/$DRUPAL_ROUTE/g" "$ROUTING_YML_FILE"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ROUTING_YML_FILE"
+echo -e "Updated $ROUTING_YML_FILE from templates."
 
 # Run a build...
 
