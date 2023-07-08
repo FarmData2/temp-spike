@@ -68,7 +68,7 @@ read -rp "Name for new entry point (snake_case): " ENTRY_POINT
 ROUTE="$ROUTE_PREFIX""/$ENTRY_POINT"
 
 echo ""
-echo -e "Adding an entry point to the ${UNDERLINE_GREEN}$MODULE_NAME${NO_COLOR} module"
+echo -e "Adding the entry point ${UNDERLINE_GREEN}$ENTRY_POINT${NO_COLOR} to the ${UNDERLINE_GREEN}$MODULE_NAME${NO_COLOR} module"
 echo -e "with the farmOS route ${UNDERLINE_GREEN}$ROUTE${NO_COLOR}."
 echo -e ""
 
