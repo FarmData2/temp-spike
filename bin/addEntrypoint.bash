@@ -173,6 +173,7 @@ do
 
     if [[ "$Y_N" == "n" || "$Y_N" == "N" ]]
     then
+        echo -e "Entry point creation canceled."
         exit 255
     fi
 done
