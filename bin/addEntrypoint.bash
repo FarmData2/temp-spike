@@ -53,26 +53,28 @@ do
         break
     fi
 done
-ROUTE_PREFIX="${MODULE_NAME:5}"
+DRUPAL_ROUTE_PREFIX="${MODULE_NAME:5}"
 echo ""
 
 # Switch to the directory for the module to which the entry point is being added.
-cd "$REPO_ROOT_DIR/modules/$MODULE_NAME" 2> /dev/null || ( \
+MODULE_DIR="$REPO_ROOT_DIR/modules/$MODULE_NAME"
+cd "$MODULE_DIR" 2> /dev/null || ( \
     echo -e "${ON_RED}ERROR:${NO_COLOR} Directory modules/$MODULE_NAME is missisng."; \
     echo -e "Restore this directory and try again."; \
     exit 255 ) || exit 255
 
 # Get the name for the new entry point.
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
-FARMOS_ROUTE="$ROUTE_PREFIX""/$ENTRY_POINT"
-ENTRY_POINT_DIR="REPO_ROOT_DIR/modules/$MODULE_NAME/src/endpoints/$ENTRY_POINT"
-DRUPAL_ROUTE_NAME=$ROUTE_PREFIX
+
+DRUPAL_ROUTE="$ROUTE_PREFIX""/$ENTRY_POINT"
+ENTRY_POINT_SRC_DIR="$MODULE_DIR/src/endpoints/$ENTRY_POINT"
+DRUPAL_ROUTE_NAME="$DRUPAL_ROUTE_PREFIX""_$ENTRY_POINT_NAME"
 
 # Check if the directory for the entry point exits...
 if [ -d "src/entrypoints/$ENTRY_POINT" ]
 then
     echo -e "${ON_RED}ERROR:${NO_COLOR} A directory for the entry point $ENTRY_POINT already exists"
-    echo -e "in the directory $REPO_ROOT_DIR/src/entrypoints/$ENTRY_POINT."
+    echo -e "in the directory $$ENTRY_POINT_SRC_DIR."
     echo -e "Pick a different name for your entry point."
     echo -e "OR:"
     echo -e "  Remove the src/entrypoints/$ENTRY_POINT directory"
@@ -134,11 +136,12 @@ done
 echo ""
 echo -e "Adding an entry point as follows:"
 echo -e "             module: $MODULE_NAME"
+echo -e "   module direcotry: $MODULE_DIR"
 echo -e "   entry point name: $ENTRY_POINT"
-echo -e "      src directory: $ENTRY_POINT_DIR"
+echo -e "      src directory: $ENTRY_POINT_SRC_DIR"
 echo -e "              title: $ENTRY_POINT_TITLE"
 echo -e "        description: $ENTRY_POINT_DESCRIPTION"
-echo -e "       farmOS route: $FARMOS_ROUTE"
+echo -e "       drupal route: $DRUPAL_ROUTE"
 echo -e "  drupal route name: $DRUPAL_ROUTE_NAME"
 
 exit 1
