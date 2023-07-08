@@ -67,7 +67,7 @@ cd "$MODULE_DIR" 2> /dev/null || ( \
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
 echo -e ""
 
-DRUPAL_ROUTE="$DRUPAL_ROUTE_PREFIX""/$ENTRY_POINT"
+DRUPAL_ROUTE="$DRUPAL_ROUTE_PREFIX""\/$ENTRY_POINT"
 ENTRY_POINT_SRC_DIR="$MODULE_DIR/src/entrypoints/$ENTRY_POINT"
 ENTRY_POINT_TEMPLATE_DIR="$SCRIPT_DIR/templates/entrypoints"
 DRUPAL_ROUTE_NAME="$DRUPAL_ROUTE_PREFIX""_$ENTRY_POINT"
@@ -162,7 +162,8 @@ echo -e "   entry point directory: $ENTRY_POINT_SRC_DIR"
 echo -e "      template directory: $ENTRY_POINT_TEMPLATE_DIR"
 echo -e "                   title: $ENTRY_POINT_TITLE"
 echo -e "             description: $ENTRY_POINT_DESCRIPTION"
-echo -e "            drupal route: $DRUPAL_ROUTE"
+DISPLAY_DRUPAL_ROUTE=$(tr '\' '' "$DRUPAL_ROUTE")
+echo -e "            drupal route: $DISPLAY_DRUPAL_ROUTE"
 echo -e "       drupal route name: $DRUPAL_ROUTE_NAME"
 echo ""
 
