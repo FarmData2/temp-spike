@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: farm
       POSTGRES_DB: farm
 
-  www:
+  farmOS:
     depends_on:
       - db
     image: farmos/farmos:2.x

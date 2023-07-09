@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+
 // https://on.cypress.io/api
 
 describe('Check that entry point exists.', () => {
@@ -7,7 +8,7 @@ describe('Check that entry point exists.', () => {
 
     cy.visit('/%ENTRY_POINT%/%ENTRY_POINT%.html')
 
-    cy.get('[data-cy=page-loaded]').should('have.value', true)
+    cy.waitForPage()
   })
 
   it('Check that the page loaded in the preview server.', () => {
@@ -15,7 +16,7 @@ describe('Check that entry point exists.', () => {
 
     cy.visit('/%ENTRY_POINT%/%ENTRY_POINT%.html')
 
-    cy.get('[data-cy=page-loaded]').should('have.value', true)
+    cy.waitForPage()
   })
 
   it('Check that the page loaded in the farmOS server.', () => {
@@ -23,6 +24,6 @@ describe('Check that entry point exists.', () => {
 
     cy.visit('/%ENTRY_POINT%/%ENTRY_POINT%.html')
 
-    cy.get('[data-cy=page-loaded]').should('have.value', true)
+    cy.waitForPage()
   })
 })
