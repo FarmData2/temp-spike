@@ -227,7 +227,7 @@ sed -i "s/%DRUPAL_ROUTE%/$DRUPAL_ROUTE/g" "$ROUTING_YML_FILE"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ROUTING_YML_FILE"
 echo -e "Updated $ROUTING_YML_FILE from templates."
 
-# Run a build...
+# Build the drupal module...
 npm run build:"$DRUPAL_ROUTE_PREFIX"
 
 # Clear drupal cache
