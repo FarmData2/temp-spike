@@ -57,11 +57,14 @@ then
 else
   if [ -z "$DOCKER_SOCK_HOME" ]
   then
+    # This symlink allows the docker-compose to mount it the same on linux/mac/win.
     echo "  Creating symbolic link to /var/run/docker.sock as ~/.docker/run/docker.sock"
     ln -s /var/run/docker.sock ~/.docker/run/docker.sock
   fi 
-  echo "  Using docker socket at ~/.docker/run/docker.sock."
 fi
+# We now know this path exists on all platforms.
+DOCKER_SOCK_PATH=~/.docker/run/docker.sock
+echo "  Using docker socket at $DOCKER_SOCK_PATH."
 
 # Determine the host operating system.  This allows us to do different
 # things based on the host, both in this script and in the startup.bash
@@ -76,7 +79,7 @@ elif [[ "$OS" == *"microsoft"* ]] || [[ "$OS" == *"Microsoft"* ]];
 then
   # Note that this is before Linux because if running in WSL
   # uname -a reports Linux, but also has microsoft later in the output.
-  PROFILE=windows
+  PROFILE=wsl
 elif [[ "$OS" == *"Linux"* ]];
 then
   PROFILE=linux
@@ -111,11 +114,9 @@ echo "  Running on a $PROFILE host."
 #        handled by the dev/startup.bash script that runs when the
 #        container starts.
 
-if [ "$PROFILE" == "linux" ] || [ "$PROFILE" == "windows" ];
+if [ "$PROFILE" == "linux" ] || [ "$PROFILE" == "wsl" ];
 then
   echo "Configuring Linux or Windows (WSL) host..."
-
-  exit 1 
 
   # If the docker group doesn't exist on the host, create it.
   DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
@@ -147,28 +148,28 @@ then
     echo "  User $(id -un) is in docker group."
   fi
 
-  # If the /var/run/docker.sock does not belong to the docker group assign it.
-  SOCK_IN_DOCKER_GRP=$(ls -l /var/run/docker.sock | grep " docker ")
+  # If the docker.sock does not belong to the docker group assign it.
+  SOCK_IN_DOCKER_GRP=$(ls -lH "$DOCKER_SOCK_PATH" | grep " docker ")
   if [ -z "$SOCK_IN_DOCKER_GRP" ];
   then
-    echo "  Assigning /var/run/docker.sock to the docker group."
-    sudo chgrp docker /var/run/docker.sock
+    echo "  Assigning $DOCKER_SOCK_PATH to the docker group."
+    sudo chgrp docker $DOCKER_SOCK_PATH
     error_check
-    echo "  /var/run/docker.sock assigned to docker group."
+    echo "  $DOCKER_SOCK_PATH assigned to docker group."
   else
-    echo "  /var/run/docker.sock belongs to docker group."
+    echo "  $DOCKER_SOCK_PATH belongs to docker group."
   fi
 
   # If the docker group does not have write permission to docker.sock add it.
-  DOCKER_GRP_RW_SOCK=$(ls -l /var/run/docker.sock | cut -c 5-6 | grep "rw")
+  DOCKER_GRP_RW_SOCK=$(ls -lH $DOCKER_SOCK_PATH | cut -c 5-6 | grep "rw")
   if [ -z "$DOCKER_GRP_RW_SOCK" ];
   then
-    echo "  Granting docker group RW access to /var/run/docker.sock."
-    sudo chmod g+rw /var/run/docker.sock
+    echo "  Granting docker group RW access to $DOCKER_SOCK_PATH."
+    sudo chmod g+rw $DOCKER_SOCK_PATH
     error_check
-    echo "  docker group granted RW access to /var/run/docker.sock."
+    echo "  docker group granted RW access to $DOCKER_SOCK_PATH."
   else 
-    echo "  docker group has RW access to /var/run/docker.sock."
+    echo "  docker group has RW access to $DOCKER_SOCK_PATH."
   fi
 
   echo "Configuring FarmData2 group (fd2grp)..."
@@ -177,8 +178,7 @@ then
   if [ -z "$FD2GRP_EXISTS" ];
   then
     echo "  Creating fd2grp group on host."
-    
-    FD2GRP_GID=$(cat ./dev/fd2grp.gid)
+    FD2GRP_GID=$(cat "$SCRIPT_DIR"/fd2grp.gid)
     FD2GRP_GID_EXISTS=$(grep ":$FD2GRP_GID:" /etc/group)
     if [ -n "$FD2GRP_GID_EXISTS" ];
     then
@@ -193,7 +193,8 @@ then
     error_check
     echo "  fd2grp group created on host with GID=$FD2GRP_GID."
   else
-    echo "  fd2grp group exists on host."
+    FD2GRP_GID=$(getent group fd2grp | cut -d: -f3)
+    echo "  fd2grp group exists on host with GID=$FD2GRP_GID."
   fi
 
   # If the current user is not in the fd2grp then add them.
@@ -205,7 +206,7 @@ then
     error_check
     echo "  User user $(id -un) added to the fd2grp group."
     echo "  ***"
-    echo "  *** Run the ./fd2-up.bash script again to continue."
+    echo "  *** Run the fd2-up.bash script again to continue."
     echo "  ***"
     exec newgrp fd2grp
   else
