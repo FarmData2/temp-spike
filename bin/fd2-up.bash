@@ -108,7 +108,6 @@ echo "  Running on a $PROFILE host."
 # When the development environment container starts:
 #   * There is a fd2grp with the same GID as on the host.
 #   * The fd2dev user is in the fd2grp group
-#   * The contents of fd2test are RW for the fd2grp.
 #
 #  Note: The pieces in the development environment container are
 #        handled by the dev/startup.bash script that runs when the
