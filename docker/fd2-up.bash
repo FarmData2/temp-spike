@@ -35,7 +35,7 @@ DOCKER_BASE=$(basename "$DOCKER_PATH")
 if [ "$DOCKER_BASE" != "docker" ];
 then
   echo "The fd2-up.bash script must be run from the docker directory."
-  echo "Change to the FarmData2 docker directory and try again."
+  echo "Change to the FarmData2/docker directory and try again."
   exit 255
 fi
 
@@ -50,16 +50,22 @@ FD2_DIR=$(basename $FD2_PATH)
 cd docker
 echo "  Starting from $FD2_PATH in repo $FD2_DIR."
 
-# Checking for docker.sock
+# Check for docker.sock and ensure that ~/.docker/run/docker.sock exists.
 echo "Checking for docker..."
-DOCKER_SOCK_EXISTS=$(ls /var/run/docker.sock 2> /dev/null)
-if [ -z "$DOCKER_SOCK_EXISTS" ];
+DOCKER_SOCK_VAR=$(ls /var/run/docker.sock 2> /dev/null)
+DOCKER_SOCK_HOME=$(ls ~/.docker/run/docker.sock 2> /dev/null)
+if [ -z "$DOCKER_SOCK_VAR" ] && [ -z "$DOCKER_SOCK_HOME" ];
 then
-  echo "  Docker socket not found at /var/run/docker.sock."
+  echo "  Docker socket not found at /var/run/docker.sock or ~/.docker/run/docker.sock"
   echo "  Ensure that the docker engine or Docker desktop is installed and running."
   exit 255
 else
-  echo "  Docker socket found at /var/run/docker.sock."
+  if [ -z "$DOCKER_SOCK_HOME" ]
+  then
+    echo "  Creating symbolic link to /var/run/docker.sock as ~/.docker/run/docker.sock"
+    ln -s /var/run/docker.sock ~/.docker/run/docker.sock
+  fi 
+  echo "  Using docker socket at ~/.docker/run/docker.sock."
 fi
 
 # Determine the host operating system.  This allows us to do different
@@ -114,6 +120,8 @@ if [ "$PROFILE" == "linux" ] || [ "$PROFILE" == "windows" ];
 then
   echo "Configuring Linux or Windows (WSL) host..."
 
+  exit 1 
+
   # If the docker group doesn't exist on the host, create it.
   DOCKER_GRP_EXISTS=$(grep "docker" /etc/group)
   if [ -z "$DOCKER_GRP_EXISTS" ];
@@ -124,7 +132,8 @@ then
     DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
     echo "  docker group created with GID=$DOCKER_GRP_GID."
   else 
-    echo "  docker group exists on host."
+    DOCKER_GRP_GID=$(cat /etc/group | grep "^docker:" | cut -d':' -f3)
+    echo "  docker group exists on host with GID=$DOCKER_GRP_GID."
   fi
 
   # If the current user is not in the docker group add them.
@@ -244,7 +253,7 @@ if [ "$PROFILE" == "macos" ];
 then
   # For macos use default values because they do not
   # have to match the host.
-  FD2GRP_GID=$(cat dev/fd2grp.gid)
+  FD2GRP_GID=$(cat fd2grp.gid)
   DOCKER_GRP_GID=$(( $FD2GRP_GID + 1 ))
 else
   # For linux or WSL use the values that were obtained above so that
