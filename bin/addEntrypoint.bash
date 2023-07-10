@@ -230,7 +230,8 @@ echo -e "Updated $ROUTING_YML_FILE from templates."
 # Build the drupal module...
 npm run build:"$DRUPAL_ROUTE_PREFIX"
 
-# Clear drupal cache
+# Rebuild drupal cache
+docker exec -it fd2_farmos drush cr
 
 # Run existence tests...
 
