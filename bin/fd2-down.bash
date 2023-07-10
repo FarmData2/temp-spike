@@ -10,6 +10,12 @@ then
   exit -1
 fi
 
+# Get the path to the main repo directory.
+SCRIPT_PATH=$(readlink -f $0)  # Path to this script.
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
+REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
+cd "$REPO_ROOT_DIR/docker"
+
 echo "Stopping and Removing Containers..."
 docker compose down
 echo "Done."

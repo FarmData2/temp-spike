@@ -29,22 +29,17 @@ then
   exit 255
 fi
 
-# Ensure that this script is run from within the docker directory
-DOCKER_PATH=$(pwd)
-DOCKER_BASE=$(basename "$DOCKER_PATH")
-if [ "$DOCKER_BASE" != "docker" ];
-then
-  echo "The fd2-up.bash script must be run from the docker directory."
-  echo "Change to the FarmData2/docker directory and try again."
-  exit 255
-fi
+# Get the path to the main repo directory.
+SCRIPT_PATH=$(readlink -f $0)  # Path to this script.
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
+REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
+cd "$REPO_ROOT_DIR"
 
 echo "Starting FarmData2..."
 
 # Get the name of the directory containing the FarmData2 repo.
 # This is the FarmData2 directory by default, but may have been
 # changed by the user.
-cd ..
 FD2_PATH=$(pwd)
 FD2_DIR=$(basename $FD2_PATH)
 cd docker
