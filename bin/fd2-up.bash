@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 source ./lib.bash
 source ./colors.bash
@@ -7,16 +7,16 @@ source ./colors.bash
 RUNNING_AS_ROOT=$(id -un | grep "root" )
 if [ -n "$RUNNING_AS_ROOT" ];
 then
-  echo "${RED}ERROR:${NO_COLOR}Tfd2-up.bash script should not be run as root."
+  echo -e "${RED}ERROR:${NO_COLOR}Tfd2-up.bash script should not be run as root."
   echo "Please run fd2-up.bash without using sudo."
   exit 255
 fi
 
 # Ensure that this script is not being run in the development container.
-HOST=$(docker inspect -f '{{.Name}}' $HOSTNAME 2> /dev/null)
+HOST=$(docker inspect -f '{{.Name}}' "$HOSTNAME" 2> /dev/null)
 if [ "$HOST" == "/fd2_dev" ];
 then
-  echo "${RED}ERROR:${NO_COLOR} fd2-up.bash script cannot be run in the dev container."
+  echo -e "${RED}ERROR:${NO_COLOR} fd2-up.bash script cannot be run in the dev container."
   echo "Always run fd2-up.bash on your host OS."
   exit 255
 fi
@@ -27,7 +27,7 @@ echo "Checking for docker.sock..."
 SYS_DOCKER_SOCK=$(ls /var/run/docker.sock 2> /dev/null)
 if [ -z "$SYS_DOCKER_SOCK" ] 
 then
-    echo "  ${RED}ERROR:${NO_COLOR} /var/run/docker.sock not found."
+    echo -e "  ${RED}ERROR:${NO_COLOR} /var/run/docker.sock not found."
     echo "  Ensure that Docker Desktop is intalled and running."
     echo "  Also ensure that the 'Allow the default Docker socket to be used'"
     echo "  setting in Docker Desktop -> Settings -> Advanced is enabled."
@@ -38,7 +38,12 @@ fi
 SCRIPT_PATH=$(readlink -f $0)  # Path to this script.
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
 REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
-cd "$REPO_ROOT_DIR"
+cd "$REPO_ROOT_DIR" || \
+  (
+    echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR is missing.";
+    echo "  Resotre this directory and try again."; \
+    exit 255
+  )
 
 echo -e "${UNDERLINE_BLUE}Starting FarmData2 development environment...${NO_COLOR}"
 
@@ -47,7 +52,13 @@ echo -e "${UNDERLINE_BLUE}Starting FarmData2 development environment...${NO_COLO
 # changed by the user.
 FD2_PATH=$(pwd)
 FD2_DIR=$(basename $FD2_PATH)
-cd docker
+cd docker || \
+  (
+    echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR\docker is missing.";
+    echo "  Resotre this directory and try again."; \
+    exit 255
+  )
+
 echo "Starting development environment from $FD2_DIR."
 echo "  Full path: $FD2_PATH"
 
@@ -112,5 +123,11 @@ docker compose --profile $PROFILE up -d "$@"
 echo "Rebuilding the drupal cache..."
 sleep 3  # give site time to come up before clearing the cache.
 docker exec -it fd2_farmos drush cr
+
+echo "Waiting for fd2dev container configuration and startup..."
+echo -n "  This may take a few moments: "
+wait_for_novnc
+echo ""
+echo "  fd2dev container configured and ready." 
 
 echo -e "${UNDERLINE_BLUE}FarmData2 development enviornment started${NO_COLOR}"

@@ -43,9 +43,7 @@ services:
       # Mount the FarmData2 repo into the fd2dev user's home directory.
       - ..:/home/fd2dev/FarmData2
       # Mount the docker.sock so we can run docker commands in the container.
-      #- ~/.fd2/docker.sock:/var/run/docker.sock
       - /var/run/docker.sock:/var/run/docker.sock
-      #- /var/run/docker.sock:/var/run/docker.sock
       # Preserve the fd2dev user's home directory on a docker volume.
       # Bump the version here, in fd2dev_windows, and in volumes below 
       # if image rebuid reqires new home.
