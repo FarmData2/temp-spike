@@ -70,13 +70,6 @@ rm -fr ~/.fd2 2> /dev/null
 mkdir ~/.fd2
 echo "  The ~/.fd2 configuration directory created."
 
-# Create a symbolic link to the /var/run/docker.sock in the .fd2
-# directory.  This simplifies the mounting of docker.sock as a volumne
-# in the fd2dev container. 
-echo "Creating symbolic link to var/run/docker.sock in ~/.fd2 ..."
-ln -s /var/run/docker.sock ~/.fd2/docker.sock
-echo "  Symbolic link ~/.fd2/docker.sock created"
-
 # Determine the host operating system.
 echo "Detecting host Operating System..."
 OS=$(uname -a)
@@ -125,9 +118,13 @@ sleep 3  # give site time to come up before clearing the cache.
 docker exec -it fd2_farmos drush cr
 
 echo "Waiting for fd2dev container configuration and startup..."
-echo -n "  This may take a few moments: "
-wait_for_novnc
-echo ""
+NO_VNC_RESP=$(curl -Is localhost:6901 | grep "HTTP/1.1 200 OK")
+if [ "$NO_VNC_RESP" == "" ]
+then
+  echo -n "  This may take a few moments: "
+  wait_for_novnc
+  echo ""
+fi
 echo "  fd2dev container configured and ready." 
 
 echo -e "${UNDERLINE_BLUE}FarmData2 development enviornment started${NO_COLOR}"
