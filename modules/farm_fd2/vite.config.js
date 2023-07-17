@@ -31,7 +31,7 @@ let viteConfig = {
       ],
     }),
     {
-      // This runs after a build and clears the drupal cache so that
+      // This plugin runs after a build and clears the drupal cache so that
       // the live farmos server shows the most recent content.
       name: 'afterBuild',
       closeBundle: async () => {

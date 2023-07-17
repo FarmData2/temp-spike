@@ -156,7 +156,7 @@ then
         npx vite --config ./modules/farm_fd2/vite.config.js > /dev/null &
 
         DEV_PID=$!
-        DEV_GID=$(ps --pid "$DEV_PID" -h -o pgid)
+        DEV_GID=$(ps --pid "$DEV_PID" -h -o pgid | xargs)
 
         if [ "$(wait_for_url localhost:5173/fd2/main/)" == "" ]
         then
@@ -189,7 +189,7 @@ then
         npx vite --config ./modules/farm_fd2/vite.config.js preview > /dev/null &
 
         PREVIEW_PID=$!
-        PREVIEW_GID=$(ps --pid "$PREVIEW_PID" -h -o pgid)
+        PREVIEW_GID=$(ps --pid "$PREVIEW_PID" -h -o pgid | xargs)
 
         if [ "$(wait_for_url localhost:4173/fd2/main/)" == "" ]
         then
@@ -209,7 +209,7 @@ else
     echo "  Starting builder for the distribution..."
     npx vite --config modules/farm_fd2/vite.config.js build --watch > /dev/null &
     LIVE_PID=$!
-    LIVE_GID=$(ps --pid "$LIVE_PID" -h -o pgid)
+    LIVE_GID=$(ps --pid "$LIVE_PID" -h -o pgid | xargs)
     echo "    Builder running in process group $LIVE_GID."
 
     BASE_URL="http://farmos"

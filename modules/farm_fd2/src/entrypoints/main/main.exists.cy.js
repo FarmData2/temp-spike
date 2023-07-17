@@ -1,19 +1,13 @@
 /* eslint-disable no-undef */
 
-// https://on.cypress.io/api
-
-describe('Check that entry point exists.', () => {
+describe('Check that the entry point exists.', () => {
   it('Check that the page loaded.', () => {
+    // Login if running in live farmOS.
     cy.login('admin', 'admin')
-
-    // maybe move this whole if into the cypress login command?
-    // let baseURL = Cypress.config().baseUrl
-    // if (baseURL.includes('farmos')) {
-    //   // do a login...
-    //   console.log('NEED TO LOGIN HERE...')
-    // }
-
+    // Go to the main page.
     cy.visit('/fd2/main/')
+    // Check that the page loads.
     cy.waitForPage()
   })
 })
+

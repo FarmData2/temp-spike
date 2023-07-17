@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
 
-// https://on.cypress.io/api
-
-describe('Check that entry point exists.', () => {
+describe('Check that the entry point exists.', () => {
   it('Check that the page loaded.', () => {
-    cy.visit('/%ENTRY_POINT%/')
-
+    // Login if running in live farmOS.
+    cy.login('admin', 'admin')
+    // Go to the main page.
+    cy.visit('/fd2/main/')
+    // Check that the page loads.
     cy.waitForPage()
   })
 })
