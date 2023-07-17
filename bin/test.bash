@@ -22,6 +22,7 @@ function usage {
     echo "    -x|--examples          : RUn all of the e2e tests in the examples module."
     echo "    -s|--school            : Run all of the e2e tests in the fd2 school module."
     echo "    -g<glob>|--glob=<glob> : Run only the e2e tests matching the glob."
+    echo "                             Note: <glob> is specified relative to the root of the repo."
     echo ""
     echo "  If --e2e is specified then exactly one of the following must be included:"
     echo "    -d|--dev  : Run the e2e tests in the dev environment."
@@ -30,12 +31,11 @@ function usage {
     echo ""
     echo "  If --comp or --unit are specified then the following may be included:"
     echo "    -g<glob>|--glob=<glob>: Run only the component or unit tests matching the glob."
+    echo "                            Note: <glob> is specified relative to the root of the repo."
     echo ""
 
     exit 255
 }
-
-
 
 # Change into the main repo directory.
 SCRIPT_PATH=$(readlink -f $0)  # Path to this script.
@@ -144,7 +144,35 @@ then
     fi
 fi
 
-# Setup to run the tests on the requested type of server.
+# Setup to run e2e or component/unit tests.
+if [ -n "$E2E_TESTS" ]
+then   
+    echo "End-to-end testing requested."
+    CYPRESS_TEST_TYPE="e2e"
+    if [ -n "$TEST_FD2" ]
+    then 
+        echo "  Testing the farm_fd2 module."
+        CYPRESS_PROJECT="modules/farm_fd2"
+    elif [ -n "$TEST_EXAMPLES" ]
+    then
+        echo "  Testing the farm_fd2_examples module."
+        CYPRESS_PROJECT="modules/farm_fd2_examples"
+    else
+        echo "  Testing the farm_fd2_schoool module."
+        CYPRESS_PROJECT="modules/farm_fd2_school"
+    fi
+else
+    CYPRESS_TEST_TYPE="component"
+    CYPRESS_PROJECT="modules/farm_fd2"
+    if [ -n "$COMPONENT_TESTS" ]
+    then
+        echo "Component testing requested."
+    else
+        echo "Unit testing requested."
+    fi
+fi
+
+# Setup to run e2e tests on the requested type of server.
 if [ -n "$DEV_SERVER" ]
 then
     echo "Development tests requested..."
@@ -203,7 +231,9 @@ then
     fi
 
     BASE_URL="http://localhost:4173"
-else 
+
+elif [ -n "$LIVE_FARMOS_SERVER" ]
+then
     echo "Live tests within farmOS requested..."
 
     echo "  Starting builder for the distribution..."
@@ -215,69 +245,38 @@ else
     BASE_URL="http://farmos"
 fi
 
-# Setup to run (headless) or open (GUI) cypress.
-if [ -n "$CYPRESS_GUI" ]
-then
-    CYPRESS_MODE="open"
-else
-    CYPRESS_MODE="run"
-fi
-
-# Setup to run e2e or component/unit tests.
-if [ -n "$E2E_TESTS" ]
-then   
-    CYPRESS_TEST_TYPE="e2e"
-    if [ -n "$TEST_FD2" ]
-    then 
-        CYPRESS_PROJECT="modules/farm_fd2"
-        CYPRESS_GLOB="**/*.cy.js"
-    elif [ -n "$TEST_EXAMPLES" ]
-    then
-        CYPRESS_PROJECT="modules/farm_fd2_examples"
-        CYPRESS_GLOB="modules/farm_fd2_examples/src/entrypoints/**/*.cy.js"
-    else
-        CYPRESS_PROJECT="modules/farm_fd2_school"
-        CYPRESS_GLOB="modules/farm_fd2_school/src/entrypoints/**/*.cy.js"
-    fi
-else
-    CYPRESS_TEST_TYPE="component"
-    CYPRESS_PROJECT="modules/farm_fd2"
-    if [ -n "$COMPONENT_TESTS" ]
-    then
-        CYPRESS_GLOB="**/*.comp.cy.js"
-    else
-        CYPRESS_GLOB="**/*.unit.cy.js"
-    fi
-fi
+# Set environment variables to override the defaults as necessary.
 
 # If a glob was specified, use it to override the default set above.
 if [ -n "$SPEC_GLOB" ]
 then
-    CYPRESS_GLOB="$SPEC_GLOB"
+    FULL_GLOB="$REPO_ROOT_DIR/$SPEC_GLOB"
+    export CYPRESS_SPEC_PATTERN="$FULL_GLOB"
+fi
+
+if [ -n "$BASE_URL" ]
+then
+    export CYPRESS_BASE_URL="$BASE_URL"
 fi
 
 # Run the tests...
-echo "  Running tests..."
-
 safe_cd $CYPRESS_PROJECT
 
 if [ -n "$CYPRESS_GUI" ]
 then 
-    npx cypress $CYPRESS_MODE \
-    --"$CYPRESS_TEST_TYPE" \
-    --config baseUrl="$BASE_URL",specPattern="$CYPRESS_GLOB" > /dev/null
+    echo "Running test in the Cypress GUI."
+    npx cypress open --"$CYPRESS_TEST_TYPE" > /dev/null
 else
-    npx cypress $CYPRESS_MODE \
-    --"$CYPRESS_TEST_TYPE" \
-    --config baseUrl="$BASE_URL",specPattern="$CYPRESS_GLOB"
+    echo "Running tests headless."
+    npx cypress run --"$CYPRESS_TEST_TYPE"
 fi
 
-echo "  Tests complete."
+echo "Tests complete."
 
 # If we brought up a server, then take it back down.
 if [ -n "$DEV_PID" ]
 then 
-    echo "  Terminating the dev server."
+    echo "Terminating the dev server."
     # NOTE: Normal kill without -INT or using -TERM leaves shell
     # in mode where up/down arrows give control sequences instead
     # of command history.
@@ -285,11 +284,11 @@ then
 
 elif [ -n "$PREVIEW_GID" ]
 then
-    echo "  Terminating the builder and preview server."
+    echo "Terminating the builder and preview server."
     kill -INT -- -"$PREVIEW_GID"
 
 elif [ -n "$LIVE_GID" ]
 then
-    echo "  Terminating the builder."
+    echo "Terminating the builder."
     kill -INT -- -"$LIVE_GID"
 fi

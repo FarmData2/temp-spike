@@ -44,7 +44,7 @@ let viteConfig = {
             console.error(`stderr: ${stderr}`)
             return
           }
-          console.log(`    Rebuilding drupal cache...\n      ${stdout}`)
+          console.log(`Rebuilding drupal cache...\n  ${stdout}`)
         })
       },
     },

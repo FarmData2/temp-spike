@@ -7,10 +7,10 @@ module.exports = defineConfig({
   video: false,
   trashAssetsBeforeRuns: true,
   e2e: {
-    specPattern: '**/entrypoints/**/*.cy.js',
+    specPattern: 'src/entrypoints/**/*.cy.js',
   },
   component: {
-    specPattern: '../../components/**/*.cy.comp.js',
+    specPattern: '../../components/**/*.comp.cy.js',
     devServer: {
       framework: 'vue',
       bundler: 'vite',
