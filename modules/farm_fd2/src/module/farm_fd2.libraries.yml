@@ -7,17 +7,5 @@ main:
   css:
     theme:
       main/main.css: {}
-    layout:
-      TheWelcome/TheWelcome.css: {}
 
-other:
-  js:
-    other/other.js:
-      preprocess: false
-      minified: true
-      attributes: { type: 'module' }
-  css:
-    theme:
-      other/other.css: {}
-    layout:
-      TheWelcome/TheWelcome.css: {}
+

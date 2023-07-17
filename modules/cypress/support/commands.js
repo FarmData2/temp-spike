@@ -27,6 +27,37 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 /**
+ * This command will log into farmOS if we are currently connecting to it.
+ * That is if the tests are running with a base url of http://farmos then
+ * the user is logged in.  If the test are running with any other base url
+ * then no login is performed.
+ */
+Cypress.Commands.add('login', (user, password) => {
+  let baseURL = Cypress.config().baseUrl
+  if (baseURL.includes('http://farmos')) {
+    cy.request({
+      method: 'POST',
+      url: '/user/login',
+      form: true,
+      body: {
+        name: user,
+        pass: password,
+        form_id: 'user_login_form',
+      },
+    })
+  }
+})
+
+// Cypress.Commands.add('logout', () => {
+//   cy.request({
+//     method: 'POST',
+//     url: '/user/logout',
+//     form: true,
+//     body: {},
+//   })
+// })
+
+/**
  * This command works with a pattern in the page to wait for
  * api calls initiated in the created() method to complete.
  *

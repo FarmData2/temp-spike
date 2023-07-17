@@ -2,14 +2,6 @@ farm.fd2_main.content:
   path: '/fd2/main'
   defaults:
     _controller: '\Drupal\farm_fd2\Controller\FD2_Controller::content'
-    _title: 'FD2 Main Page'
-  requirements:
-    _permission: 'access content'
-
-farm.fd2_other.content:
-  path: '/fd2/other'
-  defaults:
-    _controller: '\Drupal\farm_fd2\Controller\FD2_Controller::content'
-    _title: 'FD2 Other Page'
+    _title: 'FarmData2'
   requirements:
     _permission: 'access content'

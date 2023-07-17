@@ -4,11 +4,13 @@ import glob from 'glob'
 import { defineConfig } from 'vite'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import vue from '@vitejs/plugin-vue'
+import { exec } from 'child_process'
 
 // https://vitejs.dev/config/
 let viteConfig = {
   root: 'modules/farm_fd2/src/entrypoints',
   publicDir: '../public',
+  base: '/fd2/',
   plugins: [
     vue(),
     viteStaticCopy({
@@ -28,6 +30,24 @@ let viteConfig = {
         },
       ],
     }),
+    {
+      // This runs after a build and clears the drupal cache so that
+      // the live farmos server shows the most recent content.
+      name: 'afterBuild',
+      closeBundle: async () => {
+        await exec('docker exec fd2_farmos drush cr', (error, stderr, stdout) => {
+          if (error) {
+            console.error(`error:  ${error.message}`)
+            return
+          }
+          if (stderr) {
+            console.error(`stderr: ${stderr}`)
+            return
+          }
+          console.log(`    Rebuilding drupal cache...\n      ${stdout}`)
+        })
+      },
+    },
   ],
   build: {
     outDir: '../../dist',
@@ -35,10 +55,9 @@ let viteConfig = {
     exclude: ['**/*.cy.js', '**/*.cy.comp.js', '**/*.cy.unit.js'],
     rollupOptions: {
       input: Object.fromEntries(
-        glob.sync('modules/farm_fd2/src/entrypoints/*/*.html').map((file) => [
-          path.basename(file, '.html'), // the prefix to .html, e.g. main
-          file.slice('modules/farm_fd2/src/entrypoints/'),
-        ])
+        glob
+          .sync('modules/farm_fd2/src/entrypoints/*')
+          .map((dir) => [path.basename(dir), dir + '/index.html'])
       ),
       output: {
         // Ensures that the entry point and css names are not hashed.
@@ -46,7 +65,7 @@ let viteConfig = {
         assetFileNames: (assetInfo) => {
           let ext = assetInfo.name.split('.').at(1)
           if (ext === 'css') {
-            return '[name]/[name].[ext]'
+            return '[name]/[name].css'
           } else {
             return 'shared/[name].[ext]'
           }

@@ -7,7 +7,7 @@ source ./colors.bash
 RUNNING_AS_ROOT=$(id -un | grep "root" )
 if [ -n "$RUNNING_AS_ROOT" ];
 then
-  echo -e "${RED}ERROR:${NO_COLOR}Tfd2-up.bash script should not be run as root."
+  echo -e "${RED}ERROR:${NO_COLOR}The fd2-up.bash script should not be run as root."
   echo "Please run fd2-up.bash without using sudo."
   exit 255
 fi

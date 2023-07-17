@@ -1,4 +1,4 @@
-import '@/shared/site.css'
+//import '@/shared/site.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

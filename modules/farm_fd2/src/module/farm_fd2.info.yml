@@ -1,5 +1,5 @@
-name: FD2 Module
-description: Creates the FarmData2 module and menu".
+name: FarmData2
+description: FarmData2 supports operations and reporting for diversified vegetable farms.
 package: farmOS FarmData2
 type: module
 version: 1.0

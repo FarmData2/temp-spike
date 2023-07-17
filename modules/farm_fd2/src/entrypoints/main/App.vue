@@ -1,67 +1,29 @@
-<script setup>
-import HelloWorld from '@comps/HelloWorld/HelloWorld.vue'
-import TheWelcome from '@comps/TheWelcome/TheWelcome.vue'
-import dayjs from 'dayjs'
-</script>
+<template>
+  <div>
+    FarmData2 provides data entry and reporting features supporting:
+    <ul>
+      <li>the day-to-day operation of diversified vegetable farms.</li>
+      <li>the organic certification process.</li>
+      <li>sustainable farming practices including soil health.</li>
+    </ul>
+  </div>
+  <div data-cy="page-loaded" v-show="false">{{ pageDoneLoading }}</div>
+</template>
 
 <script>
 export default {
   data() {
     return {
-      date: '1/1/2022',
+      createdCount: 0,
     }
   },
   computed: {
-    formatDate() {
-      return dayjs(this.date).format('YYYY-MM-DD')
+    pageDoneLoading() {
+      return this.createdCount == 1
     },
+  },
+  created() {
+    this.createdCount++
   },
 }
 </script>
-
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/shared/logo.png" width="125" height="125" />
-
-    <p>Another Change to the .vue file</p>
-
-    <div class="wrapper">
-      <HelloWorld msg="This is the `main` module!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-    <br />
-    <div>{{ formatDate }}</div>
-  </main>
-</template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>

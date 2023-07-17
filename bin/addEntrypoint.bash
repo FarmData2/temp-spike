@@ -1,21 +1,16 @@
 #!/bin/bash
 
+source colors.bash
+
 # Define to disable some checks when testing.
 TESTING=
 
 PWD="$(pwd)"
 
-# The name of the directory in which the user ran the script.
-# This will also be the name of the module (e.g. farm_fd2)
-MODULE_NAME=$(basename "$PWD") 
-
 # Get the path to the main repo directory.
 SCRIPT_PATH=$(readlink -f $0)  # Path to this script.
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
 REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
-
-# shellcheck source=./colors.bash
-source "$SCRIPT_DIR/colors.bash"
 
 # Don't check this git conditions if testing.
 if [ -z ${TESTING+x} ]
@@ -198,12 +193,13 @@ echo -e "Added $ENTRY_POINT_SRC_DIR/App.vue from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.exists.cy.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
+sed -i "s/%FARMOS_ROUTE%/$DISPLAY_DRUPAL_ROUTE/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 echo -e "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js from templates."
 
-cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.html" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
-sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
-sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html"
-echo -e "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.html from templates."
+cp "$ENTRY_POINT_TEMPLATE_DIR/index.html" "$ENTRY_POINT_SRC_DIR/index.html"
+sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ENTRY_POINT_SRC_DIR/index.html"
+sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/index.html"
+echo -e "Added $ENTRY_POINT_SRC_DIR/index.html from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js"
 echo -e "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js from templates."
@@ -234,6 +230,7 @@ npm run build:"$DRUPAL_ROUTE_PREFIX"
 docker exec -it fd2_farmos drush cr
 
 # Run existence tests...
+
 
 # Print a message...
 

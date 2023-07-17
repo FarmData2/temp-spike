@@ -8,7 +8,6 @@ module.exports = defineConfig({
   trashAssetsBeforeRuns: true,
   e2e: {
     specPattern: '**/entrypoints/**/*.cy.js',
-    baseUrl: 'http://localhost:5173',
   },
   component: {
     specPattern: '../../components/**/*.cy.comp.js',
