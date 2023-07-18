@@ -8,8 +8,6 @@
     "watch:fd2": "vite --config modules/farm_fd2/vite.config.js build --watch",
     "preview:fd2": "vite --config modules/farm_fd2/vite.config.js preview",
 
-    "test:comp": "cypress run --project modules/farm_fd2 --component",
-
     "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix --ignore-path .gitignore",
     "bashlint": "npx shellcheck $(find . -name '*.bash')",
     "dockerlint": "for NAME in $(find . -name node_modules -prune -false -o -name 'Dockerfile'); do echo 'Linting:' $NAME; npx dockerlint $NAME; done",

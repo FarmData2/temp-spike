@@ -20,8 +20,8 @@ then
     if [[ ! "$CUR_GIT_BRANCH" == *"* main"* ]]
     then
         echo -e "${ON_RED}ERROR:${NO_COLOR} You must have the main branch checked out to add an entry point."
-        echo -e "Switch to the main branch."
-        echo -e "Then run this script again."
+        echo "Switch to the main branch."
+        echo "Then run this script again."
         exit 255
     fi
 fi
@@ -31,14 +31,14 @@ GIT_STATUS=$(git status | tail -1)
 if [[ ! "$GIT_STATUS" =~ ^"nothing to commit, working tree clean"$ ]]
 then
     echo -e "${ON_RED}ERROR:${NO_COLOR} The working tree must be clean to add an entry point."
-    echo -e "Commit chagnes to a feature branch or use git stash."
-    echo -e "Then run this script again."
+    echo "Commit chagnes to a feature branch or use git stash."
+    echo "Then run this script again."
     exit 255
 fi
 
 # Get the module to which the endpoint should be added.
 ALLOWED_MODULES=("farm_fd2" "farm_fd2_examples" "farm_fd2_school")
-echo -e "Choose the module in which an entry point should be created."
+echo "Choose the module in which an entry point should be created."
 select MODULE_NAME in "${ALLOWED_MODULES[@]}"
 do
     if (( "$REPLY" <= 0 || "$REPLY" > "${#ALLOWED_MODULES[@]}" ))
@@ -49,18 +49,15 @@ do
     fi
 done
 DRUPAL_ROUTE_PREFIX="${MODULE_NAME:5}"
-echo -e ""
+echo ""
 
 # Switch to the directory for the module to which the entry point is being added.
 MODULE_DIR="$REPO_ROOT_DIR/modules/$MODULE_NAME"
-cd "$MODULE_DIR" 2> /dev/null || ( \
-    echo -e "${ON_RED}ERROR:${NO_COLOR} Directory modules/$MODULE_NAME is missisng."; \
-    echo -e "Restore this directory and try again."; \
-    exit 255 ) || exit 255
+safe_cd "$MODULE_DIR"
 
 # Get the name for the new entry point.
 read -rp "Name for new entry point (snake_case): " ENTRY_POINT
-echo -e ""
+echo ""
 
 DRUPAL_ROUTE="$DRUPAL_ROUTE_PREFIX""\/$ENTRY_POINT"
 ENTRY_POINT_SRC_DIR="$MODULE_DIR/src/entrypoints/$ENTRY_POINT"
@@ -73,9 +70,9 @@ FEATURE_BRANCH_EXISTS=$(git branch -a | grep "$FEATURE_BRANCH_NAME")
 if [[ ! "$FEATURE_BRANCH_EXISTS" == "" ]]
 then
   echo -e "${ON_RED}ERROR:${NO_COLOR} The feature branch $FEATURE_BRANCH_NAME already exists."
-  echo -e "Pick a different name for your entry point."
-  echo -e "Or delete the feature branch $FEATURE_BRANCH_NAME."
-  echo -e "Then run this script again."
+  echo "Pick a different name for your entry point."
+  echo "Or delete the feature branch $FEATURE_BRANCH_NAME."
+  echo "Then run this script again."
   exit 255
 fi
 
@@ -83,15 +80,15 @@ fi
 if [ -d "src/entrypoints/$ENTRY_POINT" ]
 then
     echo -e "${ON_RED}ERROR:${NO_COLOR} A directory for the entry point $ENTRY_POINT already exists"
-    echo -e "in the directory $$ENTRY_POINT_SRC_DIR."
-    echo -e "Pick a different name for your entry point."
-    echo -e "OR:"
-    echo -e "  Remove the src/entrypoints/$ENTRY_POINT directory"
-    echo -e "  And remove any definitions realated to the entry point $ENTRY_POINT from the files:"
-    echo -e "    $ROUTING_YML_FILE"
-    echo -e "    $LINKS_YML_FILE"
-    echo -e "    $LIBRARIES_YML_FILE"
-    echo -e "Then run this script again."
+    echo "in the directory $$ENTRY_POINT_SRC_DIR."
+    echo "Pick a different name for your entry point."
+    echo "OR:"
+    echo "  Remove the src/entrypoints/$ENTRY_POINT directory"
+    echo "  And remove any definitions realated to the entry point $ENTRY_POINT from the files:"
+    echo "    $ROUTING_YML_FILE"
+    echo "    $LINKS_YML_FILE"
+    echo "    $LIBRARIES_YML_FILE"
+    echo "Then run this script again."
     exit 255
 fi
 
@@ -110,38 +107,38 @@ IN_LIBRARIES=$(grep "^$ENTRY_POINT:$" "$LIBRARIES_YML_FILE")
 if [[ ! ("$IN_ROUTES" == "" && "$IN_LINKS" == "" && "$IN_LIBRARIES" == "") ]]
 then
     echo -e "${ON_RED}ERROR:${NO_COLOR} The entry point $ENTRY_POINT was previously defined."
-    echo -e "Remove definitions realated to the entry point $ENTRY_POINT from the files:"
-    echo -e "  $ROUTING_YML_FILE"
-    echo -e "  $LINKS_YML_FILE"
-    echo -e "  $LIBRARIES_YML_FILE"
-    echo -e "Then run this script again."
+    echo "Remove definitions realated to the entry point $ENTRY_POINT from the files:"
+    echo "  $ROUTING_YML_FILE"
+    echo "  $LINKS_YML_FILE"
+    echo "  $LIBRARIES_YML_FILE"
+    echo "Then run this script again."
     exit 255
 fi
 
 # Get a title and a description for the farmOS drupal module.
-echo -e "Enter a title (2-5 words) for the entry point."
+echo "Enter a title (2-5 words) for the entry point."
 read -r ENTRY_POINT_TITLE
-echo -e ""
-echo -e "Enter a short (one 5-10 word sentence) description of the entry point."
+echo ""
+echo "Enter a short (one 5-10 word sentence) description of the entry point."
 read -r ENTRY_POINT_DESCRIPTION
-echo -e ""
+echo ""
 
 # Get the possible menus on which to post the entry point and 
 # ask the user to pick one.
 MENUS_RAW=$(grep "parent:" "$LINKS_YML_FILE" | cut -f2 -d: | tr '\n' ' ')
 IFS=$' ' read -r -a MENUS <<< "$MENUS_RAW"
 
-echo -e "Choose the parent menu on which this entry point will appear."
+echo "Choose the parent menu on which this entry point will appear."
 select ENTRY_POINT_PARENT in "${MENUS[@]}"
 do
     if (( "$REPLY" <= 0 || "$REPLY" > "${#MENUS[@]}" ))
     then
-        echo -e "Invalid choice. Please try again."
+        echo "Invalid choice. Please try again."
     else
         break
     fi
 done
-echo -e ""
+echo ""
 
 
 # ****
@@ -151,16 +148,16 @@ echo -e ""
 # shellcheck disable=SC1003
 DISPLAY_DRUPAL_ROUTE=$(echo "$DRUPAL_ROUTE"| tr -d '\\')
 
-echo -e "About to add an entry point as follows:"
-echo -e "               in module: $MODULE_NAME"
-echo -e "        module direcotry: $MODULE_DIR"
-echo -e "        entry point name: $ENTRY_POINT"
-echo -e "   entry point directory: $ENTRY_POINT_SRC_DIR"
-echo -e "      template directory: $ENTRY_POINT_TEMPLATE_DIR"
-echo -e "                   title: $ENTRY_POINT_TITLE"
-echo -e "             description: $ENTRY_POINT_DESCRIPTION"
-echo -e "            drupal route: $DISPLAY_DRUPAL_ROUTE"
-echo -e "       drupal route name: $DRUPAL_ROUTE_NAME"
+echo "About to add an entry point as follows:"
+echo "               in module: $MODULE_NAME"
+echo "        module direcotry: $MODULE_DIR"
+echo "        entry point name: $ENTRY_POINT"
+echo "   entry point directory: $ENTRY_POINT_SRC_DIR"
+echo "      template directory: $ENTRY_POINT_TEMPLATE_DIR"
+echo "                   title: $ENTRY_POINT_TITLE"
+echo "             description: $ENTRY_POINT_DESCRIPTION"
+echo "            drupal route: $DISPLAY_DRUPAL_ROUTE"
+echo "       drupal route name: $DRUPAL_ROUTE_NAME"
 echo ""
 
 # Confirm that the entry point should be created.
@@ -168,69 +165,80 @@ Y_N=""
 while  [[ "$Y_N" != "Y" && "$Y_N" != "y" ]]
 do 
     read -rp "Continue (Y/N)? " Y_N
-    echo -e ""
+    echo ""
 
     if [[ "$Y_N" == "n" || "$Y_N" == "N" ]]
     then
-        echo -e "Entry point creation canceled."
+        echo "Entry point creation canceled."
         exit 255
     fi
 done
 
 # Create a new feature branch for the entry point.
 git branch "$FEATURE_BRANCH_NAME"
-echo -e "Created feature branch '$FEATURE_BRANCH_NAME"
+echo "Created feature branch '$FEATURE_BRANCH_NAME"
 git switch "$FEATURE_BRANCH_NAME"
-echo -e ""
+echo ""
 
 # Make the directory for the entrypoint and populate it with the template files.
 mkdir "$ENTRY_POINT_SRC_DIR"
-echo -e "Created entry point directory '$ENTRY_POINT_SRC_DIR"
+echo "Created entry point directory '$ENTRY_POINT_SRC_DIR"
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/App.vue" "$ENTRY_POINT_SRC_DIR"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/App.vue"
-echo -e "Added $ENTRY_POINT_SRC_DIR/App.vue from templates."
+echo "Added $ENTRY_POINT_SRC_DIR/App.vue from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.exists.cy.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 sed -i "s/%FARMOS_ROUTE%/$DISPLAY_DRUPAL_ROUTE/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
-echo -e "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js from templates."
+echo "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/index.html" "$ENTRY_POINT_SRC_DIR/index.html"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ENTRY_POINT_SRC_DIR/index.html"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/index.html"
-echo -e "Added $ENTRY_POINT_SRC_DIR/index.html from templates."
+echo "Added $ENTRY_POINT_SRC_DIR/index.html from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js"
-echo -e "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js from templates."
+echo "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js from templates."
 
 # Make the new entry point into a drupal Module by adding to the
 # libraries, links.menu and routing  yml files.
 cat "$ENTRY_POINT_TEMPLATE_DIR/libraries.yml" >> "$LIBRARIES_YML_FILE"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$LIBRARIES_YML_FILE"
-echo -e "Updated $LIBRARIES_YML_FILE from templates."
+echo "Updated $LIBRARIES_YML_FILE from templates."
 
 cat "$ENTRY_POINT_TEMPLATE_DIR/links.menu.yml" >> "$LINKS_YML_FILE"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$LINKS_YML_FILE"
 sed -i "s/%ENTRY_POINT_DESCRIPTION%/$ENTRY_POINT_DESCRIPTION/g" "$LINKS_YML_FILE"
 sed -i "s/%ENTRY_POINT_PARENT%/$ENTRY_POINT_PARENT/g" "$LINKS_YML_FILE"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$LINKS_YML_FILE"
-echo -e "Updated $LINKS_YML_FILE from templates."
+echo "Updated $LINKS_YML_FILE from templates."
 
 cat "$ENTRY_POINT_TEMPLATE_DIR/routing.yml" >> "$ROUTING_YML_FILE"
 sed -i "s/%DRUPAL_ROUTE_NAME%/$DRUPAL_ROUTE_NAME/g" "$ROUTING_YML_FILE"
 sed -i "s/%DRUPAL_ROUTE%/$DRUPAL_ROUTE/g" "$ROUTING_YML_FILE"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ROUTING_YML_FILE"
-echo -e "Updated $ROUTING_YML_FILE from templates."
+echo "Updated $ROUTING_YML_FILE from templates."
 
-# Build the drupal module...
-npm run build:"$DRUPAL_ROUTE_PREFIX"
+# Run the basic tests to be sure everyting is working...
+# Note: The test script does the builds for the preview and live farmOS servers.
+TEST_FILE="$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
+TEST_MODULE=${MODULE_NAME##*_}
 
-# Rebuild drupal cache
-docker exec -it fd2_farmos drush cr
+test.bash --e2e --dev --"$TEST_MODULE" --glob "$TEST_FILE"
+test.bash --e2e --prev --"$TEST_MODULE" --glob "$TEST_FILE"
+test.bash --e2e --live --"$TEST_MODULE" --glob "$TEST_FILE"
 
-# Run existence tests...
-
+## SHOULD ENSURE THAT THE TESTS PASS...
 
 # Print a message...
+echo -e "${ON_GREEN}SUCCESS:${NO_COLOR} New entry point $ENTRY_POINT created in module $MODULE_NAME."
 
+# Commit the chagnes to the feature branch and print some info...
+git add . 
+git commit -m "Adds new entry point $ENTRY_POINT to module $MODULE_NAME"
+echo "Changes have been commited to the git branch: $$FEATURE_BRANCH_NAME."
+echo "Modify the $MODULE_NAME/$ENTRY_POINT/App.vue file to create the desired funcionality"
+echo "Add additional *.cy.js files to test the added functionality."
+echo "When ready, push your feature branch to your origin and create a pull request."
+echo ""

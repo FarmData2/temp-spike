@@ -10,4 +10,3 @@ describe('Check that the entry point exists.', () => {
     cy.waitForPage()
   })
 })
-
