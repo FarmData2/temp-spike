@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source colors.bash
+source lib.bash
 
 # Define to disable some checks when testing.
 TESTING=
