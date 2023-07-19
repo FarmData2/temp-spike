@@ -226,9 +226,9 @@ echo "Updated $ROUTING_YML_FILE from templates."
 TEST_FILE="$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 TEST_MODULE=${MODULE_NAME##*_}
 
-test.bash --e2e --dev --"$TEST_MODULE" --glob "$TEST_FILE"
-test.bash --e2e --prev --"$TEST_MODULE" --glob "$TEST_FILE"
-test.bash --e2e --live --"$TEST_MODULE" --glob "$TEST_FILE"
+test.bash --e2e --dev --"$TEST_MODULE" --glob="$TEST_FILE"
+test.bash --e2e --prev --"$TEST_MODULE" --glob="$TEST_FILE"
+test.bash --e2e --live --"$TEST_MODULE" --glob="$TEST_FILE"
 
 ## SHOULD ENSURE THAT THE TESTS PASS...
 
