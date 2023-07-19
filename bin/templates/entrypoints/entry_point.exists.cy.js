@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 
-describe('Check that the entry point exists.', () => {
+describe('Check that the %ENTRY_POINT% entry point exists.', () => {
   it('Check that the page loaded.', () => {
     // Login if running in live farmOS.
     cy.login('admin', 'admin')
     // Go to the main page.
-    cy.visit('/fd2/main/')
+    cy.visit('%DRUPAL_ROUTE%')
     // Check that the page loads.
     cy.waitForPage()
   })
