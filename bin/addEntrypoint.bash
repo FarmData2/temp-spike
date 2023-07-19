@@ -226,7 +226,7 @@ echo "Updated $ROUTING_YML_FILE from templates."
 
 ## THIS DIRECTORY IS NOT CORRECT...
 ##   > /home/fd2dev/FarmData2/src/entrypoints/test/test.exists.cy.js
-## ALSO SERVER KILL KILLS THIS SCRIPT!!!!
+
 
 TEST_FILE="$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 TEST_MODULE=${MODULE_NAME##*_}
