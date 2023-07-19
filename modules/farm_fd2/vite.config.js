@@ -6,7 +6,36 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 import vue from '@vitejs/plugin-vue'
 import { exec } from 'child_process'
 
-// https://vitejs.dev/config/
+
+// NEED THIS TO ADD AN index.html if we get a raw path
+// This is because the dev server sometimes randomly doesn't find index.html
+// by default and gives a 404 instead.  But it always works with /index.html 
+// on the end.
+const middleware = () => {
+  return {
+    name: 'middleware',
+    apply: 'serve',
+    configureServer(viteDevServer) {
+      return () => {
+        viteDevServer.middlewares.use(async (req, res, next) => {
+          console.log(req.originalUrl)
+          if (!req.originalUrl.endsWith('index.html')) {
+            if (req.originalUrl.endsWith('/')) {
+              req.url = req.originalUrl + 'index.html'
+            } else {
+              req.url = req.originalUrl + '/index.html'
+            }
+          } else {
+            req.url = req.originalUrl
+          }
+          console.log(req.url)
+          next()
+        })
+      }
+    },
+  }
+}
+
 let viteConfig = {
   root: 'modules/farm_fd2/src/entrypoints',
   publicDir: '../public',
@@ -48,6 +77,7 @@ let viteConfig = {
         })
       },
     },
+    //middleware(),
   ],
   build: {
     outDir: '../../dist',
