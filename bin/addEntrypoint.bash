@@ -224,7 +224,7 @@ echo "Updated $ROUTING_YML_FILE from templates."
 # Run the basic tests to be sure everyting is working...
 # Note: The test script does the builds for the preview and live farmOS servers.
 TEST_MODULE=${MODULE_NAME##*_}
-TEST_FILE="modules/$TEST_MODULE/src/entrypoints/$ENTRY_POINT/$ENTRY_POINT.exists.cy.js"
+TEST_FILE="modules/$MODULE_NAME/src/entrypoints/$ENTRY_POINT/$ENTRY_POINT.exists.cy.js"
 
 test.bash --e2e --dev --"$TEST_MODULE" --glob="$TEST_FILE"
 test.bash --e2e --prev --"$TEST_MODULE" --glob="$TEST_FILE"
