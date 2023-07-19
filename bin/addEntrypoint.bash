@@ -126,7 +126,7 @@ echo ""
 
 # Get the possible menus on which to post the entry point and 
 # ask the user to pick one.
-MENUS_RAW=$(grep "parent:" "$LINKS_YML_FILE" | cut -f2 -d: | tr '\n' ' ')
+MENUS_RAW="farm.base "$(grep "parent:" "$LINKS_YML_FILE" | cut -f2 -d: | tr '\n' ' ')
 IFS=$' ' read -r -a MENUS <<< "$MENUS_RAW"
 
 echo "Choose the parent menu on which this entry point will appear."
