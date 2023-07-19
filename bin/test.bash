@@ -169,7 +169,7 @@ if [ -n "$DEV_SERVER" ]; then
   if [ "$(check_url localhost:5173/fd2/main/)" == "" ]; then
     echo "    Dev server not found."
     echo "    Starting dev server..."
-    npx vite --config ./modules/farm_fd2/vite.config.js > /dev/null &
+    setsid npx vite --config ./modules/farm_fd2/vite.config.js > /dev/null &
 
     DEV_PID=$!
     DEV_GID=$(ps --pid "$DEV_PID" -h -o pgid | xargs)
@@ -190,16 +190,16 @@ elif [ -n "$PREVIEW_SERVER" ]; then
   echo "Preview tests requested..."
 
   echo "  Starting builder for the distribution..."
-  npx vite --config modules/farm_fd2/vite.config.js build --watch > /dev/null &
+  setsid npx vite --config modules/farm_fd2/vite.config.js build --watch > /dev/null &
   BUILDER_PID=$!
-  BUILDER_GID=$(ps --pid "$BUILDER_PID" -h -o pgid)
+  BUILDER_GID=$(ps --pid "$BUILDER_PID" -h -o pgid | xargs)
   echo "    Builder running in process group $BUILDER_GID."
 
   echo "  Checking that the preview server is running on port 4173..."
   if [ "$(check_url localhost:4173/fd2/main/)" == "" ]; then
     echo "    Preview server not found."
     echo "    Starting preview server..."
-    npx vite --config ./modules/farm_fd2/vite.config.js preview > /dev/null &
+    setsid npx vite --config ./modules/farm_fd2/vite.config.js preview > /dev/null &
 
     PREVIEW_PID=$!
     PREVIEW_GID=$(ps --pid "$PREVIEW_PID" -h -o pgid | xargs)
@@ -220,7 +220,7 @@ elif [ -n "$LIVE_FARMOS_SERVER" ]; then
   echo "Live tests within farmOS requested..."
 
   echo "  Starting builder for the distribution..."
-  npx vite --config modules/farm_fd2/vite.config.js build --watch > /dev/null &
+  setsid npx vite --config modules/farm_fd2/vite.config.js build --watch > /dev/null &
   LIVE_PID=$!
   LIVE_GID=$(ps --pid "$LIVE_PID" -h -o pgid | xargs)
   echo "    Builder running in process group $LIVE_GID."
@@ -255,17 +255,25 @@ echo "Tests complete."
 
 # If we brought up a server, then take it back down.
 if [ -n "$DEV_PID" ]; then
-  echo "Terminating the dev server."
-  # NOTE: Normal kill without -INT or using -TERM leaves shell
-  # in mode where up/down arrows give control sequences instead
-  # of command history.
+  echo "Terminating the dev server..."
   kill -INT -- -"$DEV_GID"
+  echo "Dev server terminated."
+fi
 
-elif [ -n "$PREVIEW_GID" ]; then
-  echo "Terminating the builder and preview server."
+if [ -n "$BUILDER_GID" ]; then
+  echo "Terminating the builder..."
+  kill -INT -- -"$BUILDER_GID"
+  echo "Builder terminated."
+fi
+
+if [ -n "$PREVIEW_GID" ]; then
+  echo "Terminating preview server..."
   kill -INT -- -"$PREVIEW_GID"
+  echo "Preview server terminated."
+fi
 
-elif [ -n "$LIVE_GID" ]; then
-  echo "Terminating the builder."
+if [ -n "$LIVE_GID" ]; then
+  echo "Terminating the builder..."
   kill -INT -- -"$LIVE_GID"
+  echo "Builder terminated."
 fi
