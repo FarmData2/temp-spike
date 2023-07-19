@@ -237,7 +237,7 @@ echo -e "${ON_GREEN}SUCCESS:${NO_COLOR} New entry point $ENTRY_POINT created in 
 
 # Commit the chagnes to the feature branch and print some info...
 echo "Use git status to reveiw the changes."
-echo "Commit them to the current git branch: $$FEATURE_BRANCH_NAME."
+echo "Commit them to the current git branch: $FEATURE_BRANCH_NAME."
 echo "Modify the $MODULE_NAME/$ENTRY_POINT/App.vue file to create the desired funcionality"
 echo "Add additional *.cy.js files to test the added functionality."
 echo "When ready, push your feature branch to your origin and create a pull request."
