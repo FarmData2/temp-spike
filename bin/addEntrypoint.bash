@@ -187,20 +187,21 @@ echo "Created entry point directory '$ENTRY_POINT_SRC_DIR"
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/App.vue" "$ENTRY_POINT_SRC_DIR"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/App.vue"
-echo "Added $ENTRY_POINT_SRC_DIR/App.vue from templates."
+echo "  Added $ENTRY_POINT_SRC_DIR/App.vue from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.exists.cy.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 sed -i "s/%DRUPAL_ROUTE%/$DRUPAL_ROUTE/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
-echo "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js from templates."
+echo "  Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/index.html" "$ENTRY_POINT_SRC_DIR/index.html"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ENTRY_POINT_SRC_DIR/index.html"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/index.html"
-echo "Added $ENTRY_POINT_SRC_DIR/index.html from templates."
+echo "  Added $ENTRY_POINT_SRC_DIR/index.html from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js"
-echo "Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js from templates."
+echo "  Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.js from templates."
+echo ""
 
 # Make the new entry point into a drupal Module by adding to the
 # libraries, links.menu and routing  yml files.
@@ -220,6 +221,7 @@ sed -i "s/%DRUPAL_ROUTE_NAME%/$DRUPAL_ROUTE_NAME/g" "$ROUTING_YML_FILE"
 sed -i "s/%DRUPAL_ROUTE%/$DRUPAL_ROUTE/g" "$ROUTING_YML_FILE"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ROUTING_YML_FILE"
 echo "Updated $ROUTING_YML_FILE from templates."
+echo "" 
 
 # Run the basic tests to be sure everyting is working...
 # Note: The test script does the builds for the preview and live farmOS servers.
@@ -256,6 +258,7 @@ else
 fi
 
 echo "Tests complete."
+echo ""
 
 (( TESTS_PASSED=DEV_EXIT_CODE || PREV_EXIT_CODE || LIVE_EXIT_CODE ))
 
@@ -263,29 +266,29 @@ if [ ! "$TESTS_PASSED" == "0" ]; then
     if [ ! "$DEV_EXIT_CODE" == "0" ]; then
         echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from dev server."
         echo ""
-        echo "$DEV_TEST_OUT"
+        echo -e "$DEV_TEST_OUT"
         echo ""
     fi
     if [ ! "$PREV_EXIT_CODE" == "0" ]; then
         echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from preview server."
         echo ""
-        echo "$PREV_TEST_OUT"
+        echo -e "$PREV_TEST_OUT"
         echo ""
     fi
     if [ ! "$LIVE_EXIT_CODE" == "0" ]; then
         echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from farmOS server."
         echo ""
-        echo "$LIVE_TEST_OUT"
+        echo -e "$LIVE_TEST_OUT"
         echo ""
     fi
 
     echo -e "${ON_RED}ERROR:${NO_COLOR} Check output of failed tests above."
-    echo "Correct any errors and rerun tests using test.bash."
-    echo "Or try again by:"
-    echo "  Commit changes to the current git branch: $FEATURE_BRANCH_NAME."
-    echo "  Switch to the main branch"
-    echo "  Delete the $FEATURE_BRANCH_NAME."
-    echo "  Run this script again."
+    echo "  Correct any errors and rerun tests using test.bash."
+    echo "  Or try again by:"
+    echo "    Commit changes to the current git branch: $FEATURE_BRANCH_NAME."
+    echo "    Switch to the main branch"
+    echo "    Delete the $FEATURE_BRANCH_NAME."
+    echo "    Run this script again."
 else
     # Print a message...
     echo -e "${ON_GREEN}SUCCESS:${NO_COLOR} New entry point $ENTRY_POINT created in module $MODULE_NAME."
