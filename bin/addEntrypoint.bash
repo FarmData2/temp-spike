@@ -228,10 +228,13 @@ TEST_FILE="modules/$MODULE_NAME/src/entrypoints/$ENTRY_POINT/$ENTRY_POINT.exists
 
 echo "Running tests on $MODULE_NAME module..."
 
+echo "  Testing on dev server..."
 DEV_TEST_OUT=$(test.bash --e2e --dev --"$TEST_MODULE" --glob="$TEST_FILE")
 DEV_EXIT_CODE=$?
+echo "  Testing on preview server..."
 PREV_TEST_OUT=$(test.bash --e2e --prev --"$TEST_MODULE" --glob="$TEST_FILE")
 PREV_EXIT_CODE=$?
+echo "  Testing on farmOS server..."
 LIVE_TEST_OUT=$(test.bash --e2e --live --"$TEST_MODULE" --glob="$TEST_FILE")
 LIVE_EXIT_CODE=$?
 echo "Tests complete."
