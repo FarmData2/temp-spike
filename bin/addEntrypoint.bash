@@ -3,9 +3,6 @@
 source colors.bash
 source lib.bash
 
-# Define to disable some checks when testing.
-TESTING=
-
 PWD="$(pwd)"
 
 # Get the path to the main repo directory.
@@ -13,18 +10,14 @@ SCRIPT_PATH=$(readlink -f $0)  # Path to this script.
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
 REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
 
-# Don't check this git conditions if testing.
-if [ -z ${TESTING+x} ]
-then 
-    # Check that the main branch is checked out
-    CUR_GIT_BRANCH=$(git branch)
-    if [[ ! "$CUR_GIT_BRANCH" == *"* main"* ]]
-    then
-        echo -e "${ON_RED}ERROR:${NO_COLOR} You must have the main branch checked out to add an entry point."
-        echo "Switch to the main branch."
-        echo "Then run this script again."
-        exit 255
-    fi
+# Check that the main branch is checked out
+CUR_GIT_BRANCH=$(git branch)
+if [[ ! "$CUR_GIT_BRANCH" == *"* main"* ]]
+then
+    echo -e "${ON_RED}ERROR:${NO_COLOR} You must have the main branch checked out to add an entry point."
+    echo "Switch to the main branch."
+    echo "Then run this script again."
+    exit 255
 fi
 
 # Check that working tree is clean
