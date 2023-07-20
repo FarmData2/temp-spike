@@ -246,9 +246,11 @@ safe_cd $CYPRESS_PROJECT
 if [ -n "$CYPRESS_GUI" ]; then
   echo "Running test in the Cypress GUI."
   npx cypress open --"$CYPRESS_TEST_TYPE" > /dev/null
+  EXIT_CODE=$?
 else
   echo "Running tests headless."
   npx cypress run --"$CYPRESS_TEST_TYPE"
+  EXIT_CODE=$?
 fi
 
 echo "Tests complete."
@@ -277,3 +279,5 @@ if [ -n "$LIVE_GID" ]; then
   kill -INT -- -"$LIVE_GID"
   echo "Builder terminated."
 fi
+
+exit "$EXIT_CODE"

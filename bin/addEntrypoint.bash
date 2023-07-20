@@ -226,19 +226,53 @@ echo "Updated $ROUTING_YML_FILE from templates."
 TEST_MODULE=${MODULE_NAME##*_}
 TEST_FILE="modules/$MODULE_NAME/src/entrypoints/$ENTRY_POINT/$ENTRY_POINT.exists.cy.js"
 
-test.bash --e2e --dev --"$TEST_MODULE" --glob="$TEST_FILE"
-test.bash --e2e --prev --"$TEST_MODULE" --glob="$TEST_FILE"
-test.bash --e2e --live --"$TEST_MODULE" --glob="$TEST_FILE"
+echo "Running tests on $MODULE_NAME module..."
 
-## SHOULD ENSURE THAT THE TESTS PASS...
+DEV_TEST_OUT=$(test.bash --e2e --dev --"$TEST_MODULE" --glob="$TEST_FILE")
+DEV_EXIT_CODE=$?
+PREV_TEST_OUT=$(test.bash --e2e --prev --"$TEST_MODULE" --glob="$TEST_FILE")
+PREV_EXIT_CODE=$?
+LIVE_TEST_OUT=$(test.bash --e2e --live --"$TEST_MODULE" --glob="$TEST_FILE")
+LIVE_EXIT_CODE=$?
+echo "Tests complete."
 
-# Print a message...
-echo -e "${ON_GREEN}SUCCESS:${NO_COLOR} New entry point $ENTRY_POINT created in module $MODULE_NAME."
+(( TESTS_PASSED="$DEV_EXIT_CODE" || "$PREV_EXIT_CODE" || "$LIVE_EXIT_CODE" ))
 
-# Commit the chagnes to the feature branch and print some info...
-echo "Use git status to reveiw the changes."
-echo "Commit them to the current git branch: $FEATURE_BRANCH_NAME."
-echo "Modify the $MODULE_NAME/$ENTRY_POINT/App.vue file to create the desired funcionality"
-echo "Add additional *.cy.js files to test the added functionality."
-echo "When ready, push your feature branch to your origin and create a pull request."
-echo ""
+if [ ! "$TESTS_PASSED" ]; then
+    echo -e "${ON_RED}ERROR:${NO_COLOR} some tests have failed."
+    echo "Output of the failed tests follows."
+    echo ""
+    if [ ! "$DEV_EXIT_CODE" ]; then
+        echo "$DEV_TEST_OUT"
+        echo ""
+    fi
+    if [ ! "$PREV_EXIT_CODE" ]; then
+        echo "$PREV_TEST_OUT"
+        echo ""
+    fi
+    if [ ! "$LIVE_EXIT_CODE" ]; then
+        echo "$LIVE_TEST_OUT"
+        echo ""
+    fi
+
+    echo -e "${ON_RED}ERROR:${NO_COLOR} Check output of failed tests above."
+    echo "Correct any errors and rerun tests using test.bash."
+    echo "Or try again by:"
+    echo "  Commit changes to the current git branch: $FEATURE_BRANCH_NAME."
+    echo "  Switch to the main branch"
+    echo "  Delete the $FEATURE_BRANCH_NAME."
+    echo "  Run this script again."
+else
+    # Print a message...
+    echo -e "${ON_GREEN}SUCCESS:${NO_COLOR} New entry point $ENTRY_POINT created in module $MODULE_NAME."
+
+    # Commit the chagnes to the feature branch and print some info...
+    echo "Use git status to reveiw the changes."
+    echo "Commit them to the current git branch: $FEATURE_BRANCH_NAME."
+    echo "Modify the $MODULE_NAME/$ENTRY_POINT/App.vue file to create the desired funcionality"
+    echo "Add additional *.cy.js files to test the added functionality."
+    echo "When ready, push your feature branch to your origin and create a pull request."
+    echo ""
+fi
+
+exit "$TESTS_PASSED"
