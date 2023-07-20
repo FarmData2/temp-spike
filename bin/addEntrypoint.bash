@@ -260,19 +260,19 @@ echo "Tests complete."
 (( TESTS_PASSED=DEV_EXIT_CODE || PREV_EXIT_CODE || LIVE_EXIT_CODE ))
 
 if [ ! "$TESTS_PASSED" == "0" ]; then
-    if [ ! "$DEV_EXIT_CODE" ]; then
+    if [ ! "$DEV_EXIT_CODE" == "0" ]; then
         echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from dev server."
         echo ""
         echo "$DEV_TEST_OUT"
         echo ""
     fi
-    if [ ! "$PREV_EXIT_CODE" ]; then
+    if [ ! "$PREV_EXIT_CODE" == "0" ]; then
         echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from preview server."
         echo ""
         echo "$PREV_TEST_OUT"
         echo ""
     fi
-    if [ ! "$LIVE_EXIT_CODE" ]; then
+    if [ ! "$LIVE_EXIT_CODE" == "0" ]; then
         echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from farmOS server."
         echo ""
         echo "$LIVE_TEST_OUT"
