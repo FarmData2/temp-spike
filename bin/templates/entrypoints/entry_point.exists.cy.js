@@ -5,7 +5,7 @@ describe('Check that the %ENTRY_POINT% entry point exists.', () => {
     // Login if running in live farmOS.
     cy.login('admin', 'admin')
     // Go to the main page.
-    cy.visit('%DRUPAL_ROUTE%2/')
+    cy.visit('%DRUPAL_ROUTE%/')
     // Check that the page loads.
     cy.waitForPage()
   })

@@ -141,7 +141,6 @@ do
 done
 echo ""
 
-
 # ****
 # *** NEED TO DEAL WITH Permissions - ????
 # ***
@@ -287,7 +286,7 @@ if [ ! "$TESTS_PASSED" == "0" ]; then
     echo "  Or try again by:"
     echo "    Commit changes to the current git branch: $FEATURE_BRANCH_NAME."
     echo "    Switch to the main branch"
-    echo "    Delete the $FEATURE_BRANCH_NAME."
+    echo "    Delete the $FEATURE_BRANCH_NAME branch."
     echo "    Run this script again."
 else
     # Print a message...
