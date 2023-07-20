@@ -226,12 +226,12 @@ echo "Updated $ROUTING_YML_FILE from templates."
 TEST_MODULE=${MODULE_NAME##*_}
 TEST_FILE="modules/$MODULE_NAME/src/entrypoints/$ENTRY_POINT/$ENTRY_POINT.exists.cy.js"
 
-echo "Running tests on $MODULE_NAME module..."
+echo "Running tests on $ENTRY_POINT in the $MODULE_NAME module..."
 
 echo "  Testing on dev server..."
 DEV_TEST_OUT=$(test.bash --e2e --dev --"$TEST_MODULE" --glob="$TEST_FILE")
 DEV_EXIT_CODE=$?
-if [ ! "$DEV_EXIT_CODE" ]; then
+if [ ! "$DEV_EXIT_CODE" == "0" ]; then
   echo "  Errors occured when testing on the dev server. Output will be shown below"
 else
   echo "  Success."
@@ -240,7 +240,7 @@ fi
 echo "  Testing on preview server..."
 PREV_TEST_OUT=$(test.bash --e2e --prev --"$TEST_MODULE" --glob="$TEST_FILE")
 PREV_EXIT_CODE=$?
-if [ ! "$PREV_EXIT_CODE" ]; then
+if [ ! "$PREV_EXIT_CODE" == "0" ]; then
   echo "  Errors occured when testing on the preview server. Output will be shown below"
 else
   echo "  Success."
@@ -249,7 +249,7 @@ fi
 echo "  Testing on farmOS server..."
 LIVE_TEST_OUT=$(test.bash --e2e --live --"$TEST_MODULE" --glob="$TEST_FILE")
 LIVE_EXIT_CODE=$?
-if [ ! "$LIVE_EXIT_CODE" ]; then
+if [ ! "$LIVE_EXIT_CODE" == "0" ]; then
   echo "  Errors occured when testing on the farmOS server. Output will be shown below"
 else
   echo "  Success."
@@ -259,7 +259,7 @@ echo "Tests complete."
 
 (( TESTS_PASSED=DEV_EXIT_CODE || PREV_EXIT_CODE || LIVE_EXIT_CODE ))
 
-if [ ! "$TESTS_PASSED" ]; then
+if [ ! "$TESTS_PASSED" == "0" ]; then
     if [ ! "$DEV_EXIT_CODE" ]; then
         echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from dev server."
         echo ""
