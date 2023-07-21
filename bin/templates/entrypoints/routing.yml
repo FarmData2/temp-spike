@@ -2,7 +2,7 @@
 farm.%DRUPAL_ROUTE_NAME%.content:
   path: '/%DRUPAL_ROUTE%'
   defaults:
-    _controller: '\Drupal\farm_fd2\Controller\FD2_Controller::content'
+    _controller: '\Drupal\%MODULE_NAME%\Controller\FD2_Controller::content'
     _title: '%ENTRY_POINT_TITLE%'
   requirements:
     _permission: 'access content'
