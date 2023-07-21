@@ -24,7 +24,7 @@ services:
       - farmos2_config_fd2.1:/opt/drupal/web/sites
       # Mount the dist directories containing the fd2 modules into the farmOS container.
       - ../modules/farm_fd2/dist:/opt/drupal/web/sites/all/modules/farm_fd2
-      - ../modules/farm_fd2_example/dist:/opt/drupal/web/sites/all/modules/farm_fd2_example
+      - ../modules/farm_fd2_examples/dist:/opt/drupal/web/sites/all/modules/farm_fd2_examples
       - ../modules/farm_fd2_school/dist:/opt/drupal/web/sites/all/modules/farm_fd2_school
     ports:
       - '80:80'

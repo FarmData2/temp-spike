@@ -4,9 +4,16 @@
   "private": true,
   "scripts": {
     "dev:fd2": "vite --config modules/farm_fd2/vite.config.js",
+    "dev:ex": "vite --config modules/farm_fd2_examples/vite.config.js",
+
     "build:fd2": "vite --config modules/farm_fd2/vite.config.js build",
+    "build:ex": "vite --config modules/farm_fd2_examples/vite.config.js build",
+
     "watch:fd2": "vite --config modules/farm_fd2/vite.config.js build --watch",
+    "watch:ex": "vite --config modules/farm_fd2_examples/vite.config.js build --watch",
+
     "preview:fd2": "vite --config modules/farm_fd2/vite.config.js preview",
+    "preview:ex": "vite --config modules/farm_fd2_examples/vite.config.js preview",
 
     "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix --ignore-path .gitignore",
     "bashlint": "npx shellcheck $(find . -name '*.bash')",

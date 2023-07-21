@@ -145,12 +145,15 @@ if [ -n "$E2E_TESTS" ]; then
   if [ -n "$TEST_FD2" ]; then
     echo "  Testing the farm_fd2 module."
     CYPRESS_PROJECT="modules/farm_fd2"
+    URL_PREFIX="fd2"
   elif [ -n "$TEST_EXAMPLES" ]; then
     echo "  Testing the farm_fd2_examples module."
     CYPRESS_PROJECT="modules/farm_fd2_examples"
+    URL_PREFIX="fd2_examples"
   else
     echo "  Testing the farm_fd2_schoool module."
     CYPRESS_PROJECT="modules/farm_fd2_school"
+    URL_PREFIX="fd2_school"
   fi
 else
   CYPRESS_TEST_TYPE="component"
@@ -166,15 +169,15 @@ fi
 if [ -n "$DEV_SERVER" ]; then
   echo "Development tests requested..."
   echo "  Checking that the dev server is running on port 5173..."
-  if [ "$(check_url localhost:5173/fd2/main/)" == "" ]; then
+  if [ "$(check_url localhost:5173/$URL_PREFIX/main/)" == "" ]; then
     echo "    Dev server not found."
     echo "    Starting dev server..."
-    setsid npx vite --config ./modules/farm_fd2/vite.config.js > /dev/null &
+    setsid npx vite --config ./$CYPRESS_PROJECT/vite.config.js > /dev/null &
 
     DEV_PID=$!
     DEV_GID=$(ps --pid "$DEV_PID" -h -o pgid | xargs)
 
-    if [ "$(wait_for_url localhost:5173/fd2/main/)" == "" ]; then
+    if [ "$(wait_for_url localhost:5173/$URL_PREFIX/main/)" == "" ]; then
       echo -e "    ${ON_RED}ERROR:${NO_COLOR} Unable to start dev server."
       exit 255
     else
@@ -190,21 +193,21 @@ elif [ -n "$PREVIEW_SERVER" ]; then
   echo "Preview tests requested..."
 
   echo "  Starting builder for the distribution..."
-  setsid npx vite --config modules/farm_fd2/vite.config.js build --watch > /dev/null &
+  setsid npx vite --config ./$CYPRESS_PROJECT/vite.config.js build --watch > /dev/null &
   BUILDER_PID=$!
   BUILDER_GID=$(ps --pid "$BUILDER_PID" -h -o pgid | xargs)
   echo "    Builder running in process group $BUILDER_GID."
 
   echo "  Checking that the preview server is running on port 4173..."
-  if [ "$(check_url localhost:4173/fd2/main/)" == "" ]; then
+  if [ "$(check_url localhost:4173/$URL_PREFIX/main/)" == "" ]; then
     echo "    Preview server not found."
     echo "    Starting preview server..."
-    setsid npx vite --config ./modules/farm_fd2/vite.config.js preview > /dev/null &
+    setsid npx vite --config ./$CYPRESS_PROJECT/vite.config.js preview > /dev/null &
 
     PREVIEW_PID=$!
     PREVIEW_GID=$(ps --pid "$PREVIEW_PID" -h -o pgid | xargs)
 
-    if [ "$(wait_for_url localhost:4173/fd2/main/)" == "" ]; then
+    if [ "$(wait_for_url localhost:4173/$URL_PREFIX/main/)" == "" ]; then
       echo -e "    ${ON_RED}ERROR:${NO_COLOR} Unable to start preveiw server."
       exit 255
     else
@@ -220,7 +223,7 @@ elif [ -n "$LIVE_FARMOS_SERVER" ]; then
   echo "Live tests within farmOS requested..."
 
   echo "  Starting builder for the distribution..."
-  setsid npx vite --config modules/farm_fd2/vite.config.js build --watch > /dev/null &
+  setsid npx vite --config ./$CYPRESS_PROJECT/vite.config.js build --watch > /dev/null &
   LIVE_PID=$!
   LIVE_GID=$(ps --pid "$LIVE_PID" -h -o pgid | xargs)
   echo "    Builder running in process group $LIVE_GID."
