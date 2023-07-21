@@ -38,7 +38,7 @@ function usage {
 }
 
 # Change into the main repo directory.
-SCRIPT_PATH=$(readlink -f $0)                       # Path to this script.
+SCRIPT_PATH=$(readlink -f "$0")                       # Path to this script.
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")                # Path to directory containing this script.
 REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
 safe_cd "$REPO_ROOT_DIR"
@@ -169,7 +169,7 @@ fi
 if [ -n "$DEV_SERVER" ]; then
   echo "Development tests requested..."
   echo "  Checking that the dev server is running on port 5173..."
-  if [ "$(check_url localhost:5173/$URL_PREFIX/main/)" == "" ]; then
+  if [ "$(check_url localhost:5173/"$URL_PREFIX"/main/)" == "" ]; then
     echo "    Dev server not found."
     echo "    Starting dev server..."
     setsid npx vite --config ./$CYPRESS_PROJECT/vite.config.js > /dev/null &
@@ -177,7 +177,7 @@ if [ -n "$DEV_SERVER" ]; then
     DEV_PID=$!
     DEV_GID=$(ps --pid "$DEV_PID" -h -o pgid | xargs)
 
-    if [ "$(wait_for_url localhost:5173/$URL_PREFIX/main/)" == "" ]; then
+    if [ "$(wait_for_url localhost:5173/"$URL_PREFIX"/main/)" == "" ]; then
       echo -e "    ${ON_RED}ERROR:${NO_COLOR} Unable to start dev server."
       exit 255
     else
@@ -199,7 +199,7 @@ elif [ -n "$PREVIEW_SERVER" ]; then
   echo "    Builder running in process group $BUILDER_GID."
 
   echo "  Checking that the preview server is running on port 4173..."
-  if [ "$(check_url localhost:4173/$URL_PREFIX/main/)" == "" ]; then
+  if [ "$(check_url localhost:4173/"$URL_PREFIX"/main/)" == "" ]; then
     echo "    Preview server not found."
     echo "    Starting preview server..."
     setsid npx vite --config ./$CYPRESS_PROJECT/vite.config.js preview > /dev/null &
@@ -207,7 +207,7 @@ elif [ -n "$PREVIEW_SERVER" ]; then
     PREVIEW_PID=$!
     PREVIEW_GID=$(ps --pid "$PREVIEW_PID" -h -o pgid | xargs)
 
-    if [ "$(wait_for_url localhost:4173/$URL_PREFIX/main/)" == "" ]; then
+    if [ "$(wait_for_url localhost:4173/"$URL_PREFIX"/main/)" == "" ]; then
       echo -e "    ${ON_RED}ERROR:${NO_COLOR} Unable to start preveiw server."
       exit 255
     else

@@ -19,9 +19,8 @@
     "preview:examples": "vite --config modules/farm_fd2_examples/vite.config.js preview",
     "preview:school": "vite --config modules/farm_fd2_school/vite.config.js preview",
 
-    "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix --ignore-path .gitignore",
-    "bashlint": "npx shellcheck $(find . -name '*.bash')",
-    "dockerlint": "for NAME in $(find . -name node_modules -prune -false -o -name 'Dockerfile'); do echo 'Linting:' $NAME; npx dockerlint $NAME; done",
+    "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix",
+    "bashlint": "npx shellcheck $(find . -path ./docker/db -prune -false -o -name '*.bash')",
     "lint": "npm run eslint; npm run bashlint",
 
     "format:all": "prettier --write .",

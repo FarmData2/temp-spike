@@ -35,7 +35,7 @@ then
 fi
 
 # Get the path to the main repo directory.
-SCRIPT_PATH=$(readlink -f $0)  # Path to this script.
+SCRIPT_PATH=$(readlink -f "$0")  # Path to this script.
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
 REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
 cd "$REPO_ROOT_DIR" || \
@@ -51,7 +51,7 @@ echo -e "${UNDERLINE_BLUE}Starting FarmData2 development environment...${NO_COLO
 # This is the FarmData2 directory by default, but may have been
 # changed by the user.
 FD2_PATH=$(pwd)
-FD2_DIR=$(basename $FD2_PATH)
+FD2_DIR=$(basename "$FD2_PATH")
 cd docker || \
   (
     echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR\docker is missing.";

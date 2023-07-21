@@ -1,0 +1,10 @@
+docker/db/
+docker/docker-compose.yml
+
+bin/templates/**/*.yml
+**/*.info.yml
+**/*.libraries.yml
+**/*.links.menu.yml
+**/*.routing.yml
+
+**/dist

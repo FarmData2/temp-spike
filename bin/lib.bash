@@ -71,7 +71,7 @@ function xor {
   # https://stackoverflow.com/questions/56700325/xor-conditional-in-bash
     local -i cnt=0
     while [[ $# -gt 0 ]]; do
-        [[ -n $1 ]] && let cnt++
+        [[ -n $1 ]] && (( cnt++ ))
         shift
     done
     [ "$cnt" -eq "1" ] 
