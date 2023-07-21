@@ -1,9 +1,1 @@
-{
-  "languageSettings": [
-    {
-      "languageId": "javascript",
-      "includeRegExpList": ["CStyleComment", "string"],
-      "ignoreRegExpList": ["/from\\s+(['\"]).*\\1/"]
-    }
-  ]
-}
+../.cspell.json
