@@ -45,7 +45,7 @@ services:
       # Mount the docker.sock so we can run docker commands in the container.
       - /var/run/docker.sock:/var/run/docker.sock
       # Preserve the fd2dev user's home directory on a docker volume.
-      # Bump the version here, in fd2dev_windows, and in volumes below 
+      # Bump the version here and in volumes below 
       # if image rebuid reqires new home.
       - fd2dev_home_fd2.1:/home/fd2dev
       # Mount a docker volume into which the farmOS database will be built.
