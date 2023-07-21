@@ -15,7 +15,7 @@ class FD2_Controller extends ControllerBase
     // e.g. main or fieldkit or ...
     $current_path = \Drupal::service('path.current')->getPath();
 
-  // Offset here (5) must match prefix: fd2/
+    // Offset here (5) must match prefix: fd2/
     $fd2_service = substr($current_path, 5);
 
     return [

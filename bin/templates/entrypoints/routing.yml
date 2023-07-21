@@ -1,4 +1,3 @@
-
 farm.%DRUPAL_ROUTE_NAME%.content:
   path: '/%DRUPAL_ROUTE%'
   defaults:

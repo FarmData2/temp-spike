@@ -6,41 +6,37 @@ source lib.bash
 PWD="$(pwd)"
 
 # Get the path to the main repo directory.
-SCRIPT_PATH=$(readlink -f "$0")  # Path to this script.
-SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
+SCRIPT_PATH=$(readlink -f "$0")                     # Path to this script.
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")                # Path to directory containing this script.
 REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
 
 # Check that the main branch is checked out
 CUR_GIT_BRANCH=$(git branch)
-if [[ ! "$CUR_GIT_BRANCH" == *"* main"* ]]
-then
-    echo -e "${ON_RED}ERROR:${NO_COLOR} You must have the main branch checked out to add an entry point."
-    echo "Switch to the main branch."
-    echo "Then run this script again."
-    exit 255
+if [[ ! "$CUR_GIT_BRANCH" == *"* main"* ]]; then
+  echo -e "${ON_RED}ERROR:${NO_COLOR} You must have the main branch checked out to add an entry point."
+  echo "Switch to the main branch."
+  echo "Then run this script again."
+  exit 255
 fi
 
 # Check that working tree is clean
 GIT_STATUS=$(git status | tail -1)
-if [[ ! "$GIT_STATUS" =~ ^"nothing to commit, working tree clean"$ ]]
-then
-    echo -e "${ON_RED}ERROR:${NO_COLOR} The working tree must be clean to add an entry point."
-    echo "Commit chagnes to a feature branch or use git stash."
-    echo "Then run this script again."
-    exit 255
+if [[ ! "$GIT_STATUS" =~ ^"nothing to commit, working tree clean"$ ]]; then
+  echo -e "${ON_RED}ERROR:${NO_COLOR} The working tree must be clean to add an entry point."
+  echo "Commit chagnes to a feature branch or use git stash."
+  echo "Then run this script again."
+  exit 255
 fi
 
 # Get the module to which the endpoint should be added.
 ALLOWED_MODULES=("farm_fd2" "farm_fd2_examples" "farm_fd2_school")
 echo "Choose the module in which an entry point should be created."
-select MODULE_NAME in "${ALLOWED_MODULES[@]}"
-do
-    if (( "$REPLY" <= 0 || "$REPLY" > "${#ALLOWED_MODULES[@]}" ))
-    then
-        echo -e "${ON_RED}ERROR:${NO_COLOR} Invalid choice. Please try again."
-    else
-        break
-    fi
+select MODULE_NAME in "${ALLOWED_MODULES[@]}"; do
+  if (("$REPLY" <= 0 || "$REPLY" > "${#ALLOWED_MODULES[@]}")); then
+    echo -e "${ON_RED}ERROR:${NO_COLOR} Invalid choice. Please try again."
+  else
+    break
+  fi
 done
 DRUPAL_ROUTE_PREFIX="${MODULE_NAME:5}"
 echo ""
@@ -61,8 +57,7 @@ FEATURE_BRANCH_NAME="add_$ENTRY_POINT""_entry_point"
 
 # Check if a feature branch already exists for the entry point...
 FEATURE_BRANCH_EXISTS=$(git branch -a | grep "$FEATURE_BRANCH_NAME")
-if [[ ! "$FEATURE_BRANCH_EXISTS" == "" ]]
-then
+if [[ ! "$FEATURE_BRANCH_EXISTS" == "" ]]; then
   echo -e "${ON_RED}ERROR:${NO_COLOR} The feature branch $FEATURE_BRANCH_NAME already exists."
   echo "Pick a different name for your entry point."
   echo "Or delete the feature branch $FEATURE_BRANCH_NAME."
@@ -71,19 +66,18 @@ then
 fi
 
 # Check if the directory for the entry point exits...
-if [ -d "src/entrypoints/$ENTRY_POINT" ]
-then
-    echo -e "${ON_RED}ERROR:${NO_COLOR} A directory for the entry point $ENTRY_POINT already exists"
-    echo "in the directory $$ENTRY_POINT_SRC_DIR."
-    echo "Pick a different name for your entry point."
-    echo "OR:"
-    echo "  Remove the src/entrypoints/$ENTRY_POINT directory"
-    echo "  And remove any definitions realated to the entry point $ENTRY_POINT from the files:"
-    echo "    $ROUTING_YML_FILE"
-    echo "    $LINKS_YML_FILE"
-    echo "    $LIBRARIES_YML_FILE"
-    echo "Then run this script again."
-    exit 255
+if [ -d "src/entrypoints/$ENTRY_POINT" ]; then
+  echo -e "${ON_RED}ERROR:${NO_COLOR} A directory for the entry point $ENTRY_POINT already exists"
+  echo "in the directory $$ENTRY_POINT_SRC_DIR."
+  echo "Pick a different name for your entry point."
+  echo "OR:"
+  echo "  Remove the src/entrypoints/$ENTRY_POINT directory"
+  echo "  And remove any definitions realated to the entry point $ENTRY_POINT from the files:"
+  echo "    $ROUTING_YML_FILE"
+  echo "    $LINKS_YML_FILE"
+  echo "    $LIBRARIES_YML_FILE"
+  echo "Then run this script again."
+  exit 255
 fi
 
 # Define the module .yml file paths for convenience.
@@ -98,15 +92,14 @@ IN_LIBRARIES=$(grep "^$ENTRY_POINT:$" "$LIBRARIES_YML_FILE")
 
 # The directory for the entry point does not exist.
 # So now check if the entry point has information in any of the .yml files.
-if [[ ! ("$IN_ROUTES" == "" && "$IN_LINKS" == "" && "$IN_LIBRARIES" == "") ]]
-then
-    echo -e "${ON_RED}ERROR:${NO_COLOR} The entry point $ENTRY_POINT was previously defined."
-    echo "Remove definitions realated to the entry point $ENTRY_POINT from the files:"
-    echo "  $ROUTING_YML_FILE"
-    echo "  $LINKS_YML_FILE"
-    echo "  $LIBRARIES_YML_FILE"
-    echo "Then run this script again."
-    exit 255
+if [[ ! ("$IN_ROUTES" == "" && "$IN_LINKS" == "" && "$IN_LIBRARIES" == "") ]]; then
+  echo -e "${ON_RED}ERROR:${NO_COLOR} The entry point $ENTRY_POINT was previously defined."
+  echo "Remove definitions realated to the entry point $ENTRY_POINT from the files:"
+  echo "  $ROUTING_YML_FILE"
+  echo "  $LINKS_YML_FILE"
+  echo "  $LIBRARIES_YML_FILE"
+  echo "Then run this script again."
+  exit 255
 fi
 
 # Get a title and a description for the farmOS drupal module.
@@ -117,20 +110,18 @@ echo "Enter a short (one 5-10 word sentence) description of the entry point."
 read -r ENTRY_POINT_DESCRIPTION
 echo ""
 
-# Get the possible menus on which to post the entry point and 
+# Get the possible menus on which to post the entry point and
 # ask the user to pick one.
 MENUS_RAW=$(grep -v "^ " "$LINKS_YML_FILE" | cut -f1 -d: | tr '\n' ' ')
 IFS=$' ' read -r -a MENUS <<< "$MENUS_RAW"
 
 echo "Choose the parent menu on which this entry point will appear."
-select ENTRY_POINT_PARENT in "${MENUS[@]}"
-do
-    if (( "$REPLY" <= 0 || "$REPLY" > "${#MENUS[@]}" ))
-    then
-        echo "Invalid choice. Please try again."
-    else
-        break
-    fi
+select ENTRY_POINT_PARENT in "${MENUS[@]}"; do
+  if (("$REPLY" <= 0 || "$REPLY" > "${#MENUS[@]}")); then
+    echo "Invalid choice. Please try again."
+  else
+    break
+  fi
 done
 echo ""
 
@@ -139,7 +130,7 @@ echo ""
 # ***
 
 # shellcheck disable=SC1003
-DISPLAY_DRUPAL_ROUTE=$(echo "$DRUPAL_ROUTE"| tr -d '\\')
+DISPLAY_DRUPAL_ROUTE=$(echo "$DRUPAL_ROUTE" | tr -d '\\')
 
 echo "About to add an entry point as follows:"
 echo "               in module: $MODULE_NAME"
@@ -155,16 +146,14 @@ echo ""
 
 # Confirm that the entry point should be created.
 Y_N=""
-while  [[ "$Y_N" != "Y" && "$Y_N" != "y" ]]
-do 
-    read -rp "Continue (Y/N)? " Y_N
-    echo ""
+while [[ "$Y_N" != "Y" && "$Y_N" != "y" ]]; do
+  read -rp "Continue (Y/N)? " Y_N
+  echo ""
 
-    if [[ "$Y_N" == "n" || "$Y_N" == "N" ]]
-    then
-        echo "Entry point creation canceled."
-        exit 255
-    fi
+  if [[ "$Y_N" == "n" || "$Y_N" == "N" ]]; then
+    echo "Entry point creation canceled."
+    exit 255
+  fi
 done
 
 # Create a new feature branch for the entry point.
@@ -215,7 +204,7 @@ sed -i "s/%DRUPAL_ROUTE%/$DRUPAL_ROUTE/g" "$ROUTING_YML_FILE"
 sed -i "s/%MODULE_NAME%/$MODULE_NAME/g" "$ROUTING_YML_FILE"
 sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ROUTING_YML_FILE"
 echo "Updated $ROUTING_YML_FILE from templates."
-echo "" 
+echo ""
 
 # Run the basic tests to be sure everyting is working...
 # Note: The test script does the builds for the preview and live farmOS servers.
@@ -254,46 +243,46 @@ fi
 echo "Tests complete."
 echo ""
 
-(( TESTS_PASSED=DEV_EXIT_CODE || PREV_EXIT_CODE || LIVE_EXIT_CODE ))
+((TESTS_PASSED = DEV_EXIT_CODE || PREV_EXIT_CODE || LIVE_EXIT_CODE))
 
 if [ ! "$TESTS_PASSED" == "0" ]; then
-    if [ ! "$DEV_EXIT_CODE" == "0" ]; then
-        echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from dev server."
-        echo ""
-        echo -e "$DEV_TEST_OUT"
-        echo ""
-    fi
-    if [ ! "$PREV_EXIT_CODE" == "0" ]; then
-        echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from preview server."
-        echo ""
-        echo -e "$PREV_TEST_OUT"
-        echo ""
-    fi
-    if [ ! "$LIVE_EXIT_CODE" == "0" ]; then
-        echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from farmOS server."
-        echo ""
-        echo -e "$LIVE_TEST_OUT"
-        echo ""
-    fi
-
-    echo -e "${ON_RED}ERROR:${NO_COLOR} Check output of failed tests above."
-    echo "  Correct any errors and rerun tests using test.bash."
-    echo "  Or try again by:"
-    echo "    Commit changes to the current git branch: $FEATURE_BRANCH_NAME."
-    echo "    Switch to the main branch"
-    echo "    Delete the $FEATURE_BRANCH_NAME branch."
-    echo "    Run this script again."
-else
-    # Print a message...
-    echo -e "${ON_GREEN}SUCCESS:${NO_COLOR} New entry point $ENTRY_POINT created in module $MODULE_NAME."
-
-    # Commit the chagnes to the feature branch and print some info...
-    echo "Use git status to reveiw the changes."
-    echo "Commit them to the current git branch: $FEATURE_BRANCH_NAME."
-    echo "Modify the $MODULE_NAME/$ENTRY_POINT/App.vue file to create the desired funcionality"
-    echo "Add additional *.cy.js files to test the added functionality."
-    echo "When ready, push your feature branch to your origin and create a pull request."
+  if [ ! "$DEV_EXIT_CODE" == "0" ]; then
+    echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from dev server."
     echo ""
+    echo -e "$DEV_TEST_OUT"
+    echo ""
+  fi
+  if [ ! "$PREV_EXIT_CODE" == "0" ]; then
+    echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from preview server."
+    echo ""
+    echo -e "$PREV_TEST_OUT"
+    echo ""
+  fi
+  if [ ! "$LIVE_EXIT_CODE" == "0" ]; then
+    echo -e "${ON_RED}ERROR:${NO_COLOR} Failed tests from farmOS server."
+    echo ""
+    echo -e "$LIVE_TEST_OUT"
+    echo ""
+  fi
+
+  echo -e "${ON_RED}ERROR:${NO_COLOR} Check output of failed tests above."
+  echo "  Correct any errors and rerun tests using test.bash."
+  echo "  Or try again by:"
+  echo "    Commit changes to the current git branch: $FEATURE_BRANCH_NAME."
+  echo "    Switch to the main branch"
+  echo "    Delete the $FEATURE_BRANCH_NAME branch."
+  echo "    Run this script again."
+else
+  # Print a message...
+  echo -e "${ON_GREEN}SUCCESS:${NO_COLOR} New entry point $ENTRY_POINT created in module $MODULE_NAME."
+
+  # Commit the chagnes to the feature branch and print some info...
+  echo "Use git status to reveiw the changes."
+  echo "Commit them to the current git branch: $FEATURE_BRANCH_NAME."
+  echo "Modify the $MODULE_NAME/$ENTRY_POINT/App.vue file to create the desired funcionality"
+  echo "Add additional *.cy.js files to test the added functionality."
+  echo "When ready, push your feature branch to your origin and create a pull request."
+  echo ""
 fi
 
 exit "$TESTS_PASSED"

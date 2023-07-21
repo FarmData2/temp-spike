@@ -1,4 +1,3 @@
-
 farm.%DRUPAL_ROUTE_NAME%:
   title: '%ENTRY_POINT_TITLE%'
   description: '%ENTRY_POINT_DESCRIPTION%'

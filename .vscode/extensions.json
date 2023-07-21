@@ -5,6 +5,6 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "bierner.markdown-preview-github-styles",
-    "timonwong.shellcheck",
+    "timonwong.shellcheck"
   ]
 }

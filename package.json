@@ -6,24 +6,19 @@
     "dev:fd2": "vite --config modules/farm_fd2/vite.config.js",
     "dev:examples": "vite --config modules/farm_fd2_examples/vite.config.js",
     "dev:school": "vite --config modules/farm_fd2_school/vite.config.js",
-
     "build:fd2": "vite --config modules/farm_fd2/vite.config.js build",
     "build:examples": "vite --config modules/farm_fd2_examples/vite.config.js build",
     "build:school": "vite --config modules/farm_fd2_school/vite.config.js build",
-
     "watch:fd2": "vite --config modules/farm_fd2/vite.config.js build --watch",
     "watch:examples": "vite --config modules/farm_fd2_examples/vite.config.js build --watch",
     "watch:school": "vite --config modules/farm_fd2_school/vite.config.js build --watch",
-
     "preview:fd2": "vite --config modules/farm_fd2/vite.config.js preview",
     "preview:examples": "vite --config modules/farm_fd2_examples/vite.config.js preview",
     "preview:school": "vite --config modules/farm_fd2_school/vite.config.js preview",
-
     "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix",
     "bashlint": "npx shellcheck $(find . -path ./docker/db -prune -false -o -name '*.bash')",
     "lint": "npm run eslint; npm run bashlint",
-
-    "format:all": "prettier --write .",
+    "format:all": "prettier . --write --check '!./docker/db' --check '!./bin/templates/entrypoints/*.yml'",
     "format:staged": "pretty-quick --write --staged ."
   },
   "dependencies": {

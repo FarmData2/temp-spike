@@ -4,9 +4,8 @@ source ./lib.bash
 source ./colors.bash
 
 # Ensuring this script is not being run as root.
-RUNNING_AS_ROOT=$(id -un | grep "root" )
-if [ -n "$RUNNING_AS_ROOT" ];
-then
+RUNNING_AS_ROOT=$(id -un | grep "root")
+if [ -n "$RUNNING_AS_ROOT" ]; then
   echo -e "${RED}ERROR:${NO_COLOR}The fd2-up.bash script should not be run as root."
   echo "Please run fd2-up.bash without using sudo."
   exit 255
@@ -14,8 +13,7 @@ fi
 
 # Ensure that this script is not being run in the development container.
 HOST=$(docker inspect -f '{{.Name}}' "$HOSTNAME" 2> /dev/null)
-if [ "$HOST" == "/fd2_dev" ];
-then
+if [ "$HOST" == "/fd2_dev" ]; then
   echo -e "${RED}ERROR:${NO_COLOR} fd2-up.bash script cannot be run in the dev container."
   echo "Always run fd2-up.bash on your host OS."
   exit 255
@@ -25,23 +23,22 @@ fi
 # ~/.contconf/docker.sock so that it can be mounted the same in WSL.
 echo "Checking for docker.sock..."
 SYS_DOCKER_SOCK=$(ls /var/run/docker.sock 2> /dev/null)
-if [ -z "$SYS_DOCKER_SOCK" ] 
-then
-    echo -e "  ${RED}ERROR:${NO_COLOR} /var/run/docker.sock not found."
-    echo "  Ensure that Docker Desktop is intalled and running."
-    echo "  Also ensure that the 'Allow the default Docker socket to be used'"
-    echo "  setting in Docker Desktop -> Settings -> Advanced is enabled."
-    exit 255
+if [ -z "$SYS_DOCKER_SOCK" ]; then
+  echo -e "  ${RED}ERROR:${NO_COLOR} /var/run/docker.sock not found."
+  echo "  Ensure that Docker Desktop is intalled and running."
+  echo "  Also ensure that the 'Allow the default Docker socket to be used'"
+  echo "  setting in Docker Desktop -> Settings -> Advanced is enabled."
+  exit 255
 fi
 
 # Get the path to the main repo directory.
-SCRIPT_PATH=$(readlink -f "$0")  # Path to this script.
-SCRIPT_DIR=$(dirname "$SCRIPT_PATH")  # Path to directory containing this script.
+SCRIPT_PATH=$(readlink -f "$0")                     # Path to this script.
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")                # Path to directory containing this script.
 REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
-cd "$REPO_ROOT_DIR" || \
-  (
-    echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR is missing.";
-    echo "  Resotre this directory and try again."; \
+cd "$REPO_ROOT_DIR" \
+  || (
+    echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR is missing."
+    echo "  Resotre this directory and try again."
     exit 255
   )
 
@@ -52,10 +49,10 @@ echo -e "${UNDERLINE_BLUE}Starting FarmData2 development environment...${NO_COLO
 # changed by the user.
 FD2_PATH=$(pwd)
 FD2_DIR=$(basename "$FD2_PATH")
-cd docker || \
-  (
-    echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR\docker is missing.";
-    echo "  Resotre this directory and try again."; \
+cd docker \
+  || (
+    echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR\docker is missing."
+    echo "  Resotre this directory and try again."
     exit 255
   )
 
@@ -74,16 +71,13 @@ echo "  The ~/.fd2 configuration directory created."
 echo "Detecting host Operating System..."
 OS=$(uname -a)
 PROFILE=
-if [[ "$OS" == *"Darwin"* ]];
-then
+if [[ "$OS" == *"Darwin"* ]]; then
   PROFILE=macos
-elif [[ "$OS" == *"microsoft"* ]] || [[ "$OS" == *"Microsoft"* ]];
-then
+elif [[ "$OS" == *"microsoft"* ]] || [[ "$OS" == *"Microsoft"* ]]; then
   # Note that this is before Linux because if running in WSL
   # uname -a reports Linux, but also has microsoft later in the output.
   PROFILE=wsl
-elif [[ "$OS" == *"Linux"* ]];
-then
+elif [[ "$OS" == *"Linux"* ]]; then
   PROFILE=linux
 else
   echo -e "${RED}ERROR:${NO_COLOR} Your host operating system $OS was not recognized."
@@ -92,8 +86,7 @@ else
 fi
 echo "  Running on a $PROFILE host."
 
-if [[ "$PROFILE" == "macos" ]]
-then
+if [[ "$PROFILE" == "macos" ]]; then
   echo "Running fd2-up.macos.bash..."
   source "$SCRIPT_DIR/fd2-up.macos.bash"
   echo "fd2-up.macos.bash done."
@@ -114,17 +107,16 @@ echo "Starting containers..."
 docker compose --profile $PROFILE up -d "$@"
 
 echo "Rebuilding the drupal cache..."
-sleep 3  # give site time to come up before clearing the cache.
+sleep 3 # give site time to come up before clearing the cache.
 docker exec -it fd2_farmos drush cr
 
 echo "Waiting for fd2dev container configuration and startup..."
 NO_VNC_RESP=$(curl -Is localhost:6901 | grep "HTTP/1.1 200 OK")
-if [ "$NO_VNC_RESP" == "" ]
-then
+if [ "$NO_VNC_RESP" == "" ]; then
   echo -n "  This may take a few moments: "
   wait_for_novnc
   echo ""
 fi
-echo "  fd2dev container configured and ready." 
+echo "  fd2dev container configured and ready."
 
 echo -e "${UNDERLINE_BLUE}FarmData2 development enviornment started${NO_COLOR}"
