@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * Contains \Drupal\farm_fd2_examples\Controller\FD2_Examples_Controller.
+ * Contains \Drupal\farm_fd2_examples\Controller\FD2_Controller.
  */
 namespace Drupal\farm_fd2_examples\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 
-class FD2_Examples_Controller extends ControllerBase
+class FD2_Controller extends ControllerBase
 {
   public function content()
   {
