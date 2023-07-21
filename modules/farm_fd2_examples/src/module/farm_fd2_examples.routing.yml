@@ -2,6 +2,6 @@ farm.fd2_examples.content:
   path: '/fd2_examples/main'
   defaults:
     _controller: '\Drupal\farm_fd2_examples\Controller\FD2_Controller::content'
-    _title: 'FarmData2 Examples'
+    _title: 'FD2 Examples'
   requirements:
     _permission: 'access content'

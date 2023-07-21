@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-describe('Check that the %ENTRY_POINT% entry point exists.', () => {
+describe('Check that the %ENTRY_POINT% entry point in %MODULE_NAME% exists.', () => {
   it('Check that the page loaded.', () => {
     // Login if running in live farmOS.
     cy.login('admin', 'admin')

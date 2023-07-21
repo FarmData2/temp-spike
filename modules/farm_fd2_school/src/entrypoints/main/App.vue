@@ -1,8 +1,7 @@
 <template>
   <div>
     The FarmData2 School module appears in the development environment. It provides a working space
-    for the FD2School Onboarding activities. Each of the activities create a new entry point in this
-    menu as a way to learn about developing FarmData2 features.
+    for completing the FarmData2 School onboarding activities.
   </div>
   <div data-cy="page-loaded" v-show="false">{{ pageDoneLoading }}</div>
 </template>

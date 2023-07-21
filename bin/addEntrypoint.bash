@@ -184,6 +184,7 @@ echo "  Added $ENTRY_POINT_SRC_DIR/App.vue from templates."
 cp "$ENTRY_POINT_TEMPLATE_DIR/entry_point.exists.cy.js" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 sed -i "s/%ENTRY_POINT%/$ENTRY_POINT/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 sed -i "s/%DRUPAL_ROUTE%/$DRUPAL_ROUTE/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
+sed -i "s/%MODULE_NAME%/$MODULE_NAME/g" "$ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js"
 echo "  Added $ENTRY_POINT_SRC_DIR/$ENTRY_POINT.exists.cy.js from templates."
 
 cp "$ENTRY_POINT_TEMPLATE_DIR/index.html" "$ENTRY_POINT_SRC_DIR/index.html"

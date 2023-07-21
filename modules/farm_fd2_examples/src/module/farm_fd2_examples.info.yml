@@ -1,4 +1,4 @@
-name: FarmData2 Examples
+name: FD2 Examples
 description: Canonical examples of FarmData2 entry points, components and tests.
 package: farmOS FarmData2
 type: module
