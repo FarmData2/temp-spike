@@ -36,7 +36,9 @@ jobs:
       - name: Identify changed files
         uses: tj-actions/changed-files@v37
         with:
-          fileOutput: 'json'
+          files_yaml: |
+            all:
+              - '**'
 
       - name: Run step if test file(s) change
         if: steps.changed-files-yaml.outputs.test_any_changed == 'true'
