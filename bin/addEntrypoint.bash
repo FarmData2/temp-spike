@@ -23,7 +23,7 @@ fi
 GIT_STATUS=$(git status | tail -1)
 if [[ ! "$GIT_STATUS" =~ ^"nothing to commit, working tree clean"$ ]]; then
   echo -e "${ON_RED}ERROR:${NO_COLOR} The working tree must be clean to add an entry point."
-  echo "Commit chagnes to a feature branch or use git stash."
+  echo "Commit changes to a feature branch or use git stash."
   echo "Then run this script again."
   exit 255
 fi
@@ -72,7 +72,7 @@ if [ -d "src/entrypoints/$ENTRY_POINT" ]; then
   echo "Pick a different name for your entry point."
   echo "OR:"
   echo "  Remove the src/entrypoints/$ENTRY_POINT directory"
-  echo "  And remove any definitions realated to the entry point $ENTRY_POINT from the files:"
+  echo "  And remove any definitions related to the entry point $ENTRY_POINT from the files:"
   echo "    $ROUTING_YML_FILE"
   echo "    $LINKS_YML_FILE"
   echo "    $LIBRARIES_YML_FILE"
@@ -94,7 +94,7 @@ IN_LIBRARIES=$(grep "^$ENTRY_POINT:$" "$LIBRARIES_YML_FILE")
 # So now check if the entry point has information in any of the .yml files.
 if [[ ! ("$IN_ROUTES" == "" && "$IN_LINKS" == "" && "$IN_LIBRARIES" == "") ]]; then
   echo -e "${ON_RED}ERROR:${NO_COLOR} The entry point $ENTRY_POINT was previously defined."
-  echo "Remove definitions realated to the entry point $ENTRY_POINT from the files:"
+  echo "Remove definitions related to the entry point $ENTRY_POINT from the files:"
   echo "  $ROUTING_YML_FILE"
   echo "  $LINKS_YML_FILE"
   echo "  $LIBRARIES_YML_FILE"
@@ -134,7 +134,7 @@ DISPLAY_DRUPAL_ROUTE=$(echo "$DRUPAL_ROUTE" | tr -d '\\')
 
 echo "About to add an entry point as follows:"
 echo "               in module: $MODULE_NAME"
-echo "        module direcotry: $MODULE_DIR"
+echo "        module directory: $MODULE_DIR"
 echo "        entry point name: $ENTRY_POINT"
 echo "   entry point directory: $ENTRY_POINT_SRC_DIR"
 echo "      template directory: $ENTRY_POINT_TEMPLATE_DIR"
@@ -206,7 +206,7 @@ sed -i "s/%ENTRY_POINT_TITLE%/$ENTRY_POINT_TITLE/g" "$ROUTING_YML_FILE"
 echo "Updated $ROUTING_YML_FILE from templates."
 echo ""
 
-# Run the basic tests to be sure everyting is working...
+# Run the basic tests to be sure everything is working...
 # Note: The test script does the builds for the preview and live farmOS servers.
 TEST_MODULE=${MODULE_NAME##*_}
 TEST_FILE="modules/$MODULE_NAME/src/entrypoints/$ENTRY_POINT/$ENTRY_POINT.exists.cy.js"
@@ -217,7 +217,7 @@ echo "  Testing on dev server..."
 DEV_TEST_OUT=$(test.bash --e2e --dev --"$TEST_MODULE" --glob="$TEST_FILE")
 DEV_EXIT_CODE=$?
 if [ ! "$DEV_EXIT_CODE" == "0" ]; then
-  echo "  Errors occured when testing on the dev server. Output will be shown below"
+  echo "  Errors occurred when testing on the dev server. Output will be shown below"
 else
   echo "  Success."
 fi
@@ -226,7 +226,7 @@ echo "  Testing on preview server..."
 PREV_TEST_OUT=$(test.bash --e2e --prev --"$TEST_MODULE" --glob="$TEST_FILE")
 PREV_EXIT_CODE=$?
 if [ ! "$PREV_EXIT_CODE" == "0" ]; then
-  echo "  Errors occured when testing on the preview server. Output will be shown below"
+  echo "  Errors occurred when testing on the preview server. Output will be shown below"
 else
   echo "  Success."
 fi
@@ -235,7 +235,7 @@ echo "  Testing on farmOS server..."
 LIVE_TEST_OUT=$(test.bash --e2e --live --"$TEST_MODULE" --glob="$TEST_FILE")
 LIVE_EXIT_CODE=$?
 if [ ! "$LIVE_EXIT_CODE" == "0" ]; then
-  echo "  Errors occured when testing on the farmOS server. Output will be shown below"
+  echo "  Errors occurred when testing on the farmOS server. Output will be shown below"
 else
   echo "  Success."
 fi
@@ -276,10 +276,10 @@ else
   # Print a message...
   echo -e "${ON_GREEN}SUCCESS:${NO_COLOR} New entry point $ENTRY_POINT created in module $MODULE_NAME."
 
-  # Commit the chagnes to the feature branch and print some info...
-  echo "Use git status to reveiw the changes."
+  # Commit the changes to the feature branch and print some info...
+  echo "Use git status to review the changes."
   echo "Commit them to the current git branch: $FEATURE_BRANCH_NAME."
-  echo "Modify the $MODULE_NAME/$ENTRY_POINT/App.vue file to create the desired funcionality"
+  echo "Modify the $MODULE_NAME/$ENTRY_POINT/App.vue file to create the desired functionality"
   echo "Add additional *.cy.js files to test the added functionality."
   echo "When ready, push your feature branch to your origin and create a pull request."
   echo ""

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# cSpell:disable
+# This is an old file that will migrate to fd2-up.linux.bash and
+# corrections will be made at that time.
+
+
 # Function that checks if prior operation succeded and
 # terminates if not.  Used throughout to avoid continuing
 # if an operation fails.

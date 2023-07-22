@@ -46,14 +46,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       # Preserve the fd2dev user's home directory on a docker volume.
       # Bump the version here and in volumes below
-      # if image rebuid reqires new home.
+      # if image rebuild requires new home.
       - fd2dev_home_fd2.1:/home/fd2dev
       # Mount a docker volume into which the farmOS database will be built.
       # This allows switching the database from within the dev container.
       # This has significantly better performance than mounting a host directory.
       # Bump the version here if a new db volume is required.
       - farmos2_db_fd2.1:/home/fd2dev/FarmData2/docker/db
-      # Mount the fd2 development evironment configuration information.
+      # Mount the fd2 development environment configuration information.
       - ~/.fd2:/home/fd2dev/.fd2
     ports:
       - 5901:5901

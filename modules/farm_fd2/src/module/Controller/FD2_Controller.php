@@ -12,7 +12,7 @@ class FD2_Controller extends ControllerBase
   public function content()
   {
     // Get the name of the FarmData service being requested from the URL
-    // e.g. main or fieldkit or ...
+    // e.g. main ...
     $current_path = \Drupal::service('path.current')->getPath();
 
     // Offset here (5) must match prefix: fd2/

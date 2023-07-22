@@ -25,7 +25,7 @@ echo "Checking for docker.sock..."
 SYS_DOCKER_SOCK=$(ls /var/run/docker.sock 2> /dev/null)
 if [ -z "$SYS_DOCKER_SOCK" ]; then
   echo -e "  ${RED}ERROR:${NO_COLOR} /var/run/docker.sock not found."
-  echo "  Ensure that Docker Desktop is intalled and running."
+  echo "  Ensure that Docker Desktop is installed and running."
   echo "  Also ensure that the 'Allow the default Docker socket to be used'"
   echo "  setting in Docker Desktop -> Settings -> Advanced is enabled."
   exit 255
@@ -35,12 +35,7 @@ fi
 SCRIPT_PATH=$(readlink -f "$0")                     # Path to this script.
 SCRIPT_DIR=$(dirname "$SCRIPT_PATH")                # Path to directory containing this script.
 REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
-cd "$REPO_ROOT_DIR" \
-  || (
-    echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR is missing."
-    echo "  Resotre this directory and try again."
-    exit 255
-  )
+safe_cd "$REPO_ROOT_DIR"
 
 echo -e "${UNDERLINE_BLUE}Starting FarmData2 development environment...${NO_COLOR}"
 
@@ -49,18 +44,13 @@ echo -e "${UNDERLINE_BLUE}Starting FarmData2 development environment...${NO_COLO
 # changed by the user.
 FD2_PATH=$(pwd)
 FD2_DIR=$(basename "$FD2_PATH")
-cd docker \
-  || (
-    echo -e "${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR\docker is missing."
-    echo "  Resotre this directory and try again."
-    exit 255
-  )
+safe_cd docker 
 
 echo "Starting development environment from $FD2_DIR."
 echo "  Full path: $FD2_PATH"
 
 # (Re)create the .fd2 directory.
-# This direcotry is used for development environment confguration information.
+# This directory is used for development environment configuration information.
 # It is recreated on each start.
 echo "Creating the ~/.fd2 configuration directory."
 rm -fr ~/.fd2 2> /dev/null
@@ -81,7 +71,7 @@ elif [[ "$OS" == *"Linux"* ]]; then
   PROFILE=linux
 else
   echo -e "${RED}ERROR:${NO_COLOR} Your host operating system $OS was not recognized."
-  echo "  Plese file an issue on the FarmData2 issue tracker."
+  echo "  Please file an issue on the FarmData2 issue tracker."
   exit 255
 fi
 echo "  Running on a $PROFILE host."
@@ -119,4 +109,4 @@ if [ "$NO_VNC_RESP" == "" ]; then
 fi
 echo "  fd2dev container configured and ready."
 
-echo -e "${UNDERLINE_BLUE}FarmData2 development enviornment started${NO_COLOR}"
+echo -e "${UNDERLINE_BLUE}FarmData2 development environment started${NO_COLOR}"

@@ -26,7 +26,7 @@ function usage {
   echo ""
   echo "  If --e2e is specified then exactly one of the following must be included:"
   echo "    -d|--dev  : Run the e2e tests in the dev environment."
-  echo "    -p|--prev : Do a bulid and run the e2e tests in the preview environment."
+  echo "    -p|--prev : Do a build and run the e2e tests in the preview environment."
   echo "    -l|--live : Do a build and run e2e tests using the farmOS server"
   echo ""
   echo "  If --comp or --unit are specified then the following may be included:"
@@ -81,7 +81,7 @@ while true; do
       ;;
     -g | --glob)
       if [ "$2" == "" ]; then
-        echo -e "${ON_RED}ERROR:${NO_COLOR} -g|--glob requres an argument."
+        echo -e "${ON_RED}ERROR:${NO_COLOR} -g|--glob requires an argument."
         echo "Use test.bash --help for usage information"
         exit 255
       fi
@@ -123,7 +123,7 @@ fi
 # -e|--e2e was specified so make sure that:
 #   Only one of -f|--fd2 or -x|--examples or -s|--school is specified
 #   and
-#   only one of -d|-dev or -p|--preveiw or -l|--live  is specified
+#   only one of -d|-dev or -p|--preview or -l|--live  is specified
 if [ -n "$E2E_TESTS" ]; then
   if ! xor "$TEST_FD2" "$TEST_EXAMPLES" "$TEST_SCHOOL"; then
     echo -e "${ON_RED}ERROR:${NO_COLOR} When -e|--e2e is specified, exactly one of -f|--fd2, -x|--examples or -s|--school must be included."
@@ -151,7 +151,7 @@ if [ -n "$E2E_TESTS" ]; then
     CYPRESS_PROJECT="modules/farm_fd2_examples"
     URL_PREFIX="fd2_examples"
   else
-    echo "  Testing the farm_fd2_schoool module."
+    echo "  Testing the farm_fd2_school module."
     CYPRESS_PROJECT="modules/farm_fd2_school"
     URL_PREFIX="fd2_school"
   fi
@@ -208,7 +208,7 @@ elif [ -n "$PREVIEW_SERVER" ]; then
     PREVIEW_GID=$(ps --pid "$PREVIEW_PID" -h -o pgid | xargs)
 
     if [ "$(wait_for_url localhost:4173/"$URL_PREFIX"/main/)" == "" ]; then
-      echo -e "    ${ON_RED}ERROR:${NO_COLOR} Unable to start preveiw server."
+      echo -e "    ${ON_RED}ERROR:${NO_COLOR} Unable to start preview server."
       exit 255
     else
       echo "    Preview server started in process group $PREVIEW_GID."

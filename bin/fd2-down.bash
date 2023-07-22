@@ -18,7 +18,7 @@ REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
 cd "$REPO_ROOT_DIR/docker" \
   || (
     echo -e "  ${RED}ERROR:${NO_COLOR} $REPO_ROOT_DIR/docker is missing."
-    echo "  Resotre this directory and try again."
+    echo "  Restore this directory and try again."
     exit 255
   )
 

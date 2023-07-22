@@ -1,4 +1,4 @@
-# Checks if prior operation succeded and terminates if not.
+# Checks if prior operation succeeded and terminates if not.
 # Used throughout to avoid continuing if an operation fails.
 function error_check {
   if [ "$?" != "0" ]; then
@@ -39,8 +39,8 @@ function check_url {
   fi
 }
 
-# Wait for up to 10 seconds for a URL to become avaiable.
-# Returns "" if the URL does not become avaialbe.
+# Wait for up to 10 seconds for a URL to become available.
+# Returns "" if the URL does not become available.
 # Returns the URL followed by OK if it becomes available.
 function wait_for_url {
   URL=$1
@@ -72,9 +72,11 @@ function xor {
   [ "$cnt" -eq "1" ]
 }
 
+# Do a cd with error handling for a directory that is missing but
+# should be present.
 function safe_cd {
   cd "$1" 2> /dev/null || (
-    echo -e "${ON_RED}ERROR:${NO_COLOR} Directory $1 is missisng."
+    echo -e "${ON_RED}ERROR:${NO_COLOR} Directory $1 is missing."
     echo -e "Restore this directory and try again."
     exit 255
   ) || exit 255
