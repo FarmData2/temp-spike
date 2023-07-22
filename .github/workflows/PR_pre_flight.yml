@@ -54,6 +54,8 @@ jobs:
               - '**.md'
             shellcheck:
               - '**.bash'
+            markdown:
+              - '**.md'
 
       - name: List all changed files
         run: |
@@ -75,3 +77,8 @@ jobs:
         if: steps.changed-files.outputs.all_any_changed == 'true'
         run: |
           npx cspell -c .cspell.json ${{ steps.changed-files.outputs.all_all_changed_files }}
+
+      - name: Run link-check on all markdown files
+        if: steps.changed-files.outputs.markdown_any_changed == 'true'
+        run: |
+          npx markdown-link-check ${{ steps.changed-files.outputs.markdown_all_changed_files }}
