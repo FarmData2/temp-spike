@@ -2,6 +2,9 @@
 # Performs lint / spell / link checks
 # Runs smoke tests
 
+# Action adapted from examples at: 
+#   https://github.com/tj-actions/changed-files
+
 name: FD2 PR Preflight
 
 on:
@@ -36,15 +39,35 @@ jobs:
       - name: Identify changed files
         id: changed-files
         uses: tj-actions/changed-files@v37
+        with:
+          files_yaml: |
+            eslint: 
+              - '**.vue'
+              - '**.js'
+              - '**.jsx'
+              - '**.cjs'
+              - '**.mjs'
+              - '**.json'
+              - '**.yml'
+              - '**.md'
+            shellcheck:
+              - '**.bash'
 
       - name: List all changed files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
+            echo "$file"
           done
 
       - name: Run eslint on changed files
-        run: npx eslint --max-warnings=0 --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md ${{ steps.changed-files.outputs.all_changed_files }}
+        if: steps.changed-files.outputs.eslint_any_changed == 'true'
+        run: |
+          npx eslint ${{ steps.changed-files.outputs.all_changed_files }}
+
+      - name: Run shellcheck on changed files
+        if: steps.changed-files.outputs.shellcheck_any_changed == 'true'
+        run: |
+          npx shellcheck ${{ steps.changed-files.outputs.all_changed_files }}
 
 #      - name: Run step if test file(s) change
 #        if: steps.changed-files.outputs.test_any_changed == 'true'
