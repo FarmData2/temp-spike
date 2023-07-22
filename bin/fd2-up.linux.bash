@@ -7,5 +7,3 @@ echo "Running fd2-up.linux.bash"
 # fd2-up-orig.bash...
 
 # test change.
-
-echo $1

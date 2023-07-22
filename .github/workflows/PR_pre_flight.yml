@@ -61,19 +61,17 @@ jobs:
             echo "$file was changed."
           done
 
-      - name: Run eslint on changed files
+      - name: Run eslint on changed vue, js, json, yml and md files
         if: steps.changed-files.outputs.eslint_any_changed == 'true'
         run: |
           npx eslint ${{ steps.changed-files.outputs.eslint_all_changed_files }}
 
-      - name: Run shellcheck on changed files
+      - name: Run shellcheck on changed bash script files
         if: steps.changed-files.outputs.shellcheck_any_changed == 'true'
         run: |
           npx shellcheck ${{ steps.changed-files.outputs.shellcheck_all_changed_files }}
 
-#      - name: Run step if test file(s) change
-#        if: steps.changed-files.outputs.test_any_changed == 'true'
-#        run: |
-#          echo "One or more test file(s) has changed."
-#          echo "List all the files that have changed: ${{ steps.changed-files.outputs.all_changed_files }}"
-
+      - name: Run cspell on all changed files
+        if: steps.changed-files.outputs.all_any_changed == 'true'
+        run: |
+          cspell -c .cspell.json ${{ steps.changed-files.outputs.all_all_changed_files }}
