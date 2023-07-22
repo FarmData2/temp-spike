@@ -33,7 +33,7 @@ jobs:
         run: npm ci
 
       - name: Identify changed files
-        uses: trilom/file-changes-action
+        uses: trilom/file-changes-action@1.2.4
         with:
           file-output: 'json'
 
