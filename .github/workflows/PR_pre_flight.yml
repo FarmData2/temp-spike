@@ -57,14 +57,14 @@ jobs:
 
       - name: List all changed files
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in ${{ steps.changed-files.outputs.all_all_changed_files }}; do
             echo "$file was changed."
           done
 
       - name: Run eslint on changed files
         if: steps.changed-files.outputs.eslint_any_changed == 'true'
         run: |
-          npx eslint ${{ steps.changed-files.outputs.eslint_changed_files }}
+          npx eslint ${{ steps.changed-files.outputs.eslint_all_changed_files }}
 
       # - name: Run shellcheck on changed files
       #   if: steps.changed-files.outputs.shellcheck_any_changed == 'true'
