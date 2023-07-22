@@ -82,8 +82,3 @@ jobs:
         if: steps.changed-files.outputs.markdown_any_changed == 'true'
         run: |
           npx markdown-link-check ${{ steps.changed-files.outputs.markdown_all_changed_files }}
-
-      - name: Run prettier on all changed files
-        if: steps.changed-files.outputs.all_any_changed == 'true'
-          run: |
-            npx prettier ${{ steps.changed-files.outputs.all_all_changed_files }}
