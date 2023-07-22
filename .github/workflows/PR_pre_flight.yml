@@ -74,4 +74,4 @@ jobs:
       - name: Run cspell on all changed files
         if: steps.changed-files.outputs.all_any_changed == 'true'
         run: |
-          cspell -c .cspell.json ${{ steps.changed-files.outputs.all_all_changed_files }}
+          npx cspell -c .cspell.json ${{ steps.changed-files.outputs.all_all_changed_files }}
