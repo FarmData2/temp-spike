@@ -2,18 +2,11 @@
   "languageSettings": [
     {
       "languageId": "javascript",
-      "includeRegExpList": [
-        "CStyleComment",
-        "string"
-      ],
-      "ignoreRegExpList": [
-        "/from\\s+(['\"]).*\\1/"
-      ]
+      "includeRegExpList": ["CStyleComment", "string"],
+      "ignoreRegExpList": ["/from\\s+(['\"]).*\\1/"]
     }
   ],
-  "dictionaries": [
-    "fd2-cspell"
-  ],
+  "dictionaries": ["fd2-cspell"],
   "dictionaryDefinitions": [
     {
       "name": "fd2-cspell",
@@ -21,16 +14,6 @@
       "addWords": true
     }
   ],
-  "ignorePaths": [
-    "docker/db",
-    "**/dist",
-    "node_modules",
-    ".fd2-cspell.txt"
-  ],
-  "enableFiletypes": [
-    "dockercompose",
-    "dockerfile",
-    "markdown-math",
-    "shellscript"
-  ]
+  "ignorePaths": ["docker/db", "**/dist", "node_modules", ".fd2-cspell.txt"],
+  "enableFiletypes": ["dockercompose", "dockerfile", "markdown-math", "shellscript"]
 }

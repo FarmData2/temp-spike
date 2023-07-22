@@ -4,7 +4,7 @@
 
 name: FD2 PR Preflight
 
-on: 
+on:
   push:
     branches:
       - main
@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
 
@@ -43,14 +43,11 @@ jobs:
             echo "$file was changed"
           done
 
-      - name: Run eslint
-        run: npm run eslint     
-
+      - name: Run eslint on changed files
+        run: npx eslint ${{ steps.changed-files.outputs.all_changed_files }}
 #      - name: Run step if test file(s) change
 #        if: steps.changed-files.outputs.test_any_changed == 'true'
 #        run: |
 #          echo "One or more test file(s) has changed."
 #          echo "List all the files that have changed: ${{ steps.changed-files.outputs.all_changed_files }}"
-      
-
 

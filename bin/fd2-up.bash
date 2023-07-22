@@ -44,7 +44,7 @@ echo -e "${UNDERLINE_BLUE}Starting FarmData2 development environment...${NO_COLO
 # changed by the user.
 FD2_PATH=$(pwd)
 FD2_DIR=$(basename "$FD2_PATH")
-safe_cd docker 
+safe_cd docker
 
 echo "Starting development environment from $FD2_DIR."
 echo "  Full path: $FD2_PATH"
