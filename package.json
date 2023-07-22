@@ -15,13 +15,14 @@
     "preview:fd2": "vite --config modules/farm_fd2/vite.config.js preview",
     "preview:examples": "vite --config modules/farm_fd2_examples/vite.config.js preview",
     "preview:school": "vite --config modules/farm_fd2_school/vite.config.js preview",
-    "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md --fix",
+    "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md",
     "bashlint": "shellcheck $(find . -path ./docker/db -prune -false -o -name '*.bash')",
     "spellcheck": "cspell --no-progress --no-summary -c .cspell.json .",
     "linkcheck": "markdown-link-check -q $(find . -path ./node_modules -prune -false -o -path ./docker/db -prune -false -o -name '*.md')",
     "lint": "npm run eslint; npm run bashlint; npm run spellcheck; npm run linkcheck",
-    "format:all": "prettier . --write --check '!./docker/db' --check '!./bin/templates/entrypoints/*.yml'",
-    "format:staged": "pretty-quick --write --staged ."
+    "format:all": "prettier --check '!./docker/db' --check '!./bin/templates/entrypoints/*.yml' .",
+    "format:all:write": "prettier --write --check '!./docker/db' --check '!./bin/templates/entrypoints/*.yml' .",
+    "format:staged:write": "pretty-quick --write --staged ."
   },
   "dependencies": {
     "dayjs": "^1.11.8",
