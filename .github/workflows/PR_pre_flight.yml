@@ -1,0 +1,46 @@
+# Github action that runs on PR's to main.
+# Performs lint / spell / link checks
+# Runs smoke tests
+
+name: FD2 PR Preflight
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request_target:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  pr-pre-flight:
+    name: Pull request preflight
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out git repository
+        uses: action/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Identify changed files
+        uses: trilom/file-changes-action
+        with:
+          file-output: 'json'
+
+      - name: Show changed files
+        run: cat $HOME/files.json
+
+
+      
+
+
