@@ -7,7 +7,7 @@ module.exports = {
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/eslint-config-prettier/skip-formatting',
-    `plugin:json/recommended`,
+    'plugin:json/recommended',
     'plugin:prettier/recommended',
     'plugin:md/prettier',
   ],

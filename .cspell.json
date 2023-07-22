@@ -10,7 +10,7 @@
   "dictionaryDefinitions": [
     {
       "name": "fd2-cspell",
-      "path": "./fd2-cspell.txt",
+      "path": "./.fd2-cspell.txt",
       "addWords": true
     }
   ],
