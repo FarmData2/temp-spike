@@ -42,16 +42,16 @@ jobs:
         with:
           files_yaml: |
             eslint: 
-              - '**.vue'
-              - '**.js'
-              - '**.jsx'
-              - '**.cjs'
-              - '**.mjs'
-              - '**.json'
-              - '**.yml'
-              - '**.md'
+              - '*.vue'
+              - '*.js'
+              - '*.jsx'
+              - '*.cjs'
+              - '*.mjs'
+              - '*.json'
+              - '*.yml'
+              - '*.md'
             shellcheck:
-              - '**.bash'
+              - '*.bash'
 
       - name: List all changed files
         run: |
