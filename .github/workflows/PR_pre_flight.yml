@@ -44,7 +44,7 @@ jobs:
           done
 
       - name: Run eslint on changed files
-        run: npx eslint --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md ${{ steps.changed-files.outputs.all_changed_files }}
+        run: npx eslint --max-warnings=0 --ext .vue,.js,.jsx,.cjs,.mjs,.json,.yml,.md ${{ steps.changed-files.outputs.all_changed_files }}
 
 #      - name: Run step if test file(s) change
 #        if: steps.changed-files.outputs.test_any_changed == 'true'
