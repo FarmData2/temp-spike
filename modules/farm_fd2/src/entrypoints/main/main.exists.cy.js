@@ -8,6 +8,5 @@ describe('Check that the main entry point in the fd2 module exists.', () => {
     cy.visit('/fd2/main/')
     // Check that the page loads.
     cy.waitForPage()
-    //ok
   })
 })

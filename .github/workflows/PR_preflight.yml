@@ -63,9 +63,9 @@ jobs:
             markdown:
               - '**.md'
             fd2e2e:
-              - 'farm_fd2/**.cy.js'
-              - '!farm_fd2/**.comp.cy.js'
-              - '!farm_fd2/**.unit.cy.js'
+              - 'modules/farm_fd2/**.cy.js'
+              - '!modules/farm_fd2/**.comp.cy.js'
+              - '!modules/farm_fd2/**.unit.cy.js'
 
       - name: List all changed files
         run: |
