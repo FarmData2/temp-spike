@@ -1,11 +1,11 @@
 # Github action that runs on PR's to main.
-# Performs lint / spell / link checks
-# Runs smoke tests
+#   - Performs lint / spell / link checks
+#    - Runs smoke tests
 
 # Action adapted from examples at: 
 #   https://github.com/tj-actions/changed-files
 
-name: FD2 PR Preflight
+name: Pull Requests Preflight
 
 on:
   push:
@@ -19,8 +19,8 @@ permissions:
   contents: read
 
 jobs:
-  pr-pre-flight:
-    name: Pull request preflight
+  pr-static:
+    name: Static checks of changed files
     runs-on: ubuntu-latest
 
     steps:
