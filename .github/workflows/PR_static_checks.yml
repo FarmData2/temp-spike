@@ -57,6 +57,7 @@ jobs:
               - '!**/*.library.yml'
               - '!**/*.links.menu.yml'
               - '!**/*.routing.yml'
+              - '!.github/**/*.yml'
             shellcheck:
               - '**.bash'
             markdown:
