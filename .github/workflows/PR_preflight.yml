@@ -108,5 +108,5 @@ jobs:
         if: steps.changed-files.outputs.fd2e2e_any_changed == 'true'
         run: |
           for test in ${{ steps.changed-files.outputs.fd2e2e_all_changed_files }}; do
-            test.bash --fd2 --e2e --dev --glob "$test"
+            test.bash --fd2 --e2e --dev --glob "$test "
           done
