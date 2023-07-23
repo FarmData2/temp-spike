@@ -1,6 +1,8 @@
 # Github action that runs on PR's to main.
 #   - Performs lint / spell / link checks
-#    - Runs smoke tests
+#   - Runs smoke tests
+#   - Runs any changed tests
+#   - Runs all tests on any changed entrypoints
 
 # Action adapted from examples at: 
 #   https://github.com/tj-actions/changed-files
@@ -70,6 +72,8 @@ jobs:
               - 'components/**/*.comp.cy.js'
             fd2_vue:
               - 'modules/farm_fd2/**/*.vue'
+            examples_vue:
+              - 'modules/farm_fd2_examples/**/*.vue'
 
       - name: List all changed files
         run: |
@@ -136,4 +140,12 @@ jobs:
           for file in ${{ steps.changed-files.outputs.fd2_vue_all_changed_files }}; do
             GLOB=$(dirname "$file")/**.cy.js
             test.bash --fd2 --e2e --dev --glob="$GLOB"
+          done
+
+      - name: Run all tests for changed entrypoint in farm_fd_examples module
+        if: always() && steps.changed-files.outputs.examples_vue_any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.examples_vue_all_changed_files }}; do
+            GLOB=$(dirname "$file")/**.cy.js
+            test.bash --examples --e2e --dev --glob="$GLOB"
           done
