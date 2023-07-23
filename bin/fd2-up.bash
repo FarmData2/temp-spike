@@ -94,7 +94,7 @@ docker rm fd2_dev &> /dev/null
 
 echo "Starting containers..."
 # Note: Any command line args are passed to the docker-compose up command
-docker compose --profile $PROFILE up -d "$@"
+docker compose up -d "$@"
 
 echo "Rebuilding the drupal cache..."
 sleep 3 # give site time to come up before clearing the cache.

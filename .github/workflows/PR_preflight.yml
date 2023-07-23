@@ -62,6 +62,10 @@ jobs:
               - '**.bash'
             markdown:
               - '**.md'
+            fd2e2e:
+              - 'farm_fd2/**.cy.js'
+              - '!farm_fd2/**.comp.cy.js'
+              - '!farm_fd2/**.unit.cy.js'
 
       - name: List all changed files
         run: |
@@ -94,6 +98,15 @@ jobs:
           npx cypress install
           echo "./bin" >> $GITHUB_PATH
 
-      - name: Run smoke tests
+      # CHANGE THIS TO START AND RUN IN farmOS SERVER.
+      # NEED A DB first.
+      # - name: Run smoke tests
+      #  run: |
+      #    test.bash --fd2 --e2e --dev
+
+      - name: Run changed tests
+        if: steps.changed-files.outputs.fd2e2e_any_changed == 'true'
         run: |
-          test.bash --fd2 --e2e --dev
+          for test in ${{ steps.changed-files.outputs.fd2e2e_all_changed_files }}; do
+            test.bash --fd2 --e2e --dev --glob "$test"
+          done

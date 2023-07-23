@@ -1,0 +1,37 @@
+version: '3'
+services:
+  db:
+    image: farmdata2/postgres:fd2.1
+    container_name: fd2_postgres
+    volumes:
+      # Use docker volume for performance.
+      # Bump version here and in volumes if new image requires new db.
+      - farmos2_db_fd2.1:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: farm
+      POSTGRES_PASSWORD: farm
+      POSTGRES_DB: farm
+
+  farmos:
+    depends_on:
+      - db
+    image: farmdata2/farmos2:fd2.1
+    container_name: fd2_farmos
+    volumes:
+      # Mount a volume to hold the config information for farmos between runs.
+      - farmos2_config_fd2.1:/opt/drupal/web/sites
+      # Mount the dist directories containing the fd2 modules into the farmOS container.
+      - ../modules/farm_fd2/dist:/opt/drupal/web/sites/all/modules/farm_fd2
+      - ../modules/farm_fd2_examples/dist:/opt/drupal/web/sites/all/modules/farm_fd2_examples
+      - ../modules/farm_fd2_school/dist:/opt/drupal/web/sites/all/modules/farm_fd2_school
+    ports:
+      - '80:80'
+    environment:
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: discover_client_host=yes
+
+volumes:
+  farmos2_db_fd2.1:
+  farmos2_config_fd2.1:
