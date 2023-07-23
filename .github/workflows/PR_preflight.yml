@@ -130,7 +130,7 @@ jobs:
             test.bash --comp --glob="$test"
           done
 
-        - name: Run all tests for changed entrypoint in farm_fd2 module
+      - name: Run all tests for changed entrypoint in farm_fd2 module
         if: always() && steps.changed-files.outputs.fd2_vue_any_changed == 'true'
         run: |
           for file in ${{ steps.changed-files.outputs.fd2_vue_all_changed_files }}; do
