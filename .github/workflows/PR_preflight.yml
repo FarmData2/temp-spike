@@ -91,4 +91,4 @@ jobs:
 
       - name: Run smoke tests
         run: |
-        ./bin/test.bash --fd2 --e2e --dev
+          ./bin/test.bash --fd2 --e2e --dev
