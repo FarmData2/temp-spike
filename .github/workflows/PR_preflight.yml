@@ -66,6 +66,8 @@ jobs:
               - 'modules/farm_fd2/**/*.cy.js'
             examples_e2e:
               - 'modules/farm_fd2_examples/**/*.cy.js'
+            comp_test:
+              - 'components/**/*.comp.cy.js'
 
       - name: List all changed files
         run: |
@@ -113,6 +115,13 @@ jobs:
           done
       
       - name: Run changed farm_fd2_examples module tests
+        if: always() && steps.changed-files.outputs.examples_e2e_any_changed == 'true'
+        run: |
+          for test in ${{ steps.changed-files.outputs.examples_e2e_all_changed_files }}; do
+            test.bash --examples --e2e --dev --glob="$test"
+          done
+
+      - name: Run changed component tests
         if: always() && steps.changed-files.outputs.examples_e2e_any_changed == 'true'
         run: |
           for test in ${{ steps.changed-files.outputs.examples_e2e_all_changed_files }}; do
