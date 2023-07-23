@@ -76,6 +76,8 @@ jobs:
               - 'modules/farm_fd2/**/*.vue'
             examples_vue:
               - 'modules/farm_fd2_examples/**/*.vue'
+            comp_vue:
+              - 'components/**/*.vue'
 
       - name: List all changed files
         run: |
@@ -150,4 +152,12 @@ jobs:
           for file in ${{ steps.changed-files.outputs.examples_vue_all_changed_files }}; do
             GLOB=$(dirname "$file")/**.cy.js
             test.bash --examples --e2e --dev --glob="$GLOB"
+          done
+    
+      - name: Run all tests for changed components
+        if: always() && steps.changed-files.outputs.comp_vue_any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.comp_vue_all_changed_files }}; do
+            GLOB=$(dirname "$file")/**.cy.js
+            test.bash --comp --glob="$GLOB"
           done

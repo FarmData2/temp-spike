@@ -1,6 +1,7 @@
 <template>
   <div>
     Counter from a component: <span data-cy="count">{{ count }}</span>
+    
     <br />
     <button data-cy="increment-button" @click="increment()">Increment</button>
   </div>
