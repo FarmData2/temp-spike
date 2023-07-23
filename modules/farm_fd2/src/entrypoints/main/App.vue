@@ -5,6 +5,7 @@
       <li>the day-to-day operation of diversified vegetable farms.</li>
       <li>the organic certification process.</li>
       <li>sustainable farming practices including soil health.</li>
+      <LI>blah</LI>
     </ul>
   </div>
   <div data-cy="page-loaded" v-show="false">{{ pageDoneLoading }}</div>

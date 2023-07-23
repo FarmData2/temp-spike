@@ -68,6 +68,8 @@ jobs:
               - 'modules/farm_fd2_examples/**/*.cy.js'
             comp_test:
               - 'components/**/*.comp.cy.js'
+            fd2_vue:
+              - 'modules/farm_fd2/**/*.vue'
 
       - name: List all changed files
         run: |
@@ -122,7 +124,14 @@ jobs:
           done
 
       - name: Run changed component tests
-        if: always() && steps.changed-files.outputs.examples_e2e_any_changed == 'true'
+        if: always() && steps.changed-files.outputs.comp_test_any_changed == 'true'
+        run: |
+          for test in ${{ steps.changed-files.outputs.comp_test_all_changed_files }}; do
+            test.bash --comp --glob="$test"
+          done
+
+        - name: Run all tests for changed entrypoint in farm_fd2 module
+        if: always() && steps.changed-files.outputs.fd2_vue_any_changed == 'true'
         run: |
           for test in ${{ steps.changed-files.outputs.examples_e2e_all_changed_files }}; do
             test.bash --examples --e2e --dev --glob="$test"
