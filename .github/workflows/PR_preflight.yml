@@ -89,6 +89,11 @@ jobs:
         run: |
           npx markdown-link-check ${{ steps.changed-files.outputs.markdown_all_changed_files }}
 
+      - name: Setup for tests
+        run: |
+          export PATH=$PATH:./bin
+          npx install cypress
+
       - name: Run smoke tests
         run: |
-          ./bin/test.bash --fd2 --e2e --dev
+          test.bash --fd2 --e2e --dev
