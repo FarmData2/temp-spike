@@ -52,6 +52,11 @@ jobs:
               - '**.json'
               - '**.yml'
               - '**.md'
+              - '!docker/docker-compose.yml'
+              - '!**/*.info.yml'
+              - '!**/*.library.yml'
+              - '!**/*.links.menu.yml'
+              - '!**/*.routing.yml'
             shellcheck:
               - '**.bash'
             markdown:
