@@ -3,11 +3,13 @@
 #   - Runs smoke tests
 #   - Runs any changed tests
 #   - Runs all tests on any changed entrypoints
+#
+# Note some tests may run twice (e.g. .vue and .cy.js changed).
 
 # Action adapted from examples at: 
 #   https://github.com/tj-actions/changed-files
 
-name: Pull Requests Preflight
+name: Pull Request Preflight
 
 on:
   push:
