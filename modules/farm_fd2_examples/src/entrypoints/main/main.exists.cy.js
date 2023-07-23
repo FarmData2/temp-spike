@@ -8,5 +8,6 @@ describe('Check that the main entry point in farm_fd2_examples exists.', () => {
     cy.visit('/fd2_examples/main/')
     // Check that the page loads.
     cy.waitForPage()
+    
   })
 })
