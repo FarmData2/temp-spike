@@ -133,6 +133,7 @@ jobs:
         - name: Run all tests for changed entrypoint in farm_fd2 module
         if: always() && steps.changed-files.outputs.fd2_vue_any_changed == 'true'
         run: |
-          for test in ${{ steps.changed-files.outputs.examples_e2e_all_changed_files }}; do
-            test.bash --examples --e2e --dev --glob="$test"
+          for file in ${{ steps.changed-files.outputs.fd2_vue_all_changed_files }}; do
+            GLOB=$(dirname "$file")/**.cy.js
+            test.bash --fd2 --e2e --dev --glob="$GLOB"
           done
