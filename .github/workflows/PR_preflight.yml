@@ -91,7 +91,7 @@ jobs:
 
       - name: Setup for tests
         run: |
-          export PATH=$PATH:./bin
+          echo "./bin" >> $GITHUB_PATH
           npx install cypress
 
       - name: Run smoke tests
