@@ -79,21 +79,22 @@ jobs:
           npx eslint ${{ steps.changed-files.outputs.eslint_all_changed_files }}
 
       - name: Run shellcheck on changed bash script files
-        if: steps.changed-files.outputs.shellcheck_any_changed == 'true'
+        if: always() && steps.changed-files.outputs.shellcheck_any_changed == 'true'
         run: |
           npx shellcheck ${{ steps.changed-files.outputs.shellcheck_all_changed_files }}
 
       - name: Run cspell on all changed files
-        if: steps.changed-files.outputs.all_any_changed == 'true'
+        if: always() && steps.changed-files.outputs.all_any_changed == 'true'
         run: |
           npx cspell -c .cspell.json ${{ steps.changed-files.outputs.all_all_changed_files }}
 
       - name: Run link-check on all markdown files
-        if: steps.changed-files.outputs.markdown_any_changed == 'true'
+        if: always() && steps.changed-files.outputs.markdown_any_changed == 'true'
         run: |
           npx markdown-link-check ${{ steps.changed-files.outputs.markdown_all_changed_files }}
 
       - name: Setup for tests
+        if: always()
         run: |
           npx cypress install
           echo "./bin" >> $GITHUB_PATH
@@ -105,7 +106,7 @@ jobs:
       #    test.bash --fd2 --e2e --dev
 
       - name: Run changed tests
-        if: steps.changed-files.outputs.fd2e2e_any_changed == 'true'
+        if: always() && steps.changed-files.outputs.fd2e2e_any_changed == 'true'
         run: |
           for test in ${{ steps.changed-files.outputs.fd2e2e_all_changed_files }}; do
             test.bash --fd2 --e2e --dev --glob="$test"
