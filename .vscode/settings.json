@@ -3,5 +3,9 @@
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.quickSuggestionsDelay": 500
+  "editor.quickSuggestionsDelay": 500,
+  "eslint.validate": [
+    "markdown",
+    "md"
+  ]
 }
