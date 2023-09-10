@@ -30,3 +30,4 @@ coverage
 
 # FD2 stuff
 docker/db
+docker/db.*.tar.bz2
