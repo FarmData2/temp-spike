@@ -36,7 +36,7 @@ services:
     depends_on:
       - db
       - farmos
-    image: farmdata2/fd2dev:fd2.1
+    image: farmdata2/fd2dev:fd2.2
     container_name: fd2_dev
     init: true
     volumes:
@@ -47,7 +47,7 @@ services:
       # Preserve the fd2dev user's home directory on a docker volume.
       # Bump the version here and in volumes below
       # if image rebuild requires new home.
-      - fd2dev_home_fd2.1:/home/fd2dev
+      - fd2dev_home_fd2.2:/home/fd2dev
       # Mount a docker volume into which the farmOS database will be built.
       # This allows switching the database from within the dev container.
       # This has significantly better performance than mounting a host directory.
@@ -62,4 +62,4 @@ services:
 volumes:
   farmos2_db_fd2.1:
   farmos2_config_fd2.1:
-  fd2dev_home_fd2.1:
+  fd2dev_home_fd2.2:
