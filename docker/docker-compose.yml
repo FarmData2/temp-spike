@@ -22,6 +22,8 @@ services:
     volumes:
       # Mount a volume to hold the config information for farmos between runs.
       - farmos2_config_fd2.1:/opt/drupal/web/sites
+      # Mount a volume to hold the farmos api keys
+      - farmos2_keys_fd2.1:/opt/drupal/keys
       # Mount the dist directories containing the fd2 modules into the farmOS container.
       - ../modules/farm_fd2/dist:/opt/drupal/web/sites/all/modules/farm_fd2
       - ../modules/farm_fd2_examples/dist:/opt/drupal/web/sites/all/modules/farm_fd2_examples
@@ -62,4 +64,5 @@ services:
 volumes:
   farmos2_db_fd2.1:
   farmos2_config_fd2.1:
+  farmos2_keys_fd2.1:
   fd2dev_home_fd2.2:

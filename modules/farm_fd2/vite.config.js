@@ -25,7 +25,7 @@ let viteConfig = {
         },
         {
           src: '../composer.json',
-          dest: './composer.json',
+          dest: '.',
         },
       ],
     }),
