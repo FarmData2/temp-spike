@@ -17,6 +17,7 @@ preprocess
 rushstack
 setsid
 shellcheck
+toplevel
 vite
 XDEBUG
 Zulip

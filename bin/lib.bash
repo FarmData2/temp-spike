@@ -2,7 +2,11 @@
 # Used throughout to avoid continuing if an operation fails.
 function error_check {
   if [ "$?" != "0" ]; then
-    echo "** Terminating: Error in last operation."
+    if [ "$1" == "" ]; then
+      echo "** Terminating: Error in last operation."
+    else
+      echo "** Terminating: $1"
+    fi
     exit 255
   fi
 }
