@@ -19,11 +19,11 @@ const removeIgnoredFiles = async (files) => {
 };
 
 /*
- * Construct a test command for each .vue file that is staged.
- * The command will use a glob to run all .cy.js files in the 
- * endpoint containing the .vue file.
+ * Construct a test command for each entrypoint .vue file that is staged.
+ * The command will use a glob to run all .cy.js e2e tests in the 
+ * endpoint directory containing the .vue file.
  */
-const getTestCommandsForVueFiles = (files) => {
+const getE2ETestCommandsForVueFiles = (files) => {
   const testCommands = files.map((file) => {
     if (file.includes("/farm_fd2/")) {
       return "test.bash --fd2 --e2e --dev --glob=" +
@@ -50,9 +50,9 @@ const getTestCommandsForVueFiles = (files) => {
 }
 
 /*
- * Construct a test command for each .vue file that is staged.
+ * Construct a test command for each entrypoint cy.js file that is staged.
  */
-const getTestCommandsForCyJsFiles = (files) => {
+const getE2ETestCommandsForCyJsFiles = (files) => {
   const testCommands = files.map((file) => {
     if (file.includes("/farm_fd2/")) {
       return "test.bash --fd2 --e2e --dev --glob=" + 
@@ -75,6 +75,20 @@ const getTestCommandsForCyJsFiles = (files) => {
   return testCommands
 }
 
+/*
+ * Construct a test command for each component .vue file that is staged.
+ * The command will use a glob to run all .cy.js e2e tests in the 
+ * component directory containing the .vue file.
+ */
+const getCompTestCommandsForVueFiles = (files) => {
+  const testCommands = files.map((file) => {
+    return "test.bash --comp --glob=" + 
+      "/components/" +  
+      path.basename(path.dirname(file)) + "/*.comp.cy.js"
+  })
+
+  return testCommands
+}
 // If test file is staged run it.
 // If entrypoint file is staged run all tests in that entrypoint
 //  use .vue file to get base and build the blob.
@@ -91,21 +105,19 @@ module.exports = {
     return [`eslint --max-warnings=0 ${filesToLint}`];
   },
   "modules/**/entrypoints/**/*.vue": (files) => {
-    return getTestCommandsForVueFiles(files)
+    return getE2ETestCommandsForVueFiles(files)
   },
   "modules/**/entrypoints/**/*.cy.js": (files) => {
-    return getTestCommandsForCyJsFiles(files);
+    return getE2ETestCommandsForCyJsFiles(files);
   },
+  "components/**/*.vue": (files) => {
+    return getCompTestCommandsForVueFiles(files);
+  }
 }
 
 x  = {
 
-  "*.json": "exit 255",
-  "modules/farm_fd2/**/*.cy.js": "echo 'fd2_test'",
-  "modules/farm_fd2_examples/**/*.vue": "echo examples_vue",
-  "modules/farm_fd2_examples/**/*.cy.js": "echo 'examples_test'",
-  "modules/farm_fd2_school/**/*.vue": "echo school_vue",
-  "modules/farm_fd2_school/**/*.cy.js": "echo 'school_test'",
+
   "components/**/*.comp.cy.js":  "echo 'comp_test'",
   "components/**/*.vue": "echo `comp_vue`"
 }
