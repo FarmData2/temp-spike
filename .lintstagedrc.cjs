@@ -25,35 +25,36 @@ const removeIgnoredFiles = async (files) => {
  */
 const getTestCommands = (files) => {
   const testCommands = files.map((file) => {
-  if (file.includes("/farm_fd2/")) {
-    return "test.bash --fd2 --e2e --dev --glob=" +
-      "/modules/farm_fd2/src/entrypoints/" + path.basename(path.dirname(file)) + "/*.cy.js";
-  }
-    //else {
-    //  return "Module for file: " + file + " not recognized."
-    //}
-})
+    if (file.includes("/farm_fd2/")) {
+      return "test.bash --fd2 --e2e --dev --glob=" +
+        "/modules/farm_fd2/src/entrypoints/" + 
+        path.basename(path.dirname(file)) + "/*.cy.js";
+    }
+    else if (file.includes("/farm_fd2_examples/")) {
+      return "test.bash --examples --e2e --dev --glob=" +
+        "/modules/farm_fd2_examples/src/entrypoints/" + 
+        path.basename(path.dirname(file)) + "/*.cy.js";
+    }
+    else if (file.includes("/farm_fd2_school/")) {
+      return "test.bash --school --e2e --dev --glob=" +
+        "/modules/farm_fd2_school/src/entrypoints/" + 
+        path.basename(path.dirname(file)) + "/*.cy.js";
+    }
+    else {
+      console.log(".vue file found in unrecognized module.")
+      console.log("All .vue files must be in fd2 or fd2_examples or fd2_school.")
+    }
+  })
 
   return testCommands
 }
 
-  //   if (file.contains("/farm_fd2/") {
-  //     return cmd + "modules/farm_fd2/" + path.basename(path.dirname(file)) + "/*.cy.js";
-  //   }
-  //   else if (file.contains("/farm_fd2_examples/")) {
-  //     return cmd + "fd2_examples/" + path.basename(path.dirname(file)) + "/*.cy.js";
-  //   }
-  //   else if (file.contains("/farm_fd2_school/")) {
-  //     return cmd + "fd2_school/" + path.basename(path.dirname(file)) + "/*.cy.js";
-  //   }
-  //   return null;
-  // });
-  
-  // return testBlobs;
-
 // If test file is staged run it.
 // If entrypoint file is staged run all tests in that entrypoint
 //  use .vue file to get base and build the blob.
+// component tests
+// unit tests
+
 
 module.exports = {
   "*": "cspell --no-progress --no-summary --config .cspell.json",
@@ -66,6 +67,7 @@ module.exports = {
   "*.vue": (files) => {
     return getTestCommands(files)
   },
+
 }
 
 x  = {
