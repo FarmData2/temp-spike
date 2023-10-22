@@ -22,7 +22,8 @@
     "linkcheck": "markdown-link-check -q $(find . -path ./node_modules -prune -false -o -path ./docker/db -prune -false -o -name '*.md')",
     "lint": "npm run eslint; npm run bashlint; npm run spellcheck; npm run linkcheck",
     "format:all": "prettier --write --check '!./docker/db' --check '!./bin/templates/entrypoints/*.yml' .",
-    "format:staged": "pretty-quick --write --staged ."
+    "format:staged": "pretty-quick --write --staged .",
+    "check:staged": "lint-staged"
   },
   "dependencies": {
     "dayjs": "^1.11.8",
@@ -41,6 +42,7 @@
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-md": "^1.0.19",
     "eslint-plugin-vue": "^9.11.0",
+    "lint-staged": "^15.0.2",
     "markdown-link-check": "^3.11.2",
     "prettier": "^2.8.8",
     "prettier-plugin-sh": "^0.12.8",
