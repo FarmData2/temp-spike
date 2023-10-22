@@ -50,11 +50,15 @@ const getTestCmds = (cmd, files) => {
 module.exports = {
   "*": "cspell --no-progress --no-summary --config .cspell.json",
   "*.bash|.githooks/*": "shellcheck",
+  "*.md": "markdown-link-check --quiet"
+}
+
+x  = {
+
   "*.vue|*.js|*.jsx|*.cjs|*.mjs|*.json|*.md": async (files) => {
     const filesToLint = await removeIgnoredFiles(files);
     return [`eslint --max-warnings=0 ${filesToLint}`];
   },
-  "*.md": "markdown-link-check --quiet",
   "modules/farm_fd2/**/*.vue": (files) => {
     console.log(files);
     return getTestCmds("test.bash --fd2 --e2e --dev --glob=", files)
