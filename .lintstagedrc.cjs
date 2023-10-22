@@ -23,7 +23,7 @@ const removeIgnoredFiles = async (files) => {
  * The command will use a glob to run all .cy.js files in the 
  * endpoint containing the .vue file.
  */
-const getTestCommands = (files) => {
+const getTestCommandsForVueFiles = (files) => {
   const testCommands = files.map((file) => {
     if (file.includes("/farm_fd2/")) {
       return "test.bash --fd2 --e2e --dev --glob=" +
@@ -49,6 +49,32 @@ const getTestCommands = (files) => {
   return testCommands
 }
 
+/*
+ * Construct a test command for each .vue file that is staged.
+ */
+const getTestCommandsForCyJsFiles = (files) => {
+  const testCommands = files.map((file) => {
+    if (file.includes("/farm_fd2/")) {
+      return "test.bash --fd2 --e2e --dev --glob=" + 
+      file.substring(file.indexOf("/modules"));
+    }
+    else if (file.includes("/farm_fd2_examples/")) {
+      return "test.bash --examples --e2e --dev --glob=" +
+      file.substring(file.indexOf("/modules"));
+    }
+    else if (file.includes("/farm_fd2_school/")) {
+      return "test.bash --school --e2e --dev --glob=" +
+      file.substring(file.indexOf("/modules"));
+    }
+    else {
+      console.log(".cy.js file found in unrecognized module.")
+      console.log("All .cy.js files must be in fd2 or fd2_examples or fd2_school.")
+    }
+  })
+
+  return testCommands
+}
+
 // If test file is staged run it.
 // If entrypoint file is staged run all tests in that entrypoint
 //  use .vue file to get base and build the blob.
@@ -64,10 +90,12 @@ module.exports = {
     const filesToLint = await removeIgnoredFiles(files);
     return [`eslint --max-warnings=0 ${filesToLint}`];
   },
-  "*.vue": (files) => {
-    return getTestCommands(files)
+  "modules/**/entrypoints/**/*.vue": (files) => {
+    return getTestCommandsForVueFiles(files)
   },
-
+  "modules/**/entrypoints/**/*.cy.js": (files) => {
+    return getTestCommandsForCyJsFiles(files);
+  },
 }
 
 x  = {
