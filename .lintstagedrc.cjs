@@ -25,14 +25,14 @@ const removeIgnoredFiles = async (files) => {
  */
 const getTestCommands = (files) => {
   const testCommands = files.map((file) => {
-    //if (file.contains("/farm_fd2/")) {
-      return "test.bash --fd2 --e2e --dev --glob=" +
-        "/modules/farm_fd2/src/entrypoints/" + path.basename(path.dirname(file)) + "/*.cy.js";
-    //}
+  if (file.includes("/farm_fd2/")) {
+    return "test.bash --fd2 --e2e --dev --glob=" +
+      "/modules/farm_fd2/src/entrypoints/" + path.basename(path.dirname(file)) + "/*.cy.js";
+  }
     //else {
     //  return "Module for file: " + file + " not recognized."
     //}
-  })
+})
 
   return testCommands
 }
