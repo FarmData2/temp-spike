@@ -77,7 +77,7 @@ const getE2ETestCommandsForCyJsFiles = (files) => {
 
 /*
  * Construct a test command for each component .vue file that is staged.
- * The command will use a glob to run all .cy.js e2e tests in the 
+ * The command will use a glob to run all comp.cy.js component tests in the 
  * component directory containing the .vue file.
  */
 const getCompTestCommandsForVueFiles = (files) => {
@@ -89,12 +89,45 @@ const getCompTestCommandsForVueFiles = (files) => {
 
   return testCommands
 }
-// If test file is staged run it.
-// If entrypoint file is staged run all tests in that entrypoint
-//  use .vue file to get base and build the blob.
-// component tests
-// unit tests
 
+/*
+ * Construct a test command for each component comp.cy.js file that is staged.
+ */
+const getCompTestCommandsForCyJsFiles = (files) => {
+  const testCommands = files.map((file) => {
+    return "test.bash --comp --glob=" + 
+      file.substring(file.indexOf("/components"));
+  })
+
+  return testCommands
+}
+
+/*
+ * Construct a test command for each library .js file that is staged.
+ * The command will use a glob to run all unit.cy.js unit tests in the 
+ * component directory containing the .js file.
+ */
+const getLibTestCommandsForVueFiles = (files) => {
+  const testCommands = files.map((file) => {
+    return "test.bash --comp --glob=" + 
+      "/library/" +  
+      path.basename(path.dirname(file)) + "/*.unit.cy.js"
+  })
+
+  return testCommands
+}
+
+/*
+ * Construct a test command for each library unit.cy.js file that is staged.
+ */
+const getLibTestCommandsForCyJsFiles = (files) => {
+  const testCommands = files.map((file) => {
+    return "test.bash --comp --glob=" + 
+      file.substring(file.indexOf("/library"));
+  })
+
+  return testCommands
+}
 
 module.exports = {
   "*": "cspell --no-progress --no-summary --config .cspell.json",
@@ -112,12 +145,14 @@ module.exports = {
   },
   "components/**/*.vue": (files) => {
     return getCompTestCommandsForVueFiles(files);
-  }
-}
-
-x  = {
-
-
-  "components/**/*.comp.cy.js":  "echo 'comp_test'",
-  "components/**/*.vue": "echo `comp_vue`"
+  },
+  "components/**/*.comp.cy.js": (files) => {
+    return getCompTestCommandsForCyJsFiles(files);
+  },
+  "library/**/!(*unit.cy).js": (files) => {
+    return getLibTestCommandsForVueFiles(files);
+  },
+  "library/**/*.unit.cy.js": (files) => {
+    return getLibTestCommandsForCyJsFiles(files);
+  },
 }
