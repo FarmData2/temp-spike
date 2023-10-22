@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Running FarmData2 pre-commit checks..."
+
+
+echo "Done."
+
+exit 255
