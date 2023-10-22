@@ -1,3 +1,6 @@
+const { ESLint } = require("eslint");
+const path = require('path');
+
 /*
  * lint-staged provides the command for each pattern with an explicit
  * list of files.  If one of those files is ignored by .eslintignore 
@@ -8,10 +11,6 @@
  * This was adopted/adapted from:
  * https://stackoverflow.com/a/73818629
  */
-
-const { ESLint } = require("eslint");
-const path = require('path');
-
 const removeIgnoredFiles = async (files) => {
   const eslint = new ESLint();
   const ignoredFiles = await Promise.all(files.map((file) => eslint.isPathIgnored(file)));
@@ -19,15 +18,25 @@ const removeIgnoredFiles = async (files) => {
   return filteredFiles.join(" ");
 };
 
-// const getTestCommandArray = (cmd, files) => {
-//   const testCommands = files.map(file => `${cmd} ${file}`);
-//   return testCommands;
-// }
+/*
+ * Construct a test command for each .vue file that is staged.
+ * The command will use a glob to run all .cy.js files in the 
+ * endpoint containing the .vue file.
+ */
+const getTestCommands = (files) => {
+  const testCommands = files.map((file) => {
+    //if (file.contains("/farm_fd2/")) {
+      return "test.bash --fd2 --e2e --dev --glob=" +
+        "/modules/farm_fd2/src/entrypoints/" + path.basename(path.dirname(file)) + "/*.cy.js";
+    //}
+    //else {
+    //  return "Module for file: " + file + " not recognized."
+    //}
+  })
 
-const getTestCmds = (cmd, files) => {
-  return [cmd + "modules/farm_fd2/" + path.basename(path.dirname(file)) + "/*.cy.js"]
+  return testCommands
+}
 
-  // const testBlobs = files.map((file) => {
   //   if (file.contains("/farm_fd2/") {
   //     return cmd + "modules/farm_fd2/" + path.basename(path.dirname(file)) + "/*.cy.js";
   //   }
@@ -41,7 +50,6 @@ const getTestCmds = (cmd, files) => {
   // });
   
   // return testBlobs;
-}
 
 // If test file is staged run it.
 // If entrypoint file is staged run all tests in that entrypoint
@@ -50,19 +58,18 @@ const getTestCmds = (cmd, files) => {
 module.exports = {
   "*": "cspell --no-progress --no-summary --config .cspell.json",
   "*.bash|.githooks/*": "shellcheck",
-  "*.md": "markdown-link-check --quiet"
-}
-
-x  = {
-
+  "*.md": "markdown-link-check --quiet",
   "*.vue|*.js|*.jsx|*.cjs|*.mjs|*.json|*.md": async (files) => {
     const filesToLint = await removeIgnoredFiles(files);
     return [`eslint --max-warnings=0 ${filesToLint}`];
   },
-  "modules/farm_fd2/**/*.vue": (files) => {
-    console.log(files);
-    return getTestCmds("test.bash --fd2 --e2e --dev --glob=", files)
+  "*.vue": (files) => {
+    return getTestCommands(files)
   },
+}
+
+x  = {
+
   "*.json": "exit 255",
   "modules/farm_fd2/**/*.cy.js": "echo 'fd2_test'",
   "modules/farm_fd2_examples/**/*.vue": "echo examples_vue",
