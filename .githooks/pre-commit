@@ -5,4 +5,5 @@ echo "Running FarmData2 pre-commit checks..."
 
 echo "Done."
 
-exit 255
+exit 0
+#exit 255
