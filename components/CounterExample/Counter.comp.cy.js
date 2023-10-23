@@ -1,7 +1,7 @@
 import Counter from './CounterExample.vue'
 
 describe('Test the counter component', () => {
-  it('renders', () => {
+  it('The component renders', () => {
     cy.mount(Counter)
   })
 })

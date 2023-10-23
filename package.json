@@ -23,7 +23,7 @@
     "lint": "npm run eslint; npm run bashlint; npm run spellcheck; npm run linkcheck",
     "format:all": "prettier --write --check '!./docker/db' --check '!./bin/templates/entrypoints/*.yml' .",
     "format:staged": "pretty-quick --write --staged .",
-    "check:staged": "lint-staged --config .lintstagedrc.cjs"
+    "check:staged": "lint-staged --config .lintstagedrc.cjs --concurrent false"
   },
   "dependencies": {
     "dayjs": "^1.11.8",

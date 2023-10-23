@@ -2,6 +2,7 @@
 
 echo "Running FarmData2 pre-commit checks..."
 
+# npm run check:staged
 
 echo "Done."
 
