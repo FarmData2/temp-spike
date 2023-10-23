@@ -79,7 +79,7 @@ function xor {
 # Do a cd with error handling for a directory that is missing but
 # should be present.
 function safe_cd {
-  cd "$1" 2>/dev/null || (
+  cd "$1" 2> /dev/null || (
     echo -e "${ON_RED}ERROR:${NO_COLOR} Directory $1 is missing."
     echo -e "Restore this directory and try again."
     exit 255
