@@ -2,7 +2,7 @@
 
 _Describe what your Pull Request does here_
 
-_Include a "Closes #" line_
+_Include a "Closes #" line for the issue your PR closes._
 
 ---
 

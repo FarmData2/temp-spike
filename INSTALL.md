@@ -29,7 +29,7 @@
   - copy PAT somewhere safe
 - Log into gh
   - gh auth login --hostname GitHub.com --git-protocol https
-  - use PAT
+  - use PAT as password.
 - Install sample Database
 
   - installDB.bash

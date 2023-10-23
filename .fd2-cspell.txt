@@ -11,6 +11,7 @@ getopt
 gids
 linkcheck
 lintstagedrc
+mfinelli
 novnc
 pgid
 pinia
