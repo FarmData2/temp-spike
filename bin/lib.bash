@@ -1,3 +1,5 @@
+# Some shell script functions that are used throughout the project.
+
 # Checks if prior operation succeeded and terminates if not.
 # Used throughout to avoid continuing if an operation fails.
 function error_check {
