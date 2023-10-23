@@ -2,9 +2,12 @@
 
 echo "Running FarmData2 pre-commit checks..."
 
-# npm run check:staged
+if npm run check:staged; then
+  echo "FarmData2 pre-commit checks passed."
+else
+  echo "FarmData2 pre-commit checks failed."
+  exit 255
+fi
 
 echo "Done."
-
 exit 0
-#exit 255
