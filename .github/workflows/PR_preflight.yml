@@ -40,7 +40,7 @@ jobs:
         run: npm ci
 
       - name: Install shfmt shell formatter
-        uses: mfinelli/setup-shfmt@v3
+        run: curl -sS https://webinstall.dev/shfmt | bash
 
       - name: Run lint-staged
         run: npx lint-staged \
