@@ -6,7 +6,7 @@
 #
 # Note some tests may run twice (e.g. .vue and .cy.js changed).
 
-# Action adapted from examples at: 
+# Action adapted from examples at:
 #   https://github.com/tj-actions/changed-files
 
 name: Pull Request Preflight
@@ -123,7 +123,7 @@ jobs:
           for test in ${{ steps.changed-files.outputs.fd2_e2e_all_changed_files }}; do
             test.bash --fd2 --e2e --dev --glob="$test"
           done
-      
+
       - name: Run changed farm_fd2_examples module tests
         if: always() && steps.changed-files.outputs.examples_e2e_any_changed == 'true'
         run: |
@@ -153,7 +153,7 @@ jobs:
             GLOB=$(dirname "$file")/**.cy.js
             test.bash --examples --e2e --dev --glob="$GLOB"
           done
-    
+
       - name: Run all tests for changed components
         if: always() && steps.changed-files.outputs.comp_vue_any_changed == 'true'
         run: |

@@ -4,7 +4,10 @@
     It provides a working space for completing the FarmData2 School onboarding
     activities.
   </div>
-  <div data-cy="page-loaded" v-show="false">
+  <div
+    data-cy="page-loaded"
+    v-show="false"
+  >
     {{ pageDoneLoading }}
   </div>
 </template>
@@ -14,15 +17,15 @@ export default {
   data() {
     return {
       createdCount: 0,
-    }
+    };
   },
   computed: {
     pageDoneLoading() {
-      return this.createdCount == 1
+      return this.createdCount == 1;
     },
   },
   created() {
-    this.createdCount++
+    this.createdCount++;
   },
-}
+};
 </script>

@@ -7,7 +7,10 @@
       <li>sustainable farming practices including soil health.</li>
     </ul>
   </div>
-  <div data-cy="page-loaded" v-show="false">
+  <div
+    data-cy="page-loaded"
+    v-show="false"
+  >
     {{ pageDoneLoading }}
   </div>
 </template>
@@ -17,15 +20,15 @@ export default {
   data() {
     return {
       createdCount: 0,
-    }
+    };
   },
   computed: {
     pageDoneLoading() {
-      return this.createdCount == 1
+      return this.createdCount == 1;
     },
   },
   created() {
-    this.createdCount++
+    this.createdCount++;
   },
-}
+};
 </script>

@@ -1,10 +1,15 @@
 <script setup>
-import dayjs from 'dayjs'
-import Counter from '@comps/CounterExample/CounterExample.vue'
+import dayjs from 'dayjs';
+import Counter from '@comps/CounterExample/CounterExample.vue';
 </script>
 
 <template>
-  <h1 class="sample" data-cy="title">Template for %ENTRY_POINT% Entry Point</h1>
+  <h1
+    class="sample"
+    data-cy="title"
+  >
+    Template for %ENTRY_POINT% Entry Point
+  </h1>
   <p>
     This uses the dayjs import: <span>{{ formatDate }}</span>
   </p>
@@ -13,7 +18,12 @@ import Counter from '@comps/CounterExample/CounterExample.vue'
     <Counter />
   </p>
 
-  <div data-cy="page-loaded" v-show="false">{{ pageDoneLoading }}</div>
+  <div
+    data-cy="page-loaded"
+    v-show="false"
+  >
+    {{ pageDoneLoading }}
+  </div>
 </template>
 
 <script>
@@ -22,20 +32,20 @@ export default {
     return {
       date: dayjs(),
       createdCount: 0,
-    }
+    };
   },
   computed: {
     formatDate() {
-      return this.date.format('YYYY-MM-DD')
+      return this.date.format('YYYY-MM-DD');
     },
     pageDoneLoading() {
-      return this.createdCount == 1
+      return this.createdCount == 1;
     },
   },
   created() {
-    this.createdCount++
+    this.createdCount++;
   },
-}
+};
 </script>
 
 <style scoped>

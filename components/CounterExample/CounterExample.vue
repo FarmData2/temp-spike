@@ -2,7 +2,12 @@
   <div>
     Counter in a component: <span data-cy="count">{{ count }}</span>
     <br />
-    <button data-cy="increment-button" @click="increment()">Increment</button>
+    <button
+      data-cy="increment-button"
+      @click="increment()"
+    >
+      Increment
+    </button>
   </div>
 </template>
 
@@ -12,12 +17,12 @@ export default {
   data() {
     return {
       count: 0,
-    }
+    };
   },
   methods: {
     increment() {
-      this.count++
+      this.count++;
     },
   },
-}
+};
 </script>

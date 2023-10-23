@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-const { defineConfig } = require('cypress')
+const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   screenshotOnRunFailure: false,
@@ -16,4 +16,4 @@ module.exports = defineConfig({
       bundler: 'vite',
     },
   },
-})
+});

@@ -33,7 +33,7 @@
  * then no login is performed.
  */
 Cypress.Commands.add('login', (user, password) => {
-  let baseURL = Cypress.config().baseUrl
+  let baseURL = Cypress.config().baseUrl;
   if (baseURL.includes('http://farmos')) {
     cy.request({
       method: 'POST',
@@ -44,9 +44,9 @@ Cypress.Commands.add('login', (user, password) => {
         pass: password,
         form_id: 'user_login_form',
       },
-    })
+    });
   }
-})
+});
 
 // Cypress.Commands.add('logout', () => {
 //   cy.request({
@@ -83,5 +83,5 @@ Cypress.Commands.add('login', (user, password) => {
  * for some examples.
  */
 Cypress.Commands.add('waitForPage', () => {
-  cy.get('[data-cy=page-loaded]').should('have.text', 'true')
-})
+  cy.get('[data-cy=page-loaded]').should('have.text', 'true');
+});

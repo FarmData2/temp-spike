@@ -1,7 +1,7 @@
-import Counter from './CounterExample.vue'
+import Counter from './CounterExample.vue';
 
 describe('Test the counter component', () => {
   it('The component renders', () => {
-    cy.mount(Counter)
-  })
-})
+    cy.mount(Counter);
+  });
+});
