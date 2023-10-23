@@ -1,25 +1,30 @@
-# Github action that runs the lint-changed script for this repo.
-# This script will:
+# Github action that runs on PR's to main.
 #   - Performs lint / spell / link checks
-#   - Format files
-#   - Runs all tests on any changed entrypoints, components, or library files.
-#   - Runs any changed tests.
+#   - Runs smoke tests
+#   - Runs any changed tests
+#   - Runs all tests on any changed entrypoints
 #
-# Note some tests may run twice (e.g. if a .vue and .cy.js are both changed).
+# Note some tests may run twice (e.g. .vue and .cy.js changed).
+
+# Action adapted from examples at:
+#   https://github.com/tj-actions/changed-files
+
+# TODO
+#  - handle formatting with prettier and shfmt
+#  - add tests for fd2_school
 
 name: Pull Request Preflight
 
 on:
+  push:
+    branches:
+      - main
   pull_request_target:
     branches:
       - main
 
-#permissions:
-#  contents: read, write
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+permissions:
+  contents: read
 
 jobs:
   pr-preflight:
@@ -27,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the git repository
+      - name: Check out git repository
         uses: actions/checkout@v3
 
       - name: Setup node
@@ -36,16 +41,127 @@ jobs:
           node-version: 18
           cache: 'npm'
 
-      - name: Install npm dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: Install shfmt shell formatter
-        run: curl -sS https://webinstall.dev/shfmt | bash
+      - name: Identify changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v37
+        with:
+          files_yaml: |
+            all:
+              - '**'
+            eslint: 
+              - '**.vue'
+              - '**.js'
+              - '**.jsx'
+              - '**.cjs'
+              - '**.mjs'
+              - '**.json'
+              - '**.yml'
+              - '**.md'
+              - '!docker/docker-compose.yml'
+              - '!**/*.info.yml'
+              - '!**/*.library.yml'
+              - '!**/*.links.menu.yml'
+              - '!**/*.routing.yml'
+              - '!.github/**/*.yml'
+            shellcheck:
+              - '**.bash'
+            markdown:
+              - '**.md'
+            fd2_e2e:
+              - 'modules/farm_fd2/**/*.cy.js'
+            examples_e2e:
+              - 'modules/farm_fd2_examples/**/*.cy.js'
+            comp_test:
+              - 'components/**/*.comp.cy.js'
+            fd2_vue:
+              - 'modules/farm_fd2/**/*.vue'
+            examples_vue:
+              - 'modules/farm_fd2_examples/**/*.vue'
+            comp_vue:
+              - 'components/**/*.vue'
 
-      - name: Run lint-staged
-        run: npx lint-staged \
-          --config .lintstagedrc.cjs \
-          --concurrent false \
-          --diff="${{ github.base_ref }}...${{ github.head_ref }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_all_changed_files }}; do
+            echo "$file was changed."
+          done
+
+      - name: Run eslint on changed vue, js, json, yml and md files
+        if: steps.changed-files.outputs.eslint_any_changed == 'true'
+        run: |
+          npx eslint ${{ steps.changed-files.outputs.eslint_all_changed_files }}
+
+      - name: Run shellcheck on changed bash script files
+        if: always() && steps.changed-files.outputs.shellcheck_any_changed == 'true'
+        run: |
+          npx shellcheck ${{ steps.changed-files.outputs.shellcheck_all_changed_files }}
+
+      - name: Run cspell on all changed files
+        if: always() && steps.changed-files.outputs.all_any_changed == 'true'
+        run: |
+          npx cspell -c .cspell.json ${{ steps.changed-files.outputs.all_all_changed_files }}
+
+      - name: Run link-check on all changed markdown files
+        if: always() && steps.changed-files.outputs.markdown_any_changed == 'true'
+        run: |
+          npx markdown-link-check ${{ steps.changed-files.outputs.markdown_all_changed_files }}
+
+      - name: Setup for tests
+        if: always()
+        run: |
+          npx cypress install
+          echo "./bin" >> $GITHUB_PATH
+
+      # CHANGE THIS TO START AND RUN IN farmOS SERVER.
+      # NEED A DB first.
+      # - name: Run smoke tests
+      #  run: |
+      #    test.bash --fd2 --e2e --dev
+
+      - name: Run changed farm_fd2 module tests
+        if: always() && steps.changed-files.outputs.fd2_e2e_any_changed == 'true'
+        run: |
+          for test in ${{ steps.changed-files.outputs.fd2_e2e_all_changed_files }}; do
+            test.bash --fd2 --e2e --dev --glob="$test"
+          done
+
+      - name: Run changed farm_fd2_examples module tests
+        if: always() && steps.changed-files.outputs.examples_e2e_any_changed == 'true'
+        run: |
+          for test in ${{ steps.changed-files.outputs.examples_e2e_all_changed_files }}; do
+            test.bash --examples --e2e --dev --glob="$test"
+          done
+
+      - name: Run changed component tests
+        if: always() && steps.changed-files.outputs.comp_test_any_changed == 'true'
+        run: |
+          for test in ${{ steps.changed-files.outputs.comp_test_all_changed_files }}; do
+            test.bash --comp --glob="$test"
+          done
+
+      - name: Run all tests for changed entrypoint in farm_fd2 module
+        if: always() && steps.changed-files.outputs.fd2_vue_any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.fd2_vue_all_changed_files }}; do
+            GLOB=$(dirname "$file")/**.cy.js
+            test.bash --fd2 --e2e --dev --glob="$GLOB"
+          done
+
+      - name: Run all tests for changed entrypoint in farm_fd_examples module
+        if: always() && steps.changed-files.outputs.examples_vue_any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.examples_vue_all_changed_files }}; do
+            GLOB=$(dirname "$file")/**.cy.js
+            test.bash --examples --e2e --dev --glob="$GLOB"
+          done
+
+      - name: Run all tests for changed components
+        if: always() && steps.changed-files.outputs.comp_vue_any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files.outputs.comp_vue_all_changed_files }}; do
+            GLOB=$(dirname "$file")/**.cy.js
+            test.bash --comp --glob="$GLOB"
+          done
