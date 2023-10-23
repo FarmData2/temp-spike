@@ -158,7 +158,7 @@ module.exports = {
     'prettier --ignore-unknown --write',
   ],
   '**/*.bash|.githooks/*': ['shellcheck', 'shfmt --write'],
-  '*.md': 'markdown-link-check --quiet',
+  '**/*.md': 'markdown-link-check --quiet',
   '*.vue|*.js|*.jsx|*.cjs|*.mjs|*.json|*.md': async (files) => {
     const filesToLint = await removeIgnoredFiles(files);
     return [`eslint --max-warnings=0 ${filesToLint}`];
