@@ -41,7 +41,6 @@ jobs:
 
       - name: Install shfmt shell formatter
         uses: mfinelli/setup-shfmt@v3
-        run: shfmt -d script.bash
 
       - name: Run lint-staged
         run: npx lint-staged \
