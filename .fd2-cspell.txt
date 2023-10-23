@@ -18,6 +18,7 @@ preprocess
 rushstack
 setsid
 shellcheck
+shfmt
 toplevel
 vite
 XDEBUG
