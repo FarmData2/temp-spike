@@ -91,9 +91,11 @@ Doesn't really belong here ... but here for now...
 
 - cspell runs on all files
   - use a known word or add to .fd2-cspell.txt if unavoidable.
-- prettier runs on all files
+- prettier runs on all files that it knows how to format.
   - formatting is automatically applied.
-- shellcheck on all bash scripts
+- shellcheck runs on all bash scripts
+- shfmt runs on all bash scripts
+  - formatting is automatically applied.
 - markdown-link-check on all md files
 - eslint on all .vue .js .jsx .cjs .mjs .json .md
 - e2e tests (in modules)
