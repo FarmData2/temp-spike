@@ -21,7 +21,9 @@
     ".fd2-cspell.txt",
     "licenses",
     ".vscode",
-    ".gitignore"
+    ".gitignore",
+    "LICENSE",
+    "LICENSE.txt"
   ],
   "enableFiletypes": [
     "dockercompose",
