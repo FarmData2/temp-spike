@@ -8,5 +8,6 @@ bin/templates/entrypoints/*.yml
 **/*.routing.yml
 
 **/dist
+modules/farm_fd2/src/public
 
 licenses
