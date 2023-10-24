@@ -107,3 +107,20 @@ Doesn't really belong here ... but here for now...
 - unit tests (in library)
   - all unit.cy.js tests in library directory for a staged .js
   - all unit.cy.js tests that are staged.
+
+## Creating a Release
+
+This is done via drupal.org
+
+- See: <https://www.drupal.org/docs/develop/git/git-for-drupal-project-maintainers/creating-a-project-release>
+
+- clone <https://git.drupalcode.org/project/farmdata2>
+- crete branch for release
+- Copy farm_fd2/dist into branch
+- commit changes
+- Create tag
+- Push tag
+- Go to <https://git.drupalcode.org/project/farmdata2>
+- Scroll to bottom
+  - Click "Add new release"
+  - Fill out the form
