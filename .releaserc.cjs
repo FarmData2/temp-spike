@@ -46,11 +46,11 @@ const config = {
       {
         assets: [
           {
-            path: 'modules/farm_fd2/dist/farmdata2/farmdata2.tar.gz',
+            path: 'modules/farm_fd2/dist/farmdata2.tar.gz',
             label: 'farmdata2.tar.gz',
           },
           {
-            path: 'modules/farm_fd2/dist/farmdata2/farmdata2.zip',
+            path: 'modules/farm_fd2/dist/farmdata2.zip',
             label: 'farmdata2.zip',
           },
         ],
