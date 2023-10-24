@@ -10,8 +10,10 @@
 #   https://github.com/tj-actions/changed-files
 
 # TODO
+#  - check that proper files are detected in each step
 #  - handle formatting with prettier and shfmt
 #  - add tests for fd2_school
+#  - add tests for libraries
 
 name: Pull Request Preflight
 
