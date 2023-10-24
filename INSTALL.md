@@ -113,6 +113,7 @@ Doesn't really belong here ... but here for now...
 This is done via drupal.org
 
 - See: <https://www.drupal.org/docs/develop/git/git-for-drupal-project-maintainers/creating-a-project-release>
+- See: <https://www.drupal.org/project/farmdata2/git-instructions>
 
 - clone <https://git.drupalcode.org/project/farmdata2>
 - crete branch for release
