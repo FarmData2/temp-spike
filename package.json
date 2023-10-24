@@ -23,7 +23,9 @@
     "lint": "npm run eslint; npm run bashlint; npm run spellcheck; npm run linkcheck",
     "format:all": "prettier --write --check '!./docker/db' --check '!./bin/templates/entrypoints/*.yml' .",
     "format:staged": "pretty-quick --write --staged .",
-    "check:staged": "lint-staged --config .lintstagedrc.cjs --concurrent false"
+    "check:staged": "lint-staged --config .lintstagedrc.cjs --concurrent false",
+    "tgz:fd2": "tar -C modules/farm_fd2/dist/ -czf modules/farm_fd2/dist/farmdata2.tar.gz farmdata2",
+    "zip:fd2": "cd modules/farm_fd2/dist/; zip -r farmdata2.zip farmdata2"
   },
   "dependencies": {
     "dayjs": "^1.11.8",

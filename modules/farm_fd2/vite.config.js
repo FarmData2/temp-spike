@@ -52,7 +52,7 @@ let viteConfig = {
     },
   ],
   build: {
-    outDir: '../../dist',
+    outDir: '../../dist/farmdata2',
     emptyOutDir: true,
     exclude: ['**/*.cy.js', '**/*.cy.comp.js', '**/*.cy.unit.js'],
     rollupOptions: {

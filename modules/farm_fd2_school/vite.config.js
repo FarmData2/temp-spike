@@ -48,7 +48,7 @@ let viteConfig = {
     },
   ],
   build: {
-    outDir: '../../dist',
+    outDir: '../../dist/fd2_school',
     emptyOutDir: true,
     exclude: ['**/*.cy.js', '**/*.cy.comp.js', '**/*.cy.unit.js'],
     rollupOptions: {

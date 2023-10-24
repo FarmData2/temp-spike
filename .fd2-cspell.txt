@@ -1,6 +1,9 @@
+backmerge
+backmerged
 bashlint
 Braught
 contconf
+conventionalcommits
 dockercompose
 dockerlint
 drush
@@ -17,6 +20,7 @@ pgid
 pinia
 preprocess
 rushstack
+saithodev
 setsid
 shellcheck
 shfmt

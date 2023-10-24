@@ -25,9 +25,9 @@ services:
       # Mount a volume to hold the farmos api keys
       - farmos2_keys_fd2.1:/opt/drupal/keys
       # Mount the dist directories containing the fd2 modules into the farmOS container.
-      - ../modules/farm_fd2/dist:/opt/drupal/web/sites/all/modules/farm_fd2
-      - ../modules/farm_fd2_examples/dist:/opt/drupal/web/sites/all/modules/farm_fd2_examples
-      - ../modules/farm_fd2_school/dist:/opt/drupal/web/sites/all/modules/farm_fd2_school
+      - ../modules/farm_fd2/dist/farmdata2:/opt/drupal/web/sites/all/modules/farmdata2
+      - ../modules/farm_fd2_examples/dist/fd2_examples:/opt/drupal/web/sites/all/modules/fd2_examples
+      - ../modules/farm_fd2_school/dist/fd2_school:/opt/drupal/web/sites/all/modules/fd2_school
     ports:
       - '80:80'
     environment:
@@ -38,7 +38,7 @@ services:
     depends_on:
       - db
       - farmos
-    image: farmdata2/fd2dev:fd2.5
+    image: farmdata2/fd2dev:fd2.6
     container_name: fd2_dev
     init: true
     volumes:
