@@ -7,6 +7,8 @@ const config = {
       {
         preset: 'angular',
         releaseRules: [
+          { breaking: true, release: false },
+          { revert: true, release: false },
           { type: 'build', release: false },
           { type: 'ci', release: false },
           { type: 'docs', release: false },
@@ -16,6 +18,8 @@ const config = {
           { type: 'refactor', release: false },
           { type: 'style', release: false },
           { type: 'test', release: false },
+          { breaking: true, scope: 'fd2', release: 'major' },
+          { revert: true, scope: 'fd2', release: 'patch' },
           { tpye: 'perf', scope: 'fd2', release: 'patch' },
           { type: 'fix', scope: 'fd2', release: 'patch' },
           { type: 'feat', scope: 'fd2', release: 'minor' },
