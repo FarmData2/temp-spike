@@ -7,14 +7,21 @@ const config = {
       {
         preset: 'angular',
         releaseRules: [
-          { type: 'build', release: 'patch' },
-          { type: 'ci', release: 'patch' },
+          { type: 'build', release: false },
+          { type: 'ci', release: false },
           { type: 'docs', release: false },
-          { type: 'perf', release: 'patch' },
-          { type: 'refactor', release: 'patch' },
-          { type: 'style', release: 'patch' },
+          { type: 'perf', release: false },
+          { type: 'refactor', release: false },
+          { type: 'style', release: false },
           { type: 'test', release: false },
+          { tpye: 'perf', scope: 'release', release: 'patch' },
+          { type: 'fix', scope: 'release', release: 'patch' },
+          { type: 'feat', scope: 'release', release: 'minor' },
+          { type: 'refactor', scope: 'release', release: 'patch' },
         ],
+        parserOpts: {
+          noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
+        },
       },
     ],
     [
