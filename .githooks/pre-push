@@ -11,20 +11,18 @@ source "$REPO_ROOT_DIR/bin/lib.bash"
 echo "Running FarmData2 pre-push hook..."
 
 read -r line
-#echo "$line"
-
 if [ "$line" = "" ]; then
-  echo "Exiting... there is nothing to push."
-  exit 255
+  exit 0
 fi
 
 LOCAL_BRANCH=$(echo "$line" | cut -f3 -d'/' | cut -f1 -d' ')
 REMOTE_BRANCH=$(echo "$line" | cut -f3 -d' ' | cut -f3 -d'/')
-#echo "  Pushing local branch $LOCAL_BRANCH to remote branch $REMOTE_BRANCH..."
-#echo "    Preparing for a release on git.drupalcode.org..."
 
 # Only run this hook when pushing to the production branch.
 if [ "$REMOTE_BRANCH" = "production" ]; then
+
+  echo "  Pushing to the production branch."
+  echo "  A release will be prepared on git.drupalcode.org..."
 
   if [ "$LOCAL_BRANCH" = "production" ]; then
 
@@ -35,37 +33,49 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
 
     echo "    Creating clone of farmdata2 from git.drupalcode.org..."
     git clone --quiet https://git.drupalcode.org/project/farmdata2.git /var/tmp/farmdata2
-        
+    error_check "Failed to clone farmdata2 from git.drupalcode.org."
+
     echo "    Copying files from farm_fd2/dist/farmdata to clone..."
-    cp -Ruv modules/farm_fd2/dist/farmdata2/* /var/tmp/farmdata2/
+    cp -Ru modules/farm_fd2/dist/farmdata2/* /var/tmp/farmdata2/
+    error_check "Failed to copy files from farm_fd2/dist/farmdata2."
 
-
-    echo "    Staging and committing to farmdata2 clone..."
-    git add .
-    git stage
+    echo "    Staging and committing to release branch in farmdata2 clone..."
+    safe_cd /var/tmp/farmdata2
+    git switch --quiet release
+    error_check "Failed to switch to release branch."
+    git stage .
+    error_check "Failed to stage files."
     git commit --no-verify --quiet -m "updated to release "
+    error_check "Failed to commit files."
 
+    echo "    Pushing farmdata2 clone to git.drupalcode.org..."
+    git push --quiet origin release
+    error_check "Failed to push farmdata2 clone to git.drupalcode.org."
 
-
-    
-
-
-    # push
-    # create tag
-    # push tag
+    echo "    Creating tag $RELEASE on git.drupalcode.org..."
+    RELEASE=$(gh release list --repo farmdata2/temp-spike | grep Latest | cut -f1)
+    RELEASE="${RELEASE:1}"
+    git tag -a "$RELEASE" -m "Release $RELEASE"
+    error_check "Failed to create tag $RELEASE."
+    git push origin "$RELEASE"
+    error_check "Failed to push tag $RELEASE to git.drupalcode.org."
 
     echo "Done."
-    exit 255
-    # exit 0 if everything works
+
+    echo
+    echo "farmdata2 on git.drupalcode.org is ready for a new release."
+    echo "Visit https://www.drupal.org/node/add/project-release/3396323 to create the release."
+    echo
+
+    exit 0
   else
     echo
-    echo "Only the local production branch may be pushed to"
-    echo "the remote production branch."
+    echo "Only the local production branch may be pushed to the remote production branch."
     echo
     exit 255
   fi
 else
   # Not pushing to the production branch
-  echo "Exiting... Not pushing to the production branch."
-  exit 255
+  echo "Done."
+  exit 0
 fi
