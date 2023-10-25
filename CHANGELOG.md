@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/FarmData2/temp-spike/compare/v1.0.0...v1.0.1) (2023-10-25)
+
+
+### Fixes
+
+* patched pre-push hook ([990b9ae](https://github.com/FarmData2/temp-spike/commit/990b9aedd30ae85473bdc704c321ab5350d83009))
+* update hooks ([0c745e3](https://github.com/FarmData2/temp-spike/commit/0c745e37efe2245c2bed99f6f25fc9adc53dd0ff))
+
 ## 1.0.0 (2023-10-24)
 
 
