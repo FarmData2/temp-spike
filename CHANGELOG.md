@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/FarmData2/temp-spike/compare/v1.1.1...v1.2.0) (2023-10-25)
+
+
+### Features
+
+* **fd2:** test the release pipeline ([c8848cb](https://github.com/FarmData2/temp-spike/commit/c8848cbcf4a8d6c71ea85f3e4e74dfb7601e84df))
+
 ## [1.1.1](https://github.com/FarmData2/temp-spike/compare/v1.1.0...v1.1.1) (2023-10-25)
 
 
