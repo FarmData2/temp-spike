@@ -153,18 +153,12 @@ Then you will need to:
 
 ## Creating a Drupal Release of the farm_fd2 Module
 
-This is done via drupal.org
+When the production branch is pushed to the upstream and a new release is created the farmdata2 git.drupalcode.org repository is also updated and a new tag is created for the release.
 
-- See: <https://www.drupal.org/docs/develop/git/git-for-drupal-project-maintainers/creating-a-project-release>
-- See: <https://www.drupal.org/project/farmdata2/git-instructions>
+The release must then be created manually by visiting:
 
-- clone <https://git.drupalcode.org/project/farmdata2>
-- crete branch for release
-- Copy farm_fd2/dist into branch
-- commit changes
-- Create tag
-- Push tag
-- Go to <https://git.drupalcode.org/project/farmdata2>
-- Scroll to bottom
-  - Click "Add new release"
-  - Fill out the form
+<https://www.drupal.org/node/add/project-release/3396323>
+
+And selecting the "Release branch or tag" for the new release.
+
+- See <https://www.drupal.org/docs/develop/git/git-for-drupal-project-maintainers/creating-a-project-release> for detailed instructions about creating the release.
