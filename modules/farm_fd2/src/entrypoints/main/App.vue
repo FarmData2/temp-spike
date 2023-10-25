@@ -1,6 +1,6 @@
 <template>
   <div>
-    FarmData2 provides entry and reporting features that support:
+    FarmData2 provides data entry and reporting features that support:
     <ul>
       <li>the day-to-day operation of diversified vegetable farms.</li>
       <li>record keeping for the organic certification process.</li>
