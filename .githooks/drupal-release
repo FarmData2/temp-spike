@@ -4,7 +4,7 @@ REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
 source "$REPO_ROOT_DIR/bin/lib.bash"
 
 echo
-echo "  Starting the drupal-release script..."
+echo "Starting the drupal-release script..."
 
 # Assumes that the most recent run on production is the one we want.
 # Note: the release action cancels in-progress-runs so should be okay.
@@ -45,19 +45,19 @@ if [ "$STATUS" = "" ]; then
   echo "    Pushing farmdata2 clone to git.drupalcode.org..."
   git push --quiet --no-verify origin release
   error_check "Failed to push farmdata2 clone to git.drupalcode.org."
+
+  echo "    Creating tag $RELEASE on git.drupalcode.org..."
+  safe_cd /var/tmp/farmdata2
+  RELEASE=$(gh release list --repo farmdata2/temp-spike | grep Latest | cut -f1)
+  RELEASE="${RELEASE:1}"
+  git tag -a "$RELEASE" -m "Release $RELEASE"
+  error_check "Failed to create tag $RELEASE."
+  git push --no-verify --quiet origin "$RELEASE"
+  error_check "Failed to push tag $RELEASE to git.drupalcode.org."
 else
   echo "    No changes to farmdata2 module to be committed."
 fi
-
-# Create the tag every time so that it stays in synch with the GitHub release.
-echo "    Creating tag $RELEASE on git.drupalcode.org..."
-safe_cd /var/tmp/farmdata2
-RELEASE=$(gh release list --repo farmdata2/temp-spike | grep Latest | cut -f1)
-RELEASE="${RELEASE:1}"
-git tag -a "$RELEASE" -m "Release $RELEASE"
-error_check "Failed to create tag $RELEASE."
-git push --no-verify --quiet origin "$RELEASE"
-error_check "Failed to push tag $RELEASE to git.drupalcode.org."
+echo "  Done."
 
 echo "  Updating FarmData2 repo branches..."
 safe_cd "$REPO_ROOT_DIR"
@@ -73,6 +73,7 @@ git switch --quiet development
 error_check "Failed to switch to development branch."
 git pull --ff-only --quiet origin development
 error_check "Failed to update the development branch."
+echo "  Done."
 
 echo "Done."
 
