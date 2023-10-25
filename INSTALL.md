@@ -135,10 +135,11 @@ A maintainer will:
    - The maintainer will use a squash merge commit message with a conventional commit message.
      - valid types are: build, chore, ci, docs, feat, fix, perf, refactor, style, test
      - valid scopes are: (fd2), (examples), (school)
-     - If the conventional commit message has a type of fix or feat and a scope of (fd2) then:
-       - The merge will create a pre-release `vX.Y.Z-development.n`
-         - X.Y.Z is the semantic version of the next release if it were created at the moment.
-         - n is a sequence number for pre-releases with the same semantic version number.
+     - If a change to farm_fd2 modifies the module it must have type fix or feat.
+       - If the commit message has a scope of (fd2) and a type of fix or feat then:
+         - The merge will create a pre-release `vX.Y.Z-development.n`
+           - X.Y.Z is the semantic version of the next release if it were created at the moment.
+           - n is a sequence number for pre-releases with the same semantic version number.
 
 ## Creating a GitHub Release of the farm_fd2 Module
 
