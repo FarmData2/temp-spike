@@ -1,0 +1,48 @@
+#!/bin/bash
+
+echo "Running FarmData2 pre-push hook..."
+
+read -r line
+#echo "$line"
+
+if [ "$line" = "" ]; then
+  echo "Nothing to push."
+  exit 255
+fi
+
+LOCAL_BRANCH=$(echo "$line" | cut -f3 -d'/' | cut -f1 -d' ')
+echo "$LOCAL_BRANCH"
+
+REMOTE_BRANCH=$(echo "$line" | cut -f3 -d' ' | cut -f3 -d'/')
+echo "$REMOTE_BRANCH"
+
+# Only run this hook when pushing to the production branch.
+if [ "$REMOTE_BRANCH" = "production" ]; then
+
+  if [ "$LOCAL_BRANCH" = "production" ]; then
+
+    echo "Creating tag on git.drupalcode.org..."
+
+    # clone drupal.org repo
+    # copy files from dist into drupal.org repo
+    # stage / commit
+    # push
+    # get the semantic release version number
+    # create tag
+    # push tag
+
+    echo "Done."
+    exit 255
+    # exit 0 if everything works
+  else
+    echo
+    echo "Only the local production branch may be pushed to"
+    echo "the remote production branch."
+    echo
+    exit 255
+  fi
+else
+  # Not pushing to the production branch
+  echo "Not pushing to the production branch."
+  exit 255
+fi
