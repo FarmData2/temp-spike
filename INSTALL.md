@@ -140,6 +140,9 @@ A maintainer will:
          - The merge will create a pre-release `vX.Y.Z-development.n`
            - X.Y.Z is the semantic version of the next release if it were created at the moment.
            - n is a sequence number for pre-releases with the same semantic version number.
+         - fix -> patch bump
+         - feat -> minor bump
+         - BREAKING CHANGE -> major bump
 
 ## Creating a GitHub Release of the farm_fd2 Module
 
