@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo
 echo "This is the drupal-release script..."
 
 # Assumes that the most recent run on production is the one we want.

@@ -23,7 +23,7 @@ if [ "$REMOTE_BRANCH" = "development" ]; then
   echo "Starting post-push script..."
   (
     sleep 5
-    "$REPO_ROOT_DIR/.githooks/post_push"
+    "$REPO_ROOT_DIR/.githooks/drupal-release"
   ) &
   exit 0
 fi
