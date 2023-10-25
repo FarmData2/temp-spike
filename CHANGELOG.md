@@ -1,3 +1,20 @@
+## [3.0.0](https://github.com/FarmData2/temp-spike/compare/v2.0.0...v3.0.0) (2023-10-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **fd2:** this breaks stuff.
+* this should not bump.
+
+### Features
+
+* **fd2:** blah ([#17](https://github.com/FarmData2/temp-spike/issues/17)) ([659ece6](https://github.com/FarmData2/temp-spike/commit/659ece6aef7c50b2ab1da46d58ff38d307c1faa9))
+
+
+### Fixes
+
+* blah ([#16](https://github.com/FarmData2/temp-spike/issues/16)) ([7b28b5d](https://github.com/FarmData2/temp-spike/commit/7b28b5d4159bac9044d60e8113c60ceb1bfda56d))
+
 ## [2.0.0](https://github.com/FarmData2/temp-spike/compare/v1.3.0...v2.0.0) (2023-10-25)
 
 
