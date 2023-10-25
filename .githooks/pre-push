@@ -1,7 +1,6 @@
 #!/bin/bash
 
 REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
-source "$REPO_ROOT_DIR/bin/colors.bash"
 source "$REPO_ROOT_DIR/bin/lib.bash"
 
 echo "Running FarmData2 pre-push hook..."
