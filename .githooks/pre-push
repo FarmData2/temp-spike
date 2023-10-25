@@ -4,8 +4,7 @@ echo "Running FarmData2 pre-push hook..."
 
 read -r line
 if [ "$line" = "" ]; then
-  echo "Exiting... there is nothing to push."
-  exit 255
+  exit 0
 fi
 
 LOCAL_BRANCH=$(echo "$line" | cut -f3 -d'/' | cut -f1 -d' ')
