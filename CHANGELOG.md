@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/FarmData2/temp-spike/compare/v3.1.1...v3.1.2) (2023-10-25)
+
+
+### Fixes
+
+* **fd2:** this time? ([#20](https://github.com/FarmData2/temp-spike/issues/20)) ([c935a2c](https://github.com/FarmData2/temp-spike/commit/c935a2c02e1a8133c403fd24f6a65a7b8cfd9617))
+
 ## [3.1.1](https://github.com/FarmData2/temp-spike/compare/v3.1.0...v3.1.1) (2023-10-25)
 
 
