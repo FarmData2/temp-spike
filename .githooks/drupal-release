@@ -65,13 +65,13 @@ safe_cd "$REPO_ROOT_DIR"
 echo "    Updating production branch..."
 git switch --quiet production
 error_check "Failed to switch to production branch."
-git pull --ff-only origin production
+git pull --ff-only --quiet origin production
 error_check "Failed to update the production branch."
 
 echo "    Updating development branch..."
 git switch --quiet development
 error_check "Failed to switch to development branch."
-git pull --ff-only origin development
+git pull --ff-only --quiet origin development
 error_check "Failed to update the development branch."
 
 echo "Done."
