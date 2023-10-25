@@ -1,3 +1,14 @@
+## [1.0.2](https://github.com/FarmData2/temp-spike/compare/v1.0.1...v1.0.2) (2023-10-25)
+
+
+### Fixes
+
+* added check for no changes to drupal module ([756d581](https://github.com/FarmData2/temp-spike/commit/756d5815648b574efddf52ee6deda5718ee6a1c1))
+* change to /var/tmp/farmdata2 ([0fdb4a1](https://github.com/FarmData2/temp-spike/commit/0fdb4a1226dd0534401dc16d1f6b3f993b77bc8e))
+* correted status check ([ca6c219](https://github.com/FarmData2/temp-spike/commit/ca6c219a25588ba072f7149125682edcf20f1980))
+* touch up pre-commit ([f04680e](https://github.com/FarmData2/temp-spike/commit/f04680edd997c847cff76abce1ab53a02703834b))
+* typo ([dbf48c2](https://github.com/FarmData2/temp-spike/commit/dbf48c20222878c7c1b31008e1565100c5f4f7f0))
+
 ## [1.0.1](https://github.com/FarmData2/temp-spike/compare/v1.0.0...v1.0.1) (2023-10-25)
 
 
