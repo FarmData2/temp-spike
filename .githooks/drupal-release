@@ -1,11 +1,10 @@
 #!/bin/bash
 
 REPO_ROOT_DIR=$(git rev-parse --show-toplevel)
-source "$REPO_ROOT_DIR/bin/colors.bash"
 source "$REPO_ROOT_DIR/bin/lib.bash"
 
 echo
-echo "Starting the drupal-release script..."
+echo "  Starting the drupal-release script..."
 
 # Assumes that the most recent run on production is the one we want.
 # Note: the release action cancels in-progress-runs so should be okay.
@@ -59,6 +58,21 @@ git tag -a "$RELEASE" -m "Release $RELEASE"
 error_check "Failed to create tag $RELEASE."
 git push --no-verify --quiet origin "$RELEASE"
 error_check "Failed to push tag $RELEASE to git.drupalcode.org."
+
+echo "  Updating FarmData2 repo branches..."
+safe_cd "$REPO_ROOT_DIR"
+
+echo "    Updating production branch..."
+git switch --quiet production
+error_check "Failed to switch to production branch."
+git pull --ff-only --quiet origin production
+error_check "Failed to update the production branch."
+
+echo "    Updating development branch..."
+git switch --quiet development
+error_check "Failed to switch to development branch."
+git pull --ff-only --quiet origin development
+error_check "Failed to update the development branch."
 
 echo "Done."
 
