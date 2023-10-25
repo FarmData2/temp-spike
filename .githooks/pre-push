@@ -27,6 +27,20 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
 
   if [ "$LOCAL_BRANCH" = "production" ]; then
 
+    echo "    Pushing FarmData2 production branch to GitHub."
+    safe_cd "$REPO_ROOT_DIR"
+    git push --quiet --no-verify origin production
+    error_check "Failed to push FarmData2 production branch to GitHub."
+
+    # Assumes that the most recent run on production is the one we want.
+    # This could be problematic if there are multiple runs at once.
+    RUN_ID=$(gh run list --repo farmdata2/temp-spike --workflow FD2Release --branch production --event push --limit 1 | tail -1 | cut -d$'\t' -f7)
+    echo "$RUN_ID"
+
+    echo "    Watching the FarmData2 FD2Release action on farmdata2/temp-spike..."
+    gh run watch --repo farmdata2/temp-spike "$RUN_ID" --exit-status -i 2
+    error_check "FarmData2 FD2Release action has failed."
+
     if [ -d /var/tmp/farmdata2 ]; then
       echo "    Removing existing farmdata2 clone..."
       rm -rf /var/tmp/farmdata2
@@ -59,16 +73,6 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
     else
       echo "    No changes to farmdata2 module to be committed."
     fi
-
-    echo "    Pushing FarmData2 production branch to GitHub."
-    safe_cd "$REPO_ROOT_DIR"
-    git push --quiet --no-verify origin production
-    error_check "Failed to push FarmData2 production branch to GitHub."
-
-    RUN=$(gh run list --repo farmdata2/temp-spike --branch production)
-    echo "$RUN"
-
-    gh run watch --repo farmdata2/temp-spike-i 2 && echo "run is done"
 
     # Create the tag anyway so that it stays in synch with the GitHub release.
     echo "    Creating tag $RELEASE on git.drupalcode.org..."
