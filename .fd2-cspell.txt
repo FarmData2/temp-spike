@@ -6,6 +6,7 @@ contconf
 conventionalcommits
 dockercompose
 dockerlint
+drupalcode
 drush
 entrypoints
 farmdata
