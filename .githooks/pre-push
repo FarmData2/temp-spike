@@ -1,33 +1,56 @@
 #!/bin/bash
 
+# Change into the main repo directory.
+SCRIPT_PATH=$(readlink -f "$0")                     # Path to this script.
+SCRIPT_DIR=$(dirname "$SCRIPT_PATH")                # Path to directory containing this script.
+REPO_ROOT_DIR=$(builtin cd "$SCRIPT_DIR/.." && pwd) # REPO root directory.
+
+source "$REPO_ROOT_DIR/bin/colors.bash"
+source "$REPO_ROOT_DIR/bin/lib.bash"
+
 echo "Running FarmData2 pre-push hook..."
 
 read -r line
 #echo "$line"
 
 if [ "$line" = "" ]; then
-  echo "Nothing to push."
+  echo "Exiting... there is nothing to push."
   exit 255
 fi
 
 LOCAL_BRANCH=$(echo "$line" | cut -f3 -d'/' | cut -f1 -d' ')
-echo "$LOCAL_BRANCH"
-
 REMOTE_BRANCH=$(echo "$line" | cut -f3 -d' ' | cut -f3 -d'/')
-echo "$REMOTE_BRANCH"
+#echo "  Pushing local branch $LOCAL_BRANCH to remote branch $REMOTE_BRANCH..."
+#echo "    Preparing for a release on git.drupalcode.org..."
 
 # Only run this hook when pushing to the production branch.
 if [ "$REMOTE_BRANCH" = "production" ]; then
 
   if [ "$LOCAL_BRANCH" = "production" ]; then
 
-    echo "Creating tag on git.drupalcode.org..."
+    if [ -d /var/tmp/farmdata2 ]; then
+      echo "    Removing existing farmdata2 clone..."
+      rm -rf /var/tmp/farmdata2
+    fi
 
-    # clone drupal.org repo
-    # copy files from dist into drupal.org repo
-    # stage / commit
+    echo "    Creating clone of farmdata2 from git.drupalcode.org..."
+    git clone --quiet https://git.drupalcode.org/project/farmdata2.git /var/tmp/farmdata2
+        
+    echo "    Copying files from farm_fd2/dist/farmdata to clone..."
+    cp -Ruv modules/farm_fd2/dist/farmdata2/* /var/tmp/farmdata2/
+
+
+    echo "    Staging and committing to farmdata2 clone..."
+    git add .
+    git stage
+    git commit --no-verify --quiet -m "updated to release "
+
+
+
+    
+
+
     # push
-    # get the semantic release version number
     # create tag
     # push tag
 
@@ -43,6 +66,6 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
   fi
 else
   # Not pushing to the production branch
-  echo "Not pushing to the production branch."
+  echo "Exiting... Not pushing to the production branch."
   exit 255
 fi
