@@ -10,11 +10,11 @@ fi
 LOCAL_BRANCH=$(echo "$line" | cut -f3 -d'/' | cut -f1 -d' ')
 REMOTE_BRANCH=$(echo "$line" | cut -f3 -d' ' | cut -f3 -d'/')
 
-echo "  Pushing to the production branch."
-echo "  A release will be prepared on git.drupalcode.org..."
-
 # Only run this hook when pushing to the production branch.
 if [ "$REMOTE_BRANCH" = "production" ]; then
+
+  echo "  Pushing to the production branch."
+  echo "  A release will be prepared on git.drupalcode.org..."
 
   if [ "$LOCAL_BRANCH" = "production" ]; then
 
@@ -68,6 +68,6 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
   fi
 else
   # Not pushing to the production branch
-  echo "Exiting... this hook only runs when pushing the production branch."
-  exit 255
+  echo "Done."
+  exit 0
 fi
