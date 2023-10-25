@@ -1,3 +1,20 @@
+## [1.3.0](https://github.com/FarmData2/temp-spike/compare/v1.2.0...v1.3.0) (2023-10-25)
+
+
+### Features
+
+* **fd2:** fix scope to be fd2 ([#11](https://github.com/FarmData2/temp-spike/issues/11)) ([94a837b](https://github.com/FarmData2/temp-spike/commit/94a837b52fb83221a7527608607bd413d02cb03f))
+* **fd2:** should make release ([#10](https://github.com/FarmData2/temp-spike/issues/10)) ([2ad331a](https://github.com/FarmData2/temp-spike/commit/2ad331aa3eeae8ae2909ee0a113907734f8fd24b))
+* try again ([#9](https://github.com/FarmData2/temp-spike/issues/9)) ([1f3456b](https://github.com/FarmData2/temp-spike/commit/1f3456b6da27ec752f7147560e4d88ec84226e38))
+
+
+### Fixes
+
+* add (Drupal Module) to release name ([#7](https://github.com/FarmData2/temp-spike/issues/7)) ([f7d6d74](https://github.com/FarmData2/temp-spike/commit/f7d6d7416cc26edb23de45f9ccd4877f23da25d3))
+* **fd2:** fix some stuff ([#12](https://github.com/FarmData2/temp-spike/issues/12)) ([db447a8](https://github.com/FarmData2/temp-spike/commit/db447a8823bedb6e10968b3939f41f74ca43104b))
+* no bump ([#13](https://github.com/FarmData2/temp-spike/issues/13)) ([05f2a4a](https://github.com/FarmData2/temp-spike/commit/05f2a4aa1b22ddf243bddd6d5477558fb4f3e602))
+* no release on fix or feat without fd2 scope ([#8](https://github.com/FarmData2/temp-spike/issues/8)) ([8281903](https://github.com/FarmData2/temp-spike/commit/8281903f70c93068433d550297a18ff6bdb1b61b))
+
 ## [1.2.0](https://github.com/FarmData2/temp-spike/compare/v1.1.1...v1.2.0) (2023-10-25)
 
 
