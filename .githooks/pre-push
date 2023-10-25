@@ -60,8 +60,17 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
       echo "    No changes to farmdata2 module to be committed."
     fi
 
-    # Create the release anyway so that it stays in synch with the GitHub release.
+    echo "    Pushing FarmData2 production branch to GitHub."
+    safe_cd "$REPO_ROOT_DIR"
+    git push --quiet --no-verify origin production
+    error_check "Failed to push FarmData2 production branch to GitHub."
+
+    RUN=$(gh run list --repo farmdata2/temp-spike --branch production)
+    echo "$RUN"
+
+    # Create the tag anyway so that it stays in synch with the GitHub release.
     echo "    Creating tag $RELEASE on git.drupalcode.org..."
+    safe_cd /var/tmp/farmdata2
     RELEASE=$(gh release list --repo farmdata2/temp-spike | grep Latest | cut -f1)
     RELEASE="${RELEASE:1}"
     git tag -a "$RELEASE" -m "Release $RELEASE"
