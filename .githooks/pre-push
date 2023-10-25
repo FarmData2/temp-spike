@@ -68,6 +68,8 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
     RUN=$(gh run list --repo farmdata2/temp-spike --branch production)
     echo "$RUN"
 
+    gh run watch --repo farmdata2/temp-spike-i 2 && echo "run is done"
+
     # Create the tag anyway so that it stays in synch with the GitHub release.
     echo "    Creating tag $RELEASE on git.drupalcode.org..."
     safe_cd /var/tmp/farmdata2
