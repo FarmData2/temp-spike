@@ -34,9 +34,11 @@ echo "  Done."
 
 echo "  Building the Drupal release..."
 
-echo "    Building the farm_fd2 module locally...
+echo "    Building the farm_fd2 module locally..."
+git switch --quiet production
+error_check "Failed to switch to production branch."
 npm run build:fd2
-error_check \"Failed to build farm_fd2 module.\""
+error_check "Failed to build farm_fd2 module."
 echo "    Done."
 
 if [ -d /var/tmp/farmdata2 ]; then
