@@ -41,8 +41,8 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
     error_check "Failed to copy files from farm_fd2/dist/farmdata2."
 
     echo "    Checking status of farmdata2 clone..."
-    STATUS=$(git status)
-    if [ ! "$STATUS" = "nothing to commit, working tree clean" ]; then
+    STATUS=$(git status | grep "nothing to commit, working tree clean")
+    if [ "$STATUS" = "" ]; then
       echo "    Staging and committing to release branch in farmdata2 clone..."
       safe_cd /var/tmp/farmdata2
       git switch --quiet release
