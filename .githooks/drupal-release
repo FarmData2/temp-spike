@@ -37,6 +37,7 @@ echo "  Building the Drupal release..."
 if [ -d /var/tmp/farmdata2 ]; then
   echo "    Removing existing farmdata2 clone..."
   rm -rf /var/tmp/farmdata2
+  echo "    Done."
 fi
 
 echo "    Creating clone of farmdata2 from git.drupalcode.org..."
