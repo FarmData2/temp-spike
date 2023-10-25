@@ -10,6 +10,8 @@ const config = {
           { type: 'build', release: false },
           { type: 'ci', release: false },
           { type: 'docs', release: false },
+          { type: 'feat', release: false },
+          { type: 'fix', release: false },
           { type: 'perf', release: false },
           { type: 'refactor', release: false },
           { type: 'style', release: false },
