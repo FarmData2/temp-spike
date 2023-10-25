@@ -25,7 +25,7 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
   echo "  A release will be prepared on git.drupalcode.org."
 
   if [ "$LOCAL_BRANCH" = "production" ]; then
-    echo "Starting drupal-release script (will run in 10 seconds)"
+    echo "  Starting drupal-release script (will run in 10 seconds)"
     (
       sleep 10
       "$REPO_ROOT_DIR/.githooks/drupal-release"
