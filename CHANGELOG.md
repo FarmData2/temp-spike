@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/FarmData2/temp-spike/compare/v1.1.0...v1.1.1) (2023-10-25)
+
+
+### Fixes
+
+* updated scripts ([#5](https://github.com/FarmData2/temp-spike/issues/5)) ([0553c97](https://github.com/FarmData2/temp-spike/commit/0553c970d5f00c303bf752b950e47260c9c5c098))
+
 ## [1.1.0](https://github.com/FarmData2/temp-spike/compare/v1.0.1...v1.1.0) (2023-10-25)
 
 
