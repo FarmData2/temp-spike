@@ -24,7 +24,7 @@ if [ "$REMOTE_BRANCH" = "development" ]; then
   (
     sleep 5
     "$REPO_ROOT_DIR/.githooks/post_push"
-  )
+  ) &
   exit 0
 fi
 
