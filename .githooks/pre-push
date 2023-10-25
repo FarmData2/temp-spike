@@ -40,11 +40,12 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
     cp -Ru modules/farm_fd2/dist/farmdata2/* /var/tmp/farmdata2/
     error_check "Failed to copy files from farm_fd2/dist/farmdata2."
 
+    safe_cd /var/tmp/farmdata2
+
     echo "    Checking status of farmdata2 clone..."
     STATUS=$(git status | grep "nothing to commit, working tree clean")
     if [ "$STATUS" = "" ]; then
       echo "    Staging and committing to release branch in farmdata2 clone..."
-      safe_cd /var/tmp/farmdata2
       git switch --quiet release
       error_check "Failed to switch to release branch."
       git stage .
@@ -53,7 +54,7 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
       error_check "Failed to commit files."
 
       echo "    Pushing farmdata2 clone to git.drupalcode.org..."
-      git push --quiet origin release
+      git push --quiet --no-verify origin release
       error_check "Failed to push farmdata2 clone to git.drupalcode.org."
     else
       echo "    No changes to farmdata2 module to be committed."
@@ -65,7 +66,7 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
     RELEASE="${RELEASE:1}"
     git tag -a "$RELEASE" -m "Release $RELEASE"
     error_check "Failed to create tag $RELEASE."
-    git push origin "$RELEASE"
+    git push --no-verity origin "$RELEASE"
     error_check "Failed to push tag $RELEASE to git.drupalcode.org."
 
     echo "Done."
