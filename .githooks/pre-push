@@ -7,43 +7,21 @@ source "$REPO_ROOT_DIR/bin/lib.bash"
 echo "Running FarmData2 pre-push hook..."
 
 read -r line
-if [ "$line" = "" ]; then
-  echo "Done."
-  exit 0
-fi
-
 LOCAL_BRANCH=$(echo "$line" | cut -f3 -d'/' | cut -f1 -d' ')
 REMOTE_BRANCH=$(echo "$line" | cut -f3 -d' ' | cut -f3 -d'/')
-
-if [ "$REMOTE_BRANCH" = "development" ]; then
-  echo "Starting post-push script..."
-  (
-    sleep 5
-    "$REPO_ROOT_DIR/.githooks/drupal-release"
-  ) &
-  exit 0
-fi
 
 # Only run this hook when pushing to the production branch.
 if [ "$REMOTE_BRANCH" = "production" ]; then
 
   echo "  Pushing to the production branch."
-  echo "  A release will be prepared on git.drupalcode.org..."
+  echo "  A release will be prepared on git.drupalcode.org."
 
   if [ "$LOCAL_BRANCH" = "production" ]; then
-
-    # echo "    Pushing FarmData2 production branch to GitHub."
-    # safe_cd "$REPO_ROOT_DIR"
-    # git push --quiet --no-verify origin production
-    # error_check "Failed to push FarmData2 production branch to GitHub."
-
-    # # Assumes that the most recent run on production is the one we want.
-    # # This could be problematic if there are multiple runs at once.
-    # RUN_ID=$(gh run list --repo farmdata2/temp-spike --workflow FD2Release --branch production --event push --limit 1 | tail -1 | cut -d$'\t' -f7)
-    # echo "$RUN_ID"
-
-    echo "When release is created on GitHub, run the DrupalRelease script"
-    echo "to create a release on git.drupalcode.org."
+    echo "Starting drupal-release script (will run in 10 seconds)"
+    (
+      sleep 10
+      "$REPO_ROOT_DIR/.githooks/drupal-release"
+    ) &
     exit 0
   else
     echo
