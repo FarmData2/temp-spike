@@ -12,6 +12,7 @@ echo "Running FarmData2 pre-push hook..."
 
 read -r line
 if [ "$line" = "" ]; then
+  echo "Done."
   exit 0
 fi
 
@@ -38,6 +39,10 @@ if [ "$REMOTE_BRANCH" = "production" ]; then
     echo "    Copying files from farm_fd2/dist/farmdata to clone..."
     cp -Ru modules/farm_fd2/dist/farmdata2/* /var/tmp/farmdata2/
     error_check "Failed to copy files from farm_fd2/dist/farmdata2."
+
+    echo "    Checking status of farmdata2 clone..."
+    STATUS=$(git status)
+    echo "$STATUS"
 
     echo "    Staging and committing to release branch in farmdata2 clone..."
     safe_cd /var/tmp/farmdata2
