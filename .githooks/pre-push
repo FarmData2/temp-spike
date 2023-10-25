@@ -9,6 +9,15 @@ read -r line
 LOCAL_BRANCH=$(echo "$line" | cut -f3 -d'/' | cut -f1 -d' ')
 REMOTE_BRANCH=$(echo "$line" | cut -f3 -d' ' | cut -f3 -d'/')
 
+if [ "$REMOTE_BRANCH" = "development" ]; then
+  echo
+  echo "Do not push to the development branch."
+  echo "Instead create a feature branch and commit your changes to it."
+  echo "Then push your feature branch to GitHub and create a pull request."
+  echo
+  exit 255
+fi
+
 # Only run this hook when pushing to the production branch.
 if [ "$REMOTE_BRANCH" = "production" ]; then
 

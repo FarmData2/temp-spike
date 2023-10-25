@@ -110,18 +110,21 @@ Doesn't really belong here ... but here for now...
 
 ### Development Workflow
 
-To change, modify, update, add a database:
+To change, modify, update, add to FarmData2
 
 - Prerequisites:
-  - Fork the `FD2-SampleDBs` upstream repository
-  - Clone your fork into the FarmData2 Development Environment
+  - Install Docker Desktop and TigerVNC Viewer
+  - Fork the `FarmData2` upstream repository to your local machine
+  - cd FarmData2/docker
+  - ./fd2-up.bash
+  - connect to localhost:5901 with Tiger VNC viewer
 
 1. Ensure that your `development` branch is synchronized with the `upstream`
 2. Create a new feature branch from the `development` branch
 3. Make and test changes in your feature branch
-4. Commit to your feature branch:
-   - The changes you have made to the code.
-   - The newly created database files (e.g. `db.base.tar.gz`)
+4. Commit to your feature branch.
+   - Identify and resolve any issues raised by the pre-commit checks.
+   - Try your commit again as necessary.
 5. Pull and merge any new changes to the `development` branch into your feature branch
 6. Create a pull request to the `development` branch in the upstream
 
@@ -129,10 +132,13 @@ A maintainer will:
 
 1. Review your pull request and provide feedback
 2. If/when appropriate squash merge your pull request into the `development` branch
-   - The squash merge commit message must be a conventional commit message.
-     - This will create a pre-release `vX.Y.Z-development.n`
-       - X.Y.Z is the semantic version of the next release if created at the moment
-       - n is a sequence number for pre-releases with the same semantic version number.
+   - The maintainer will use a squash merge commit message with a conventional commit message.
+     - valid types are: build, chore, ci, docs, feat, fix, perf, refactor, style, test
+     - valid scopes are: (fd2), (examples), (school)
+     - If the conventional commit message has a type of fix or feat and a scope of (fd2) then:
+       - The merge will create a pre-release `vX.Y.Z-development.n`
+         - X.Y.Z is the semantic version of the next release if it were created at the moment.
+         - n is a sequence number for pre-releases with the same semantic version number.
 
 ## Creating a GitHub Release of the farm_fd2 Module
 
@@ -141,24 +147,14 @@ When changes warranting a new release have been added to the `development` branc
 1. Updating the `production` and `development` branches from the upstream.
 2. Fast-forward merging the latest `development` branch into the `production` branch
 3. Pushing the `production` branch to the upstream
-   - This will create a new release `vX.Y.Z`
+   - This will create a new release `vX.Y.Z` in GitHub
      - X.Y.Z is the semantic version of the release
      - All but the most recent `development` pre-release will be deleted
      - The `CHANGELOG.md` file in the `production` branch is updated with the changes added
      - The `production` branch is _backmerged_ into the `development` branch
-
-Then you will need to:
-
-1. Update the `production` and `development` branches from the upstream to get the backmerged `CHANGELOG.md` file.
-
-## Creating a Drupal Release of the farm_fd2 Module
-
-When the production branch is pushed to the upstream and a new release is created the farmdata2 git.drupalcode.org repository is also updated and a new tag is created for the release.
-
-The release must then be created manually by visiting:
-
-<https://www.drupal.org/node/add/project-release/3396323>
-
-And selecting the "Release branch or tag" for the new release.
-
-- See <https://www.drupal.org/docs/develop/git/git-for-drupal-project-maintainers/creating-a-project-release> for detailed instructions about creating the release.
+   - A release for the farm_fd2 module will be setup in git.drupalcode.org
+     - Code changes to farm_fd2 module will be pushed to the release branch
+     - A tag will be created with the current sem ver number.
+   - The local production and development branches will be updated.
+4. Manually create the drupal release by visiting: <https://www.drupal.org/node/add/project-release/3396323> and selecting the "Release branch or tag" for the new release.
+   - See <https://www.drupal.org/docs/develop/git/git-for-drupal-project-maintainers/creating-a-project-release> for detailed instructions about creating the release.
