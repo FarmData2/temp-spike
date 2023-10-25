@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "This is the drupal-release script..."
+
+# Assumes that the most recent run on production is the one we want.
+# This could be problematic if there are multiple runs at once.
+RUN_ID=$(gh run list --repo farmdata2/temp-spike --workflow FD2Release --branch development --event push --limit 1 | tail -1 | cut -d$'\t' -f7)
+echo "$RUN_ID"
+
+echo "    Watching the FarmData2 FD2Release action on farmdata2/temp-spike..."
+gh run watch --repo farmdata2/temp-spike "$RUN_ID" --exit-status -i 2
+error_check "FarmData2 FD2Release action has failed."
+
+exit 0

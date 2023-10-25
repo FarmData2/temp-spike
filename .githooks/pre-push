@@ -19,6 +19,15 @@ fi
 LOCAL_BRANCH=$(echo "$line" | cut -f3 -d'/' | cut -f1 -d' ')
 REMOTE_BRANCH=$(echo "$line" | cut -f3 -d' ' | cut -f3 -d'/')
 
+if [ "$REMOTE_BRANCH" = "development" ]; then
+  echo "Starting post-push script..."
+  (
+    sleep 5
+    "$REPO_ROOT_DIR/.githooks/post_push"
+  )
+  exit 0
+fi
+
 # Only run this hook when pushing to the production branch.
 if [ "$REMOTE_BRANCH" = "production" ]; then
 
