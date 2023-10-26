@@ -2,6 +2,7 @@ backmerge
 backmerged
 bashlint
 Braught
+chgrp
 contconf
 conventionalcommits
 dockercompose
@@ -13,6 +14,7 @@ farmdata
 farmos
 getopt
 gids
+isready
 linkcheck
 lintstagedrc
 mfinelli
