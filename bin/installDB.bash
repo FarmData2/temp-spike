@@ -4,19 +4,19 @@
 source colors.bash
 source lib.bash
 
-# Define some useful variables, import libraries and 
+# Define some useful variables, import libraries and
 # check some common pre-conditions.
-REPO_DIR=$(git rev-parse --show-toplevel)       
+REPO_DIR=$(git rev-parse --show-toplevel)
 DB_DIR="$REPO_DIR/docker/db"
 
 if [ "$1" == "" ]; then
   # shellcheck disable=SC2207
-  RELEASES=( \
+  RELEASES=(
     $(gh release list \
       --exclude-drafts \
       --exclude-pre-releases \
-      --repo FarmData2/FD2-SampleDBs | \
-    cut -f1) 
+      --repo FarmData2/FD2-SampleDBs |
+      cut -f1)
   )
 
   echo "Choose the release to use..."
@@ -27,7 +27,7 @@ if [ "$1" == "" ]; then
       break
     fi
   done
-else 
+else
   RELEASE="$1"
 fi
 
@@ -37,7 +37,7 @@ error_check "Unable to verify that release exists."
 echo "  Release exists."
 
 # shellcheck disable=SC2207
-DBS=( $(echo "$REL_INFO" | grep "asset:" | cut -f2 ) )
+DBS=($(echo "$REL_INFO" | grep "asset:" | cut -f2))
 
 if [ "$2" == "" ]; then
   echo "Choose which database asset from the release to use..."

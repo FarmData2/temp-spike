@@ -11,3 +11,4 @@ bin/templates/entrypoints/*.yml
 modules/farm_fd2/src/public
 
 licenses
+CHANGELOG.md
